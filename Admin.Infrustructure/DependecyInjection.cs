@@ -1,4 +1,8 @@
-﻿using Admin.Persistence.Context;
+﻿using Admin.Application.Interfaces;
+using Admin.Application.Services;
+using Admin.Domain.Interfaces;
+using Admin.Persistence.Context;
+using Admin.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,8 +18,13 @@ public static class DependecyInjection
         {
             options.UseSqlServer(configuration.GetConnectionString("ConnectionDev"),
                 m => m.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName));
-                //sqlOptions => sqlOptions.MigrationsAssembly("Admin.Persistence"));
-        }); 
+        });
+        // Services
+        services.AddScoped<IHardwareService, HardwareService> ();
+
+        // Repositories
+        services.AddScoped<IHardwareRepositories, HardwareRepositories>();
+
         return services;
     }
 }

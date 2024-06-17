@@ -22,16 +22,4 @@ internal class HardwareConfig : IEntityTypeConfiguration<Hardware>
                .HasForeignKey<Telnet>(x => x.HardwareId);
     }
 
-
-
-
-
-    public int Id { get; private set; }
-    public string Description { get; private set; }
-    public string Model { get; private set; }
-    public string Ipv4 { get; private set; }
-    public int SnmpId { get; private set; }
-    public Snmp Snmp { get; set; }
-    public int TelnetId { get; private set; }
-    public Telnet Telnet { get; set; }
 }
