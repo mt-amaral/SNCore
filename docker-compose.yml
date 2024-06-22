@@ -23,7 +23,7 @@ services:
       - sql_server
 
   sql_server:
-    image: sqlserver:1.0.0 
+    image: sql_server:1.0.0 
     container_name: sql_server_admin
     hostname: sql_server_admin
     build: 
@@ -46,3 +46,8 @@ networks:
       config:
         - subnet: 172.19.254.0/27
           gateway: 172.19.254.30
+
+# -- Rebuild Api
+# docker build -t api_admin:1.0.0 --target api -f Admin.Api/Dockerfile .;docker-compose up -d
+# --- Rebuild Sql
+# docker build -t sql_server:1.0.0 --target sql -f Admin.Sql.Test/Dockerfile .;docker-compose up -d

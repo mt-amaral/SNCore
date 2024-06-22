@@ -33,5 +33,3 @@ WORKDIR /app
 COPY --from=publish /app/publish .
 COPY Admin.Api/https/. .
 ENTRYPOINT ["dotnet", "Admin.Api.dll"]
-
-#docker build -t api_admin:1.0.0 --target api .;docker-compose up -d
