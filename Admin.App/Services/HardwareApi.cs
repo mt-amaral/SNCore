@@ -11,8 +11,8 @@ public class HardwareApi
         _httpClient = httpClient;
     }
 
-    public async Task<IEnumerable<HardwareModel>> GetHardwaresAsync()
-    {
-        return await _httpClient.GetFromJsonAsync<IEnumerable<HardwareModel>>("Hardware/ExibirTodos");
-    }
+    public async Task<IEnumerable<HardwareModel>?> GetHardwaresAsync()
+        {
+            return await _httpClient.GetFromJsonAsync<IEnumerable<HardwareModel>>("Hardware/ExibirTodos");
+        }
 }

@@ -16,7 +16,9 @@ builder.Services.AddCors(
         policy => policy
         .WithOrigins([
             Configuration.AdminAppUrl, 
-            Configuration.AdminApiUrl
+            Configuration.AdminApiUrl,
+            Configuration.AdminAppConteiner,
+            Configuration.AdminApiConteiner
             ])
         .AllowAnyMethod()
         .AllowAnyHeader()
