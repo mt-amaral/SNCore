@@ -1,9 +1,5 @@
 version: '3.8'
 
-networks:
-  cisco-api:
-    driver: bridge
-
 services:
   api-admin:
     container_name: api_admin
@@ -13,8 +9,8 @@ services:
       context: .
       dockerfile: Admin.Api/Dockerfile
     networks:
-      - cisco-api
-
+      cisco-api:
+        ipv4_address: 172.19.254.1
     ports:
       - "8080:8080"
       - "8081:8081"
@@ -23,13 +19,35 @@ services:
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
     restart: unless-stopped
+    depends_on:
+      - sql_server
 
+  sql_server:
+    image: sql_server:1.0.0 
+    container_name: sql_server_admin
+    hostname: sql_server_admin
+    build: 
+      context: .
+      dockerfile: Admin.Sql.Test/Dockerfile
+    environment:
+      ACCEPT_EULA: Y
+      MSSQL_SA_PASSWORD: BneiivxZf28w7seZ
+      MSSQL_PID: Evaluation
+    ports:
+      - "1433:1433"
+    networks:
+      cisco-api:
+        ipv4_address: 172.19.254.2
 
-#version: '3.4'
-#
-#services:
-#  admin.api:
-#    image: ${DOCKER_REGISTRY-}adminapi
-#    build:
-#      context: .
-#      dockerfile: Admin.Api/Dockerfile
+networks:
+  cisco-api:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.19.254.0/27
+          gateway: 172.19.254.30
+
+# -- Rebuild Api
+# docker build -t api_admin:1.0.0 --target api -f Admin.Api/Dockerfile .;docker-compose up -d
+# --- Rebuild Sql
+# docker build -t sql_server:1.0.0 --target sql -f Admin.Sql.Test/Dockerfile .;docker-compose up -d
