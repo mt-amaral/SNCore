@@ -1,0 +1,42 @@
+﻿@page "/hardware"
+@inject HardwareApi hardwareApi
+
+<h3>Hardware List</h3>
+
+@if (hardwareList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Description</th>
+                <th>Model</th>
+                <th>IPv4</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var hardware in hardwareList)
+            {
+                <tr>
+                    <td>@hardware.Id</td>
+                    <td>@hardware.Description</td>
+                    <td>@hardware.Model</td>
+                    <td>@hardware.Ipv4</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IEnumerable<HardwareModel>? hardwareList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        hardwareList = await hardwareApi.GetHardwaresAsync();
+    }
+}
