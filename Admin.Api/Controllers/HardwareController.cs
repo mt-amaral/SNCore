@@ -6,6 +6,7 @@ using Admin.Persistence.Repositories;
 using AutoMapper;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Admin.Api.Controllers;
 
@@ -61,7 +62,21 @@ public class HardwareController : Controller
             await _hardwareService.Edit(hardwareDTO);
             return Created();
         }
-        catch (Exception ex) 
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+    [HttpDelete]
+    [Route("DeleteHardware")]
+    public async Task<ActionResult> DeleteHardware(HardwareDTO hardwareDTO)
+    {
+        try
+        {
+            await _hardwareService.Delete(hardwareDTO);
+            return Ok();
+        }
+        catch (Exception ex)
         {
             return BadRequest(ex.Message);
         }

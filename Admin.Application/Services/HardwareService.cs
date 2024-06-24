@@ -34,4 +34,9 @@ public class HardwareService : IHardwareService
         var hardware = _mapper.Map<Hardware>(hardwareDTO);
        await _hardwareRepositories.Edit(hardware);
     }
+    public async Task Delete(HardwareDTO hardwareDTO)
+    {
+        var hardware = _mapper.Map<Hardware>(hardwareDTO);
+        await _hardwareRepositories.Delete(hardware);
+    }
 }

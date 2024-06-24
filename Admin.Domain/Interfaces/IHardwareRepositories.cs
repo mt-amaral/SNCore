@@ -10,4 +10,5 @@ public interface IHardwareRepositories
     Task<Hardware> SelectByPk(int ?id);
     Task<IEnumerable<Hardware>> SelectAll();
     Task Edit(Hardware hardware);
+    Task Delete(Hardware hardware);
 }

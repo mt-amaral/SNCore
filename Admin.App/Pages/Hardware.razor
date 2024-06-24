@@ -1,8 +1,14 @@
 ﻿@page "/hardware"
 @using System.Net.Http.Json
 @inject HardwareApi hardwareApi
+@if (hardwareList == null)
+{
+    
+}
 
-<MudDataGrid T="HardwareModel" Items="@hardwareList.Take(4)" ReadOnly="@_readOnly" EditMode="@(_isCellEditMode ? DataGridEditMode.Cell : DataGridEditMode.Form)"
+<MudThemeProvider></MudThemeProvider>
+
+<MudDataGrid  T="HardwareModel" Items="@hardwareList.Take(15)" ReadOnly="@_readOnly" EditMode="@(_isCellEditMode ? DataGridEditMode.Cell : DataGridEditMode.Form)"
              StartedEditingItem="@StartedEditingItem" CanceledEditingItem="@CanceledEditingItem" CommittedItemChanges="@CommittedItemChanges"
              Bordered="true" Dense="true" EditTrigger="@(_editTriggerRowClick ? DataGridEditTrigger.OnRowClick : DataGridEditTrigger.Manual)">
     <Columns>
@@ -13,10 +19,13 @@
         <TemplateColumn Hidden="@(_isCellEditMode || _readOnly || _editTriggerRowClick)" CellClass="d-flex justify-end">
             <CellTemplate>
                 <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@context.Actions.StartEditingItemAsync" />
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Delete" aria-label="delete" OnClick="@context.Actions.StartEditingItemAsync" />
+
             </CellTemplate>
         </TemplateColumn>
     </Columns>
 </MudDataGrid>
+
 
 <MudExpansionPanels Style="flex:1">
     <MudExpansionPanel Text="Show Events">
@@ -51,6 +60,7 @@
         {
             // Handle exception (e.g., log the error, show a message to the user, etc.)
             Console.Error.WriteLine($"Error loading hardware: {ex.Message}");
+
             hardwareList = Array.Empty<HardwareModel>();
         }
     }
@@ -65,10 +75,15 @@
     {
         _events.Insert(0, $"Event = CanceledEditingItem, Data = {System.Text.Json.JsonSerializer.Serialize(item)}");
     }
+    async void DeleteItem(HardwareModel item)
+    {
+        ;
+    }
 
     async void CommittedItemChanges(HardwareModel item)
     {
         _events.Insert(0, $"Event = CommittedItemChanges, Data = {System.Text.Json.JsonSerializer.Serialize(item)}");
         await hardwareApi.EditHardwareAsync(item);
     }
+
 }

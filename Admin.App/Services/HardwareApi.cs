@@ -20,4 +20,9 @@ public class HardwareApi
         var response = await _httpClient.PutAsJsonAsync("Hardware/EditarHardware", hardware);
         response.EnsureSuccessStatusCode();
     }
+    public async Task DeleteHardwareAsync(int hardwareId)
+    {
+        var response = await _httpClient.DeleteAsync($"api/hardware/DeleteHardware/{hardwareId}");
+        response.EnsureSuccessStatusCode();
+    }
 }

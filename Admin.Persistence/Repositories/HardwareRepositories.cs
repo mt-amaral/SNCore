@@ -20,6 +20,7 @@ public class HardwareRepositories : IHardwareRepositories
         return await _context.SaveChangesAsync() > 0;
     }
 
+
     public async Task<Hardware> SelectByPk(int? id)
     {
         var hadware = await _context.Hardware.Where(x => x.Id == id).FirstOrDefaultAsync();
@@ -36,11 +37,20 @@ public class HardwareRepositories : IHardwareRepositories
     }
 
     public async Task Edit(Hardware hardware)
-    {
+    { 
 
         _context.Hardware.Update(hardware);
         await _context.SaveChangesAsync();
 
+    }
+    public async Task Delete(Hardware hardware)
+    {
+        var entidadeToDelete = _context.Hardware.Where(x => x.Id == hardware.Id).FirstOrDefault();
+        if (entidadeToDelete != null)
+        {
+            _context.Hardware.Remove(entidadeToDelete);
+            await _context.SaveChangesAsync();
+        }
     }
 }
 
