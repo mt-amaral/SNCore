@@ -8,4 +8,5 @@ public interface IHardwareService
 {
     Task<HardwareDTO> SelectByPk(int id);
     Task<IEnumerable<HardwareDTO>> SelectAll();
+    Task Edit(HardwareDTO hardwareDTO);
 }

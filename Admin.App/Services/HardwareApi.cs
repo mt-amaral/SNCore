@@ -15,4 +15,9 @@ public class HardwareApi
         {
             return await _httpClient.GetFromJsonAsync<IEnumerable<HardwareModel>>("Hardware/ExibirTodos");
         }
+    public async Task EditHardwareAsync(HardwareModel hardware)
+    {
+        var response = await _httpClient.PutAsJsonAsync("Hardware/EditarHardware", hardware);
+        response.EnsureSuccessStatusCode();
+    }
 }

@@ -1,42 +1,74 @@
 ﻿@page "/hardware"
+@using System.Net.Http.Json
 @inject HardwareApi hardwareApi
 
-<h3>Hardware List</h3>
+<MudDataGrid T="HardwareModel" Items="@hardwareList.Take(4)" ReadOnly="@_readOnly" EditMode="@(_isCellEditMode ? DataGridEditMode.Cell : DataGridEditMode.Form)"
+             StartedEditingItem="@StartedEditingItem" CanceledEditingItem="@CanceledEditingItem" CommittedItemChanges="@CommittedItemChanges"
+             Bordered="true" Dense="true" EditTrigger="@(_editTriggerRowClick ? DataGridEditTrigger.OnRowClick : DataGridEditTrigger.Manual)">
+    <Columns>
+        <PropertyColumn Property="x => x.Id" Title="Id" IsEditable="false" />
+        <PropertyColumn Property="x => x.Description" Title="Description" />
+        <PropertyColumn Property="x => x.Model" Title="Model" />
+        <PropertyColumn Property="x => x.Ipv4" Title="IPv4" />
+        <TemplateColumn Hidden="@(_isCellEditMode || _readOnly || _editTriggerRowClick)" CellClass="d-flex justify-end">
+            <CellTemplate>
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@context.Actions.StartEditingItemAsync" />
+            </CellTemplate>
+        </TemplateColumn>
+    </Columns>
+</MudDataGrid>
 
-@if (hardwareList == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Description</th>
-                <th>Model</th>
-                <th>IPv4</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var hardware in hardwareList)
-            {
-                <tr>
-                    <td>@hardware.Id</td>
-                    <td>@hardware.Description</td>
-                    <td>@hardware.Model</td>
-                    <td>@hardware.Ipv4</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+<MudExpansionPanels Style="flex:1">
+    <MudExpansionPanel Text="Show Events">
+        @foreach (var message in _events)
+        {
+            <MudText Typo="@Typo.body2">@message</MudText>
+        }
+        @if (_events.Count > 0)
+        {
+            <div class="d-flex">
+                <MudSpacer />
+                <MudButton Class="mt-3" ButtonType="ButtonType.Button" Variant="Variant.Filled" OnClick="@(() => _events.Clear())">Clear</MudButton>
+            </div>
+        }
+    </MudExpansionPanel>
+</MudExpansionPanels>
 
 @code {
-    private IEnumerable<HardwareModel>? hardwareList;
+    private IEnumerable<HardwareModel> hardwareList = new List<HardwareModel>();
+    private bool _readOnly;
+    private bool _isCellEditMode;
+    private List<string> _events = new();
+    private bool _editTriggerRowClick;
 
     protected override async Task OnInitializedAsync()
     {
-        hardwareList = await hardwareApi.GetHardwaresAsync();
+        try
+        {
+            hardwareList = await hardwareApi.GetHardwaresAsync();
+        }
+        catch (Exception ex)
+        {
+            // Handle exception (e.g., log the error, show a message to the user, etc.)
+            Console.Error.WriteLine($"Error loading hardware: {ex.Message}");
+            hardwareList = Array.Empty<HardwareModel>();
+        }
+    }
+
+    // events
+    void StartedEditingItem(HardwareModel item)
+    {
+        _events.Insert(0, $"Event = StartedEditingItem, Data = {System.Text.Json.JsonSerializer.Serialize(item)}");
+    }
+
+    void CanceledEditingItem(HardwareModel item)
+    {
+        _events.Insert(0, $"Event = CanceledEditingItem, Data = {System.Text.Json.JsonSerializer.Serialize(item)}");
+    }
+
+    async void CommittedItemChanges(HardwareModel item)
+    {
+        _events.Insert(0, $"Event = CommittedItemChanges, Data = {System.Text.Json.JsonSerializer.Serialize(item)}");
+        await hardwareApi.EditHardwareAsync(item);
     }
 }

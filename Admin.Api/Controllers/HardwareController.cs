@@ -52,4 +52,18 @@ public class HardwareController : Controller
             return BadRequest(ex.Message);
         }
     }
+    [HttpPut]
+    [Route("EditarHardware")]
+    public async Task<ActionResult> EditHardware(HardwareDTO hardwareDTO)
+    {
+        try
+        {
+            await _hardwareService.Edit(hardwareDTO);
+            return Created();
+        }
+        catch (Exception ex) 
+        {
+            return BadRequest(ex.Message);
+        }
+    }
 }

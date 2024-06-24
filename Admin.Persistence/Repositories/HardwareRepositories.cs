@@ -34,6 +34,14 @@ public class HardwareRepositories : IHardwareRepositories
     {
         return await _context.Hardware.ToListAsync();
     }
+
+    public async Task Edit(Hardware hardware)
+    {
+
+        _context.Hardware.Update(hardware);
+        await _context.SaveChangesAsync();
+
+    }
 }
 
 

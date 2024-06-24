@@ -29,4 +29,9 @@ public class HardwareService : IHardwareService
         var hardware = await _hardwareRepositories.SelectByPk(id);
         return _mapper.Map<HardwareDTO>(hardware);
     }
+    public async Task Edit(HardwareDTO hardwareDTO)
+    {
+        var hardware = _mapper.Map<Hardware>(hardwareDTO);
+       await _hardwareRepositories.Edit(hardware);
+    }
 }
