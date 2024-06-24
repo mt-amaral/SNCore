@@ -1,13 +1,8 @@
 ﻿@page "/hardware"
 @using System.Net.Http.Json
 @inject HardwareApi hardwareApi
-@if (hardwareList == null)
-{
-    
-}
-
+<MudText>Hardware</MudText>
 <MudThemeProvider></MudThemeProvider>
-
 <MudDataGrid  T="HardwareModel" Items="@hardwareList.Take(15)" ReadOnly="@_readOnly" EditMode="@(_isCellEditMode ? DataGridEditMode.Cell : DataGridEditMode.Form)"
              StartedEditingItem="@StartedEditingItem" CanceledEditingItem="@CanceledEditingItem" CommittedItemChanges="@CommittedItemChanges"
              Bordered="true" Dense="true" EditTrigger="@(_editTriggerRowClick ? DataGridEditTrigger.OnRowClick : DataGridEditTrigger.Manual)">
@@ -42,6 +37,7 @@
         }
     </MudExpansionPanel>
 </MudExpansionPanels>
+<MudPaper/>
 
 @code {
     private IEnumerable<HardwareModel> hardwareList = new List<HardwareModel>();

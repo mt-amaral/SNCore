@@ -1,3 +1,17 @@
+#app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.loading-progress-text {
+    margin-top: 20px;
+    font-size: 1.5rem;
+    color: #333;
+}
+
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;
