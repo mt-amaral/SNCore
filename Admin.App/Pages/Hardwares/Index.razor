@@ -1,26 +1,33 @@
 ﻿@page "/hardware"
 @using System.Net.Http.Json
 @inject HardwareApi hardwareApi
+
 <MudText>Hardware</MudText>
 <MudThemeProvider></MudThemeProvider>
-<MudDataGrid  T="HardwareModel" Items="@hardwareList.Take(15)" ReadOnly="@_readOnly" EditMode="@(_isCellEditMode ? DataGridEditMode.Cell : DataGridEditMode.Form)"
-             StartedEditingItem="@StartedEditingItem" CanceledEditingItem="@CanceledEditingItem" CommittedItemChanges="@CommittedItemChanges"
-             Bordered="true" Dense="true" EditTrigger="@(_editTriggerRowClick ? DataGridEditTrigger.OnRowClick : DataGridEditTrigger.Manual)">
-    <Columns>
-        <PropertyColumn Property="x => x.Id" Title="Id" IsEditable="false" />
-        <PropertyColumn Property="x => x.Description" Title="Description" />
-        <PropertyColumn Property="x => x.Model" Title="Model" />
-        <PropertyColumn Property="x => x.Ipv4" Title="IPv4" />
-        <TemplateColumn Hidden="@(_isCellEditMode || _readOnly || _editTriggerRowClick)" CellClass="d-flex justify-end">
-            <CellTemplate>
-                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@context.Actions.StartEditingItemAsync" />
-                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Delete" aria-label="delete" OnClick="@context.Actions.StartEditingItemAsync" />
 
-            </CellTemplate>
-        </TemplateColumn>
-    </Columns>
-</MudDataGrid>
-
+@if (!hardwareList.Any())
+{
+    <MudProgressLinear Indeterminate="true" Class="my-7"/>
+}
+else
+{
+    <MudDataGrid T="HardwareModel" Items="@hardwareList.Take(15)" ReadOnly="@_readOnly" EditMode="@(_isCellEditMode ? DataGridEditMode.Cell : DataGridEditMode.Form)"
+                 StartedEditingItem="@StartedEditingItem" CanceledEditingItem="@CanceledEditingItem" CommittedItemChanges="@CommittedItemChanges"
+                 Bordered="true" Dense="true" EditTrigger="@(_editTriggerRowClick ? DataGridEditTrigger.OnRowClick : DataGridEditTrigger.Manual)">
+        <Columns>
+            <PropertyColumn Property="x => x.Id" Title="Id" IsEditable="false" />
+            <PropertyColumn Property="x => x.Description" Title="Description" />
+            <PropertyColumn Property="x => x.Model" Title="Model" />
+            <PropertyColumn Property="x => x.Ipv4" Title="IPv4" />
+            <TemplateColumn Hidden="@(_isCellEditMode || _readOnly || _editTriggerRowClick)" CellClass="d-flex justify-end">
+                <CellTemplate>
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@context.Actions.StartEditingItemAsync" />
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Delete" aria-label="delete" OnClick="@context.Actions.StartEditingItemAsync" />
+                </CellTemplate>
+            </TemplateColumn>
+        </Columns>
+    </MudDataGrid>
+}
 
 <MudExpansionPanels Style="flex:1">
     <MudExpansionPanel Text="Show Events">
@@ -37,7 +44,7 @@
         }
     </MudExpansionPanel>
 </MudExpansionPanels>
-<MudPaper/>
+<MudPaper />
 
 @code {
     private IEnumerable<HardwareModel> hardwareList = new List<HardwareModel>();
@@ -71,15 +78,10 @@
     {
         _events.Insert(0, $"Event = CanceledEditingItem, Data = {System.Text.Json.JsonSerializer.Serialize(item)}");
     }
-    async void DeleteItem(HardwareModel item)
-    {
-        ;
-    }
 
     async void CommittedItemChanges(HardwareModel item)
     {
         _events.Insert(0, $"Event = CommittedItemChanges, Data = {System.Text.Json.JsonSerializer.Serialize(item)}");
         await hardwareApi.EditHardwareAsync(item);
     }
-
 }
