@@ -3,7 +3,7 @@
 @inject HardwareApi hardwareApi
 
 <MudText Align="Align.Center" Typo="Typo.h4" >HARDWARE</MudText>
-<MudContainer MaxWidth="MaxWidth.ExtraLarge" >
+<MudContainer MaxWidth="MaxWidth.Medium" >
 
 @if (!hardwareList.Any())
 {
@@ -11,28 +11,29 @@
 }
 else
 {
-        <MudTable Items="@hardwareList" MultiSelection="true" T="HardwareResponse" SelectedItemsChanged="OnSelectedItemsChanged">
-        <ToolBarContent>
-            <MudText Typo="Typo.h6">Periodic Elements</MudText>
-            <MudSpacer />
-            <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
-        </ToolBarContent>
-        <HeaderContent>
-            <MudTh>id</MudTh>
-            <MudTh>Description</MudTh>
-            <MudTh>Model</MudTh>
-            <MudTh>Ipv4</MudTh>
-        </HeaderContent>
-        <RowTemplate>
-            <MudTd DataLabel="id">@context.Id</MudTd>
-            <MudTd DataLabel="Description">@context.Description</MudTd>
-            <MudTd DataLabel="Model">@context.Model</MudTd>
-            <MudTd DataLabel="Ipv4">@context.Ipv4</MudTd>
-        </RowTemplate>
-        <PagerContent>
-            <MudTablePager/>
-        </PagerContent>
-        </MudTable>
+        <MudTable Items="@hardwareList" MultiSelection="true" Striped="true" T="HardwareResponse"  SelectedItemsChanged="OnSelectedItemsChanged">
+    <ToolBarContent>
+        <MudSpacer />
+        <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>id</MudTh>
+        <MudTh>Description</MudTh>
+        <MudTh>Model</MudTh>
+        <MudTh>Ipv4</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="id">@context.Id</MudTd>
+        <MudTd DataLabel="Description">@context.Description</MudTd>
+        <MudTd DataLabel="Model">@context.Model</MudTd>
+        <MudTd DataLabel="Ipv4">@context.Ipv4</MudTd>
+        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" />
+        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" />
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager HideRowsPerPage="true"/>
+    </PagerContent>
+    </MudTable>
 }
 
 </MudContainer>
