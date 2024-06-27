@@ -2,7 +2,7 @@
 @using System.Net.Http.Json
 @inject HardwareApi hardwareApi
 
-<MudText Align="Align.Center" Typo="Typo.h2">Hardware</MudText>
+<MudText Align="Align.Center" Typo="Typo.h4" >HARDWARE</MudText>
 <MudContainer MaxWidth="MaxWidth.ExtraLarge" >
 
 @if (!hardwareList.Any())
@@ -11,8 +11,8 @@
 }
 else
 {
-@*     <MudDataGrid T="HardwareResponse" Items="@hardwareList.Take(15)" ReadOnly="@_readOnly" EditMode="@(_isCellEditMode ? DataGridEditMode.Cell : DataGridEditMode.Form)"
-                 StartedEditingItem="@StartedEditingItem" CanceledEditingItem="@CanceledEditingItem" CommittedItemChanges="@CommittedItemChanges"
+    <MudDataGrid T="HardwareResponse" Items="@hardwareList.Take(15)" ReadOnly="@_readOnly" EditMode="@(_isCellEditMode ? DataGridEditMode.Cell : DataGridEditMode.Form)"
+                 StartedEditingItem="@StartedEditingItem" CanceledEditingItem="@CanceledEditingItem" 
                  Bordered="true" Dense="true" EditTrigger="@(_editTriggerRowClick ? DataGridEditTrigger.OnRowClick : DataGridEditTrigger.Manual)">
         <Columns>
             <PropertyColumn Property="x => x.Id" Title="Id" IsEditable="false" />
@@ -26,7 +26,7 @@ else
                 </CellTemplate>
             </TemplateColumn>
         </Columns>
-    </MudDataGrid> *@
+    </MudDataGrid>
 }
 
 @* <MudExpansionPanels Style="flex:1">
