@@ -1,12 +1,9 @@
-﻿
-
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
-namespace Admin.Application.DTOs;
+namespace Admin.Share.Request;
 
-public class HardwareDTO
+public class HardwareRequest
 {
     [IgnoreDataMember]
     public int Id { get; set; }

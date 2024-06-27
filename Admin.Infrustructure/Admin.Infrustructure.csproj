@@ -10,6 +10,7 @@
     <ProjectReference Include="..\Admin.Application\Admin.Application.csproj" />
     <ProjectReference Include="..\Admin.Domain\Admin.Domain.csproj" />
     <ProjectReference Include="..\Admin.Persistence\Admin.Persistence.csproj" />
+    <ProjectReference Include="..\Admin.Shared\Admin.Shared.csproj" />
   </ItemGroup>
 
 </Project>

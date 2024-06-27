@@ -1,4 +1,4 @@
-﻿using Admin.Application.DTOs;
+﻿using Admin.Share.Response;
 using Admin.Domain.Entities;
 using AutoMapper;
 
@@ -8,6 +8,6 @@ public class DomainToDTOMappingProfile : Profile
 {
     public DomainToDTOMappingProfile() 
     {
-        CreateMap<Hardware, HardwareDTO>().ReverseMap();
+        CreateMap<Hardware, HardwareResponse>().ReverseMap();
     }
 }

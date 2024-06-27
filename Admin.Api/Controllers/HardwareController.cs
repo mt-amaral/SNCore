@@ -1,12 +1,9 @@
-﻿using Admin.Application.DTOs;
+﻿
 using Admin.Application.Interfaces;
-using Admin.Domain.Entities;
-using Admin.Domain.Interfaces;
-using Admin.Persistence.Repositories;
+using Admin.Share.Request;
+using Admin.Share.Response;
 using AutoMapper;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Admin.Api.Controllers;
 
@@ -25,7 +22,7 @@ public class HardwareController : Controller
 
     [HttpGet]
     [Route("ExibirTodos")]
-    public async Task<ActionResult<IEnumerable<Hardware>>> GetHardware()
+    public async Task<ActionResult<IEnumerable<HardwareResponse>>> GetHardware()
     {
         try
         {
@@ -55,11 +52,11 @@ public class HardwareController : Controller
     }
     [HttpPut]
     [Route("EditarHardware")]
-    public async Task<ActionResult> EditHardware(HardwareDTO hardwareDTO)
+    public async Task<ActionResult> EditHardware(HardwareRequest hardwareRequest)
     {
         try
         {
-            await _hardwareService.Edit(hardwareDTO);
+            await _hardwareService.Edit(hardwareRequest);
             return Created();
         }
         catch (Exception ex)
@@ -69,11 +66,11 @@ public class HardwareController : Controller
     }
     [HttpDelete]
     [Route("DeleteHardware")]
-    public async Task<ActionResult> DeleteHardware(HardwareDTO hardwareDTO)
+    public async Task<ActionResult> DeleteHardware(HardwareRequest hardwareRequest)
     {
         try
         {
-            await _hardwareService.Delete(hardwareDTO);
+            await _hardwareService.Delete(hardwareRequest);
             return Ok();
         }
         catch (Exception ex)

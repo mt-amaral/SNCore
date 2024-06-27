@@ -11,7 +11,7 @@
 }
 else
 {
-    <MudDataGrid T="HardwareModel" Items="@hardwareList.Take(15)" ReadOnly="@_readOnly" EditMode="@(_isCellEditMode ? DataGridEditMode.Cell : DataGridEditMode.Form)"
+@*     <MudDataGrid T="HardwareResponse" Items="@hardwareList.Take(15)" ReadOnly="@_readOnly" EditMode="@(_isCellEditMode ? DataGridEditMode.Cell : DataGridEditMode.Form)"
                  StartedEditingItem="@StartedEditingItem" CanceledEditingItem="@CanceledEditingItem" CommittedItemChanges="@CommittedItemChanges"
                  Bordered="true" Dense="true" EditTrigger="@(_editTriggerRowClick ? DataGridEditTrigger.OnRowClick : DataGridEditTrigger.Manual)">
         <Columns>
@@ -26,7 +26,7 @@ else
                 </CellTemplate>
             </TemplateColumn>
         </Columns>
-    </MudDataGrid>
+    </MudDataGrid> *@
 }
 
 @* <MudExpansionPanels Style="flex:1">
@@ -48,7 +48,7 @@ else
 </MudContainer>
 
 @code {
-    private IEnumerable<HardwareModel> hardwareList = new List<HardwareModel>();
+    private IEnumerable<HardwareResponse> hardwareList = new List<HardwareResponse>();
     private bool _readOnly;
     private bool _isCellEditMode;
     private List<string> _events = new();
@@ -59,32 +59,28 @@ else
         try
         {
             hardwareList = await hardwareApi.GetHardwaresAsync();
-            if (hardwareList == null)
-            {
-                return new List<HardwareModel>();
-            }
         }
         catch (Exception ex)
         {
             // Handle exception (e.g., log the error, show a message to the user, etc.)
             Console.Error.WriteLine($"Error loading hardware: {ex.Message}");
 
-            hardwareList = Array.Empty<HardwareModel>();
+            hardwareList = Array.Empty<HardwareResponse>();
         }
     }
 
     // events
-    void StartedEditingItem(HardwareModel item)
+    void StartedEditingItem(HardwareResponse item)
     {
         _events.Insert(0, $"Event = StartedEditingItem, Data = {System.Text.Json.JsonSerializer.Serialize(item)}");
     }
 
-    void CanceledEditingItem(HardwareModel item)
+    void CanceledEditingItem(HardwareResponse item)
     {
         _events.Insert(0, $"Event = CanceledEditingItem, Data = {System.Text.Json.JsonSerializer.Serialize(item)}");
     }
 
-    async void CommittedItemChanges(HardwareModel item)
+    async void CommittedItemChanges(HardwareRequest item)
     {
         _events.Insert(0, $"Event = CommittedItemChanges, Data = {System.Text.Json.JsonSerializer.Serialize(item)}");
         await hardwareApi.EditHardwareAsync(item);

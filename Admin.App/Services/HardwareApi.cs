@@ -1,5 +1,6 @@
-﻿using Admin.App.Model;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
+using Admin.Share.Request;
+using Admin.Share.Response;
 
 namespace Admin.App.Services;
 public class HardwareApi
@@ -11,11 +12,11 @@ public class HardwareApi
         _httpClient = httpClient;
     }
 
-    public async Task<IEnumerable<HardwareModel>?> GetHardwaresAsync()
+    public async Task<IEnumerable<HardwareResponse>?> GetHardwaresAsync()
         {
-            return await _httpClient.GetFromJsonAsync<IEnumerable<HardwareModel>>("Hardware/ExibirTodos");
+            return await _httpClient.GetFromJsonAsync<IEnumerable<HardwareResponse>>("Hardware/ExibirTodos");
         }
-    public async Task EditHardwareAsync(HardwareModel hardware)
+    public async Task EditHardwareAsync(HardwareRequest hardware)
     {
         var response = await _httpClient.PutAsJsonAsync("Hardware/EditarHardware", hardware);
         response.EnsureSuccessStatusCode();
