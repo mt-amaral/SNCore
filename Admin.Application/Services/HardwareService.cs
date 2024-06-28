@@ -35,9 +35,12 @@ public class HardwareService : IHardwareService
         var hardware = _mapper.Map<Hardware>(hardwareRequest);
        await _hardwareRepositories.Edit(hardware);
     }
-    public async Task Delete(HardwareRequest hardwareRequest)
+    public async Task Delete(int hardwareId)
     {
-        var hardware = _mapper.Map<Hardware>(hardwareRequest);
-        await _hardwareRepositories.Delete(hardware);
+        var hardware = await _hardwareRepositories.SelectByPk(hardwareId);
+        if (hardware != null)
+        {
+            await _hardwareRepositories.Delete(hardware);
+        }
     }
 }

@@ -23,7 +23,13 @@ public class HardwareApi
     }
     public async Task DeleteHardwareAsync(int hardwareId)
     {
-        var response = await _httpClient.DeleteAsync($"api/hardware/DeleteHardware/{hardwareId}");
-        response.EnsureSuccessStatusCode();
+        try
+        {
+            var response = await _httpClient.DeleteAsync($"Hardware/DeleteHardware/?hardwareId={hardwareId}");
+            response.EnsureSuccessStatusCode();
+        }catch (Exception ex)
+        {
+            throw new Exception("Deu ruin na consulta nobre");
+        }
     }
 }

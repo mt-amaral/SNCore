@@ -66,11 +66,11 @@ public class HardwareController : Controller
     }
     [HttpDelete]
     [Route("DeleteHardware")]
-    public async Task<ActionResult> DeleteHardware(HardwareRequest hardwareRequest)
+    public async Task<ActionResult> DeleteHardware(int hardwareId)
     {
         try
         {
-            await _hardwareService.Delete(hardwareRequest);
+            await _hardwareService.Delete(hardwareId);
             return Ok();
         }
         catch (Exception ex)
