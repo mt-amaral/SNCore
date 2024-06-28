@@ -16,6 +16,11 @@ public class HardwareApi
         {
             return await _httpClient.GetFromJsonAsync<IEnumerable<HardwareResponse>>("Hardware/ExibirTodos");
         }
+    public async CreateHardwareAsync(HardwareRequest hardware)
+    {
+        var response = await _httpClient.PostAsJsonAsync("Hardware/CriarHardware", hardware);
+        response.EnsureSuccessStatusCode();
+    }
     public async Task EditHardwareAsync(HardwareRequest hardware)
     {
         var response = await _httpClient.PutAsJsonAsync("Hardware/EditarHardware", hardware);
@@ -27,9 +32,9 @@ public class HardwareApi
         {
             var response = await _httpClient.DeleteAsync($"Hardware/DeleteHardware/?hardwareId={hardwareId}");
             response.EnsureSuccessStatusCode();
-        }catch (Exception ex)
+        }catch(Exception)
         {
-            throw new Exception("Deu ruin na consulta nobre");
+            throw new Exception("Erro request");
         }
     }
 }

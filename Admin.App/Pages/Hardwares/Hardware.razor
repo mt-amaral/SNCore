@@ -19,7 +19,7 @@
             <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.FilterAltOff" OnClick="@clearFilter"></MudIconButton>
         </ToolBarContent>
         <Columns>
-            <PropertyColumn Property="x => x.Id" Title="Id" IsEditable="false" Hidden="true" />
+            <PropertyColumn Property="x => x.Id" Title="Id" IsEditable="false" />
             <PropertyColumn Property="x => x.Description" Title="Description" />
             <PropertyColumn Property="x => x.Model" Title="Model" />
             <PropertyColumn Property="x => x.Ipv4" Title="IPv4" />
@@ -60,6 +60,35 @@
     {
         selected = Array.Empty<MudChip>();
     }
+    async Task ShowCreateConfirmation(HardwareResponse item)
+    {
+        var parameters = new DialogParameters
+        {
+            { "hardware", item }
+        };
+        var dialog = DialogService.Show<CreateHardware>("Create Hardware", parameters);
+        var result = await dialog.Result;
+        if (!result.Cancelled)
+        {
+            await CreateItem(item);
+
+        }
+    }
+    async Task CreateItem(HardwareResponse item)
+    {
+        try
+        {
+
+            await hardwareApi.CreateHardwareAsync();
+            Snackbar.Add($"Hardware {item.Id} Deleted!", Severity.Normal);
+            hardwareList = await hardwareApi.GetHardwaresAsync();
+
+        }
+        catch
+        {
+
+        }
+    }
 
     async Task ShowDeleteConfirmation(HardwareResponse item)
     {
@@ -83,9 +112,8 @@
         try
         {
             await hardwareApi.DeleteHardwareAsync(item.Id);
-            Snackbar.Add($"Hardware {item.Id}, {item.Model} Deleted", Severity.Success);
+            Snackbar.Add($"Hardware {item.Id} Deleted!", Severity.Normal);
             hardwareList = await hardwareApi.GetHardwaresAsync();
-
         }
         catch (Exception ex)
         {
