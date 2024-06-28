@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Admin.App", "Admin.App\Admi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{BA62798C-DF4A-4A68-B361-4339A6BB9FEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Admin.Shared", "Admin.Shared\Admin.Shared.csproj", "{B7A77A67-A729-4D91-ABE0-3F8B90421E44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Admin.Shared", "Admin.Shared\Admin.Shared.csproj", "{B7A77A67-A729-4D91-ABE0-3F8B90421E44}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,19 +1,21 @@
 ﻿@page "/hardware"
 @using System.Net.Http.Json
+@using Admin.App.Componentes.Hardware
 @inject HardwareApi hardwareApi
+@inject IDialogService DialogService
 
 <MudContainer MaxWidth="MaxWidth.ExtraLarge">
     <MudDataGrid T="HardwareResponse" Items="@hardwareList" LoadingProgressColor="Color.Dark" Loading="@loading"
-                    Striped="true" Dense="true" >
+                 Striped="true" Dense="true">
         <ToolBarContent>
             <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Add"></MudIconButton>
             <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Sync" OnClick="@OnInitializedAsync"></MudIconButton>
             <MudSpacer />
             <MudChipSet @bind-SelectedChips="selected" MultiSelection="true" Filter="true">
-                <MudChip Text="All Offline" ></MudChip>
+                <MudChip Text="All Offline"></MudChip>
                 <MudChip Text="Last Date"></MudChip>
             </MudChipSet>
-            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.FilterAltOff" OnClick="@chearFilter" ></MudIconButton>
+            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.FilterAltOff" OnClick="@clearFilter"></MudIconButton>
         </ToolBarContent>
         <Columns>
             <PropertyColumn Property="x => x.Id" Title="Id" IsEditable="false" Hidden="true" />
@@ -23,7 +25,7 @@
             <TemplateColumn CellClass="d-flex justify-end">
                 <CellTemplate>
                     <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" />
-                    <MudIconButton Color="Color.Error" Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="() => DeleteItem(context.Item)" />
+                    <MudIconButton Color="Color.Error" Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="() => ShowDeleteConfirmation(context.Item)" />
                 </CellTemplate>
             </TemplateColumn>
         </Columns>
@@ -33,17 +35,10 @@
     </MudDataGrid>
 </MudContainer>
 
-
-
 @code {
     MudChip[] selected;
     private bool loading;
     private IEnumerable<HardwareResponse> hardwareList = new List<HardwareResponse>();
-
-    protected void chearFilter()
-    {
-        selected = [];
-    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -51,29 +46,46 @@
         hardwareList = Array.Empty<HardwareResponse>();
         try
         {
-            hardwareList = await  hardwareApi.GetHardwaresAsync();
+            hardwareList = await hardwareApi.GetHardwaresAsync();
             loading = false;
         }
         catch (Exception ex)
         {
-            ;
+            // Handle error
         }
     }
 
-    // events
-    void StartedEditingItem(HardwareResponse item)
+    protected void clearFilter()
     {
+        selected = Array.Empty<MudChip>();
     }
 
-    void CanceledEditingItem(HardwareResponse item)
+    async Task ShowDeleteConfirmation(HardwareResponse item)
     {
+        var parameters = new DialogParameters
+        {
+            { "hardware", item }
+        };
+
+        var dialog = DialogService.Show<DeleteHardware>("Delete Hardware?", parameters);
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+            await DeleteItem(item);
+        }
     }
 
-    void CommittedItemChanges(HardwareResponse item)
+    async Task DeleteItem(HardwareResponse item)
     {
-    }
-
-    void DeleteItem(HardwareResponse item)
-    {
+        try
+        {
+            await hardwareApi.DeleteHardwareAsync(item.Id);
+            hardwareList = await hardwareApi.GetHardwaresAsync();
+        }
+        catch (Exception ex)
+        {
+            
+        }
     }
 }
