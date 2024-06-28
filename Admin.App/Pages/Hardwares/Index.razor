@@ -2,59 +2,78 @@
 @using System.Net.Http.Json
 @inject HardwareApi hardwareApi
 
-<MudText Align="Align.Center" Typo="Typo.h4" >HARDWARE</MudText>
-<MudContainer MaxWidth="MaxWidth.Medium" >
-
-@if (!hardwareList.Any())
-{
-    <MudProgressLinear Indeterminate="true" Class="my-7"/>
-}
-else
-{
-        <MudTable Items="@hardwareList" MultiSelection="true" Striped="true" T="HardwareResponse"  SelectedItemsChanged="OnSelectedItemsChanged">
-    <ToolBarContent>
-        <MudSpacer />
-        <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
-    </ToolBarContent>
-    <HeaderContent>
-        <MudTh>id</MudTh>
-        <MudTh>Description</MudTh>
-        <MudTh>Model</MudTh>
-        <MudTh>Ipv4</MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="id">@context.Id</MudTd>
-        <MudTd DataLabel="Description">@context.Description</MudTd>
-        <MudTd DataLabel="Model">@context.Model</MudTd>
-        <MudTd DataLabel="Ipv4">@context.Ipv4</MudTd>
-        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" />
-        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" />
-    </RowTemplate>
-    <PagerContent>
-        <MudTablePager HideRowsPerPage="true"/>
-    </PagerContent>
-    </MudTable>
-}
-
+<MudContainer MaxWidth="MaxWidth.ExtraLarge">
+    <MudDataGrid T="HardwareResponse" Items="@hardwareList" LoadingProgressColor="Color.Dark" Loading="@loading"
+                    Striped="true" Dense="true" >
+        <ToolBarContent>
+            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Add"></MudIconButton>
+            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Sync" OnClick="@OnInitializedAsync"></MudIconButton>
+            <MudSpacer />
+            <MudChipSet @bind-SelectedChips="selected" MultiSelection="true" Filter="true">
+                <MudChip Text="All Offline" ></MudChip>
+                <MudChip Text="Last Date"></MudChip>
+            </MudChipSet>
+            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.FilterAltOff" OnClick="@chearFilter" ></MudIconButton>
+        </ToolBarContent>
+        <Columns>
+            <PropertyColumn Property="x => x.Id" Title="Id" IsEditable="false" Hidden="true" />
+            <PropertyColumn Property="x => x.Description" Title="Description" />
+            <PropertyColumn Property="x => x.Model" Title="Model" />
+            <PropertyColumn Property="x => x.Ipv4" Title="IPv4" />
+            <TemplateColumn CellClass="d-flex justify-end">
+                <CellTemplate>
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" />
+                    <MudIconButton Color="Color.Error" Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="() => DeleteItem(context.Item)" />
+                </CellTemplate>
+            </TemplateColumn>
+        </Columns>
+        <PagerContent>
+            <MudDataGridPager T="HardwareResponse" DisableRowsPerPage="true" />
+        </PagerContent>
+    </MudDataGrid>
 </MudContainer>
 
+
+
 @code {
+    MudChip[] selected;
+    private bool loading;
     private IEnumerable<HardwareResponse> hardwareList = new List<HardwareResponse>();
-    private string searchString = "";
+
+    protected void chearFilter()
+    {
+        selected = [];
+    }
 
     protected override async Task OnInitializedAsync()
     {
+        loading = true;
+        hardwareList = Array.Empty<HardwareResponse>();
         try
         {
-            hardwareList = await hardwareApi.GetHardwaresAsync();
+            hardwareList = await  hardwareApi.GetHardwaresAsync();
+            loading = false;
         }
         catch (Exception ex)
         {
-            hardwareList = Array.Empty<HardwareResponse>();
+            ;
         }
     }
-    private void OnSelectedItemsChanged(HashSet<HardwareResponse> elements)
+
+    // events
+    void StartedEditingItem(HardwareResponse item)
     {
-        ;
+    }
+
+    void CanceledEditingItem(HardwareResponse item)
+    {
+    }
+
+    void CommittedItemChanges(HardwareResponse item)
+    {
+    }
+
+    void DeleteItem(HardwareResponse item)
+    {
     }
 }
