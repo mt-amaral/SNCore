@@ -3,11 +3,15 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
 WORKDIR /app
-EXPOSE 8080
+EXPOSE 8082
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
+COPY ["Admin.Domain/Admin.Domain.csproj", "Admin.Domain/"]
+COPY ["Admin.Persistence/Admin.Persistence.csproj", "Admin.Persistence/"]
+COPY ["ConnectionControl.Infrustructure/ConnectionControl.Infrustructure.csproj", "ConnectionControl.Infrustructure/"]
+COPY ["ConnectionControl.Application/ConnectionControl.Application.csproj", "ConnectionControl.Application/"]
 COPY ["ConnectionControl.Api/ConnectionControl.Api.csproj", "ConnectionControl.Api/"]
 RUN dotnet restore "./ConnectionControl.Api/ConnectionControl.Api.csproj"
 COPY . .
@@ -18,7 +22,8 @@ FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "./ConnectionControl.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-FROM base AS final
+FROM base AS api_connection
 WORKDIR /app
 COPY --from=publish /app/publish .
+COPY Admin.Api/https/. .
 ENTRYPOINT ["dotnet", "ConnectionControl.Api.dll"]

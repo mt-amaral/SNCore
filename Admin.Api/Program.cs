@@ -1,6 +1,6 @@
 using Admin.Api;
 using Admin.Application.Mappings;
-using Admin.Infrustructure;
+using Admin.Infrustructure; 
 using Microsoft.AspNetCore.Cors.Infrastructure;
 
 
@@ -18,7 +18,8 @@ builder.Services.AddCors(
             Configuration.AdminAppUrl, 
             Configuration.AdminApiUrl,
             Configuration.AdminAppConteiner,
-            Configuration.AdminApiConteiner
+            Configuration.AdminApiConteiner,
+            Configuration.AdminApiConnectionsConteiner,
             ])
         .AllowAnyMethod()
         .AllowAnyHeader()
@@ -26,7 +27,7 @@ builder.Services.AddCors(
         )
     );
 
-builder.Services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
+builder.Services.AddAutoMapper(typeof(DomainMappingProfile));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

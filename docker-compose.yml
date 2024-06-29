@@ -22,6 +22,27 @@ services:
     depends_on:
       - sql_server
 
+  api-ConnectionControl:
+    container_name: api_connection_control
+    hostname: api_connection_control
+    image: api_connection_control:1.0.0
+    build:
+      context: .
+      dockerfile: Admin.ConnectionControl/Dockerfile
+    networks:
+      cisco-api:
+        ipv4_address: 172.19.254.2
+    ports:
+      - "8082:8082"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8082
+    restart: unless-stopped
+    depends_on:
+      - sql_server
+  
+
   sql_server:
     image: sql_server:1.0.0 
     container_name: sql_server_admin
@@ -37,7 +58,7 @@ services:
       - "1433:1433"
     networks:
       cisco-api:
-        ipv4_address: 172.19.254.2
+        ipv4_address: 172.19.254.4
 
 networks:
   cisco-api:
@@ -49,5 +70,7 @@ networks:
 
 # -- Rebuild Api
 # docker build -t api_admin:1.0.0 --target api -f Admin.Api/Dockerfile .;docker-compose up -d
+# --- Rebuild Api Connection Control
+# docker build -t api_connection_control:1.0.0 --target api_connection -f ConnectionControl.Api/Dockerfile .;docker-compose up -d
 # --- Rebuild Sql
 # docker build -t sql_server:1.0.0 --target sql -f Admin.Sql.Test/Dockerfile .;docker-compose up -d

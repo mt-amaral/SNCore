@@ -5,9 +5,9 @@ using AutoMapper;
 
 namespace Admin.Application.Mappings;
 
-public class DomainToDTOMappingProfile : Profile
+public class DomainMappingProfile : Profile
 {
-    public DomainToDTOMappingProfile() 
+    public DomainMappingProfile() 
     {
         CreateMap<Hardware, HardwareRequest>().ReverseMap();
         CreateMap<Hardware, HardwareResponse>().ReverseMap();
