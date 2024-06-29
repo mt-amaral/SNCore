@@ -33,9 +33,13 @@ public class HardwareRepositories : IHardwareRepositories
 
     public async Task<IEnumerable<Hardware>> SelectAll()
     {
-        return await _context.Hardware.ToListAsync();
+        return await _context.Hardware.OrderByDescending(c => c.Id).ToListAsync();
     }
-
+    public async Task Create(Hardware hardware)
+    {
+        _context.Hardware.Add(hardware);
+        await _context.SaveChangesAsync();
+    }
     public async Task Edit(Hardware hardware)
     { 
 

@@ -8,6 +8,7 @@ public interface IHardwareService
 {
     Task<HardwareResponse> SelectByPk(int id);
     Task<IEnumerable<HardwareResponse>> SelectAll();
+    Task Create(HardwareRequest hardwareRequest);
     Task Edit(HardwareRequest hardwareRequest);
     Task Delete(int hardwareId);
 }

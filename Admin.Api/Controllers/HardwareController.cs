@@ -50,6 +50,20 @@ public class HardwareController : Controller
             return BadRequest(ex.Message);
         }
     }
+    [HttpPost]
+    [Route("CriarHardware")]
+    public async Task<ActionResult> CreateHardware(HardwareRequest hardwareNew)
+    {
+        try
+        {
+            await _hardwareService.Create(hardwareNew);
+            return Created();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
     [HttpPut]
     [Route("EditarHardware")]
     public async Task<ActionResult> EditHardware(HardwareRequest hardwareRequest)

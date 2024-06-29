@@ -9,7 +9,7 @@
     <MudDataGrid T="HardwareResponse" Items="@hardwareList" LoadingProgressColor="Color.Dark" Loading="@loading"
                  Striped="true" Dense="true">
         <ToolBarContent>
-            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Add"></MudIconButton>
+            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Add" OnClick="@CreateHardware"></MudIconButton>
             <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Sync" OnClick="@OnInitializedAsync"></MudIconButton>
             <MudSpacer />
             <MudChipSet @bind-SelectedChips="selected" MultiSelection="true" Filter="true">
@@ -60,33 +60,20 @@
     {
         selected = Array.Empty<MudChip>();
     }
-    async Task ShowCreateConfirmation(HardwareResponse item)
+    async Task CreateHardware()
     {
+
         var parameters = new DialogParameters
         {
-            { "hardware", item }
+            { "newHardware", new HardwareRequest() }
         };
         var dialog = DialogService.Show<CreateHardware>("Create Hardware", parameters);
         var result = await dialog.Result;
         if (!result.Cancelled)
         {
-            await CreateItem(item);
-
-        }
-    }
-    async Task CreateItem(HardwareResponse item)
-    {
-        try
-        {
-
-            await hardwareApi.CreateHardwareAsync();
-            Snackbar.Add($"Hardware {item.Id} Deleted!", Severity.Normal);
+            var newHardware = (HardwareRequest)result.Data;
+            await hardwareApi.CreateHardwareAsync(newHardware);
             hardwareList = await hardwareApi.GetHardwaresAsync();
-
-        }
-        catch
-        {
-
         }
     }
 

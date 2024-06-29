@@ -24,6 +24,11 @@ public class HardwareService : IHardwareService
        var hardwareList = await _hardwareRepositories.SelectAll();
         return _mapper.Map<IEnumerable<HardwareResponse>>(hardwareList);
     }
+    public async Task Create(HardwareRequest hardwareRequest)
+    {
+        var hardware = _mapper.Map<Hardware>(hardwareRequest);
+        await _hardwareRepositories.Create(hardware);
+    }
 
     public async Task<HardwareResponse> SelectByPk(int id)
     {
