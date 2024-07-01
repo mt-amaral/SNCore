@@ -9,7 +9,6 @@ namespace Admin.Domain.Entities
         public string Version { get; private set; }
         public string Community { get; private set; }
         public int Port { get; private set; }
-
         public int HardwareId { get; set; }
         public Hardware Hardware { get; set; }
 

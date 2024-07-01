@@ -11,11 +11,11 @@ namespace Admin.Domain.Validations
 
             RuleFor(hardware => hardware.Description)
                 .NotEmpty().WithMessage("Descrição não pode ser vazia")
-                .MaximumLength(500).WithMessage("Descrição muito longa");
+                .MaximumLength(50).WithMessage("Descrição muito longa");
 
             RuleFor(hardware => hardware.Model)
                 .NotEmpty().WithMessage("Modelo não pode ser vazio")
-                .MaximumLength(300).WithMessage("Descrição de modelo muito longa");
+                .MaximumLength(50).WithMessage("Descrição de modelo muito longa");
 
             RuleFor(hardware => hardware.Ipv4)
                 .NotEmpty().WithMessage("Ipv4 não pode ser vazio")

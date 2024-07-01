@@ -9,8 +9,8 @@ internal class SnmpConfig : IEntityTypeConfiguration<Snmp>
     public void Configure(EntityTypeBuilder<Snmp> builder)
     {
         builder.HasKey(x => x.Id);
-        builder.Property(x => x.Version);
-        builder.Property(x => x.Community).IsRequired();
+        builder.Property(x => x.Version).HasMaxLength(10).IsRequired();
+        builder.Property(x => x.Community).HasMaxLength(100).IsRequired();
         builder.Property(x => x.Port).IsRequired();
 
 
