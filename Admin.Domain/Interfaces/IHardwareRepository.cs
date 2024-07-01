@@ -6,6 +6,6 @@ namespace Admin.Domain.Interfaces
 {
     public interface IHardwareRepository : IRepositoryBase<Hardware>
     {
-        // Adicione métodos específicos do Hardware se necessário
+
     }
 }
