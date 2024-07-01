@@ -28,7 +28,7 @@ services:
     image: api_connection_control:1.0.0
     build:
       context: .
-      dockerfile: Admin.ConnectionControl/Dockerfile
+      dockerfile: ConnectionControl.Api/Dockerfile
     networks:
       cisco-api:
         ipv4_address: 172.19.254.2

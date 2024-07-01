@@ -10,4 +10,5 @@ public interface IHardwareService
     Task Create(HardwareDto hardwareDTC);
     Task Edit(HardwareDto hardwareDTC);
     Task Delete(int hardwareId);
+    Task TesteSNPM();
 }

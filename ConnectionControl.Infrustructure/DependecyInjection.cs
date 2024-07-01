@@ -6,6 +6,8 @@ using Admin.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ConnectionsControl.ConnectionLibrary.Interfaces;
+using ConnectionsControl.ConnectionLibrary.Connections;
 
 namespace ConnectionControl.Infrustructure;
 
@@ -24,6 +26,9 @@ public static class DependecyInjection
 
         // Repositories
         services.AddScoped<IHardwareRepositories, HardwareRepositories>();
+
+        // Connections
+        services.AddScoped<IDataConnection, DataConnection>();
 
         return services;
     }

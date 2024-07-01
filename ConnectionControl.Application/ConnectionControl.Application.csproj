@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Admin.Domain\Admin.Domain.csproj" />
+    <ProjectReference Include="..\ConnectionsControl.ConnectionLibrary\ConnectionsControl.ConnectionLibrary.csproj" />
   </ItemGroup>
 
 </Project>

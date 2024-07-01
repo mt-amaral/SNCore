@@ -87,4 +87,18 @@ public class HardwareController : Controller
             return BadRequest(ex.Message);
         }
     }
+    [HttpGet]
+    [Route("TesteSNMP")]
+    public async Task<ActionResult> TesteSNMP()
+    {
+        try
+        {
+            await _hardwareService.TesteSNPM();
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
 }
