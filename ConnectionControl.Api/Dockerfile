@@ -12,6 +12,7 @@ COPY ["Admin.Domain/Admin.Domain.csproj", "Admin.Domain/"]
 COPY ["Admin.Persistence/Admin.Persistence.csproj", "Admin.Persistence/"]
 COPY ["ConnectionControl.Infrustructure/ConnectionControl.Infrustructure.csproj", "ConnectionControl.Infrustructure/"]
 COPY ["ConnectionControl.Application/ConnectionControl.Application.csproj", "ConnectionControl.Application/"]
+COPY ["ConnectionControl.ConnectionLibrary/ConnectionControl.ConnectionLibrary.csproj", "ConnectionControl.ConnectionLibrary/"]
 COPY ["ConnectionControl.Api/ConnectionControl.Api.csproj", "ConnectionControl.Api/"]
 RUN dotnet restore "./ConnectionControl.Api/ConnectionControl.Api.csproj"
 COPY . .

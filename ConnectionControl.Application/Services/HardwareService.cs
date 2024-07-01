@@ -55,7 +55,7 @@ public class HardwareService : IHardwareService
 
         foreach (var hardware in hardwareList)
         {
-            _dataConnection.PerformSnmpOperation(hardware.Ipv4);
+            ;
         }
         
     }

@@ -1,6 +1,8 @@
-﻿namespace ConnectionsControl.ConnectionLibrary.Interfaces;
+﻿using Lextm.SharpSnmpLib;
+
+namespace ConnectionsControl.ConnectionLibrary.Interfaces;
 
 public interface IDataConnection
 {
-    void PerformSnmpOperation(string ipv4);
+    IList<Variable> PerformSnmpOperation(string ipv4, int port, string community, string oid);
 }
