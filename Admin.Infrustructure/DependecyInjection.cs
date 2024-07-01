@@ -22,11 +22,14 @@ public static class DependecyInjection
         // Services
         services.AddScoped<IHardwareService, HardwareService> ();
         services.AddScoped<ISnmpService, SnmpService>();
+        services.AddScoped<ITelnetService, TelnetService>();
 
 
         // Repositories
         services.AddScoped<IHardwareRepository, HardwareRepository>();
         services.AddScoped<ISnmpRepository, SnmpRepository>();
+        services.AddScoped<ITelnetRepository, TelnetRepository>();
+
 
 
         return services;

@@ -13,5 +13,7 @@ public class DomainMappingProfile : Profile
         CreateMap<Hardware, HardwareResponse>().ReverseMap();
         CreateMap<Snmp, SnmpRequest>().ReverseMap();
         CreateMap<Snmp, SnmpResponse>().ReverseMap();
+        CreateMap<Telnet, TelnetRequest>().ReverseMap();
+        CreateMap<Telnet, TelnetResponse>().ReverseMap();
     }
 }

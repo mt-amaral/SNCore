@@ -5,16 +5,16 @@ using System.Runtime.Serialization;
 
 namespace Admin.Share.Request;
 
-public class SnmpRequest
+public class TelnetRequest
 {
     [IgnoreDataMember]
     public int Id { get; set; }
     [Required]
-    public string Version { get; set; }
+    public string User { get; set; }
     [Required]
-    public string Community { get; set; }
+    public string Password { get; set; }
     [Required]
-    public int Port { get; set; }
+    public int Port { get;  set; }
     [Required]
     public int HardwareId { get; set; }
 }
