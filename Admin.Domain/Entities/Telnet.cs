@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace Admin.Domain.Entities;
 
-public class Telnet
+public class Telnet : BaseEntity
 {
     public int Id { get; private set; }
     public string User { get; private set; }
@@ -31,6 +31,7 @@ public class Telnet
         Password = password;
         Port = port;
 
+        UpDate();
         _validator.ValidateAndThrow(this);
     }
 };

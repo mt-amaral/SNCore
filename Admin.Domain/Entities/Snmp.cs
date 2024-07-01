@@ -3,9 +3,8 @@ using FluentValidation;
 
 namespace Admin.Domain.Entities
 {
-    public class Snmp
+    public class Snmp : BaseEntity
     {
-        public int Id { get; private set; }
         public string Version { get; private set; }
         public string Community { get; private set; }
         public int Port { get; private set; }
@@ -31,6 +30,7 @@ namespace Admin.Domain.Entities
             Community = community;
             Port = port;
 
+            UpDate();
             _validator.ValidateAndThrow(this);
         }
     }

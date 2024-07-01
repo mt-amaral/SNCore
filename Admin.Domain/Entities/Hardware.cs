@@ -3,9 +3,8 @@ using FluentValidation;
 
 namespace Admin.Domain.Entities
 {
-    public class Hardware
+    public class Hardware : BaseEntity
     {
-        public int Id { get; private set; }
         public string Description { get; private set; }
         public string Model { get; private set; }
         public string Ipv4 { get; private set; }
@@ -32,6 +31,7 @@ namespace Admin.Domain.Entities
             Model = model;
             Ipv4 = ipv4;
 
+            UpDate();
             _validator.ValidateAndThrow(this);
         }
     }
