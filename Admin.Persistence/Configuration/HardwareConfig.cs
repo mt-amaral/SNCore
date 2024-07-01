@@ -10,9 +10,9 @@ internal class HardwareConfig : BaseEntityConfig<Hardware>
     {
         base.Configure(builder); // Chama a configuração base
 
-        builder.Property(x => x.Description).HasMaxLength(50).IsRequired().HasColumnOrder(4);
-        builder.Property(x => x.Model).HasMaxLength(50).IsRequired().HasColumnOrder(5);
-        builder.Property(x => x.Ipv4).HasMaxLength(15).IsRequired().HasColumnOrder(6);
+        builder.Property(x => x.Description).HasMaxLength(50).IsRequired();
+        builder.Property(x => x.Model).HasMaxLength(50).IsRequired();
+        builder.Property(x => x.Ipv4).HasMaxLength(15).IsRequired();
 
         builder.HasOne(x => x.Snmp)
             .WithOne(x => x.Hardware)

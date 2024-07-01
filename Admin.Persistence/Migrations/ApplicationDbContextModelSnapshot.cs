@@ -42,20 +42,17 @@ namespace Admin.Persistence.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnOrder(4);
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Ipv4")
                         .IsRequired()
                         .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)")
-                        .HasColumnOrder(6);
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("Model")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnOrder(5);
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2")
@@ -82,8 +79,7 @@ namespace Admin.Persistence.Migrations
                     b.Property<string>("Community")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnOrder(5);
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2")
@@ -93,8 +89,7 @@ namespace Admin.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Port")
-                        .HasColumnType("int")
-                        .HasColumnOrder(6);
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2")
@@ -103,8 +98,7 @@ namespace Admin.Persistence.Migrations
                     b.Property<string>("Version")
                         .IsRequired()
                         .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)")
-                        .HasColumnOrder(4);
+                        .HasColumnType("nvarchar(10)");
 
                     b.HasKey("Id");
 

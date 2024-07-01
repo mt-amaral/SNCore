@@ -6,7 +6,6 @@ namespace Admin.Domain.Entities;
 
 public class Telnet : BaseEntity
 {
-    public int Id { get; private set; }
     public string User { get; private set; }
     public string Password { get; private set; }
     public int Port { get; private set; }
