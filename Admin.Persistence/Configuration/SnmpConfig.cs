@@ -8,7 +8,7 @@ internal class SnmpConfig : BaseEntityConfig<Snmp>
 {
     public override void Configure(EntityTypeBuilder<Snmp> builder)
     {
-        base.Configure(builder); // Chama a configuração base
+        base.Configure(builder);
 
         builder.Property(x => x.Version).HasMaxLength(10).IsRequired();
         builder.Property(x => x.Community).HasMaxLength(100).IsRequired();

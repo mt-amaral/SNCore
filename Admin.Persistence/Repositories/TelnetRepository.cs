@@ -4,11 +4,10 @@ using Admin.Persistence.Context;
 
 namespace Admin.Persistence.Repositories
 {
-    public class HardwareRepository : RepositoryBase<Hardware>, IHardwareRepository
+    public class TelnetRepository : RepositoryBase<Telnet>, ITelnetRepository
     {
-        public HardwareRepository(ApplicationDbContext context) : base(context)
+        public TelnetRepository(ApplicationDbContext context) : base(context)
         {
         }
-
     }
 }

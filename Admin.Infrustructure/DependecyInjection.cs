@@ -21,9 +21,13 @@ public static class DependecyInjection
         });
         // Services
         services.AddScoped<IHardwareService, HardwareService> ();
+        services.AddScoped<ISnmpService, SnmpService>();
+
 
         // Repositories
         services.AddScoped<IHardwareRepository, HardwareRepository>();
+        services.AddScoped<ISnmpRepository, SnmpRepository>();
+
 
         return services;
     }

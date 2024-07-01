@@ -8,6 +8,8 @@ internal class TelnetConfig : BaseEntityConfig<Telnet>
 {
     public override void Configure(EntityTypeBuilder<Telnet> builder)
     {
+        base.Configure(builder);
+
         builder.Property(x => x.User).HasMaxLength(30).IsRequired();
         builder.Property(x => x.Password).HasMaxLength(100).IsRequired();
         builder.Property(x => x.Port).IsRequired();

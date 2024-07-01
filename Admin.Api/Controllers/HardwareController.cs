@@ -12,11 +12,9 @@ namespace Admin.Api.Controllers;
 public class HardwareController : Controller
 {
     private readonly IHardwareService _hardwareService;
-    private readonly IMapper _mapper;
 
-    public HardwareController(IHardwareService hardwareService, IMapper mapper)
+    public HardwareController(IHardwareService hardwareService)
     {
-        _mapper = mapper;
         _hardwareService = hardwareService;
     }
 
@@ -35,7 +33,7 @@ public class HardwareController : Controller
         }
     }
     [HttpGet]
-    [Route("ExibirUsuarioPorId")]
+    [Route("ExibirHardwarePorId")]
     public async Task<ActionResult> SelectHardware(int id)
     {
         try

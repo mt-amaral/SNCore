@@ -4,9 +4,9 @@ using Admin.Persistence.Context;
 
 namespace Admin.Persistence.Repositories
 {
-    public class HardwareRepository : RepositoryBase<Hardware>, IHardwareRepository
+    public class SnmpRepository : RepositoryBase<Snmp>, ISnmpRepository
     {
-        public HardwareRepository(ApplicationDbContext context) : base(context)
+        public SnmpRepository(ApplicationDbContext context) : base(context)
         {
         }
 

@@ -8,7 +8,7 @@ internal class HardwareConfig : BaseEntityConfig<Hardware>
 {
     public override void Configure(EntityTypeBuilder<Hardware> builder)
     {
-        base.Configure(builder); // Chama a configuração base
+        base.Configure(builder);
 
         builder.Property(x => x.Description).HasMaxLength(50).IsRequired();
         builder.Property(x => x.Model).HasMaxLength(50).IsRequired();

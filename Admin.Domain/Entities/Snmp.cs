@@ -8,7 +8,7 @@ namespace Admin.Domain.Entities
         public string Version { get; private set; }
         public string Community { get; private set; }
         public int Port { get; private set; }
-        public int HardwareId { get; set; }
+        public int HardwareId { get; private set; }
         public Hardware Hardware { get; set; }
 
         private readonly IValidator<Snmp> _validator;
