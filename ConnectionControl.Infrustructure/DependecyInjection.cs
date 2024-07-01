@@ -25,7 +25,7 @@ public static class DependecyInjection
         services.AddScoped<IHardwareService, HardwareService> ();
 
         // Repositories
-        services.AddScoped<IHardwareRepositories, HardwareRepositories>();
+        services.AddScoped<IHardwareRepository, HardwareRepository>();
 
         // Connections
         services.AddScoped<IDataConnection, DataConnection>();

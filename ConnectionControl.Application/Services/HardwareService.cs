@@ -9,10 +9,10 @@ namespace ConnectionControl.Application.Services;
 
 public class HardwareService : IHardwareService
 {
-    private readonly IHardwareRepositories _hardwareRepositories;
+    private readonly IHardwareRepository _hardwareRepositories;
     private readonly IDataConnection _dataConnection;
     private readonly IMapper _mapper;
-    public HardwareService(IHardwareRepositories hardwareRepositories, IDataConnection dataConnection, IMapper mapper)
+    public HardwareService(IHardwareRepository hardwareRepositories, IDataConnection dataConnection, IMapper mapper)
     {
         _dataConnection = dataConnection;
         _mapper = mapper;

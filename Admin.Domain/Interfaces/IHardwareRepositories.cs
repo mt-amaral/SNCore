@@ -3,7 +3,7 @@ using Admin.Domain.Entities;
 
 namespace Admin.Domain.Interfaces;
 
-public interface IHardwareRepositories
+public interface IHardwareRepository
 {
 
     Task<bool> SaveAllAsync();

@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Admin.Persistence.Repositories;
 
-public class HardwareRepositories : IHardwareRepositories
+public class HardwareRepository : IHardwareRepository
 {
     private readonly  ApplicationDbContext _context;
 
-    public HardwareRepositories(ApplicationDbContext context)
+    public HardwareRepository(ApplicationDbContext context)
     {
         _context = context;
     }

@@ -11,9 +11,9 @@ namespace Admin.Application.Services;
 
 public class HardwareService : IHardwareService
 {
-    private readonly IHardwareRepositories _hardwareRepositories;
+    private readonly IHardwareRepository _hardwareRepositories;
     private readonly IMapper _mapper;
-    public HardwareService(IHardwareRepositories hardwareRepositories, IMapper mapper)
+    public HardwareService(IHardwareRepository hardwareRepositories, IMapper mapper)
     {
         _mapper = mapper;
         _hardwareRepositories = hardwareRepositories; 
