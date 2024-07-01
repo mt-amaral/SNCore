@@ -7,9 +7,11 @@ public class HardwareRequest
 {
     [IgnoreDataMember]
     public int Id { get; set; }
-    [StringLength(500)]
+    [Required]
+    [StringLength(50)]
     public string Description { get; set; }
-    [StringLength(300)]
+    [Required]
+    [StringLength(50)]
     public string Model { get; set; }
     [Required]
     [StringLength(15)]
