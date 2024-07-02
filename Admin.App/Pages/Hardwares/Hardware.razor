@@ -25,7 +25,7 @@
             <PropertyColumn Property="x => x.Ipv4" Title="IPv4" />
             <TemplateColumn CellClass="d-flex justify-end">
                 <CellTemplate>
-                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" />
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@(() => NavigateToEdit(context.Item.Id))" />
                     <MudIconButton Color="Color.Error" Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="() => ShowDeleteConfirmation(context.Item)" />
                 </CellTemplate>
             </TemplateColumn>
@@ -40,6 +40,7 @@
     MudChip[] selected;
     private bool loading;
     private IEnumerable<HardwareResponse> hardwareList = new List<HardwareResponse>();
+    [Inject] private NavigationManager NavigationManager { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -76,6 +77,12 @@
             hardwareList = await hardwareApi.GetHardwaresAsync();
         }
     }
+    private void NavigateToEdit(int hardwareId)
+    {
+        NavigationManager.NavigateTo($"/hardware/edit/{hardwareId}");
+    }
+
+    
 
     async Task ShowDeleteConfirmation(HardwareResponse item)
     {
@@ -90,7 +97,7 @@
         if (!result.Cancelled)
         {
             await DeleteItem(item);
-            
+
         }
     }
 

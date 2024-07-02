@@ -29,15 +29,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{BA6279
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Admin.Shared", "Admin.Shared\Admin.Shared.csproj", "{B7A77A67-A729-4D91-ABE0-3F8B90421E44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectionControl.Api", "ConnectionControl.Api\ConnectionControl.Api.csproj", "{8E0DF87C-9E2F-4BE5-9D2C-F2246B59EE99}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConnectionControl.Api", "ConnectionControl.Api\ConnectionControl.Api.csproj", "{8E0DF87C-9E2F-4BE5-9D2C-F2246B59EE99}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Connections", "Connections", "{E711394E-7FE3-4011-8B0D-CDC678C24503}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectionControl.Infrustructure", "ConnectionControl.Infrustructure\ConnectionControl.Infrustructure.csproj", "{4D01DE91-7133-45E0-AA00-4B95169AFB2A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConnectionControl.Infrustructure", "ConnectionControl.Infrustructure\ConnectionControl.Infrustructure.csproj", "{4D01DE91-7133-45E0-AA00-4B95169AFB2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectionControl.Application", "ConnectionControl.Application\ConnectionControl.Application.csproj", "{EFD20EA0-7414-454F-A35C-5C9BA44CD212}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConnectionControl.Application", "ConnectionControl.Application\ConnectionControl.Application.csproj", "{EFD20EA0-7414-454F-A35C-5C9BA44CD212}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectionsControl.ConnectionLibrary", "ConnectionsControl.ConnectionLibrary\ConnectionsControl.ConnectionLibrary.csproj", "{AA340366-1854-4E0B-A9F8-0DF25A635884}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConnectionsControl.ConnectionLibrary", "ConnectionsControl.ConnectionLibrary\ConnectionsControl.ConnectionLibrary.csproj", "{AA340366-1854-4E0B-A9F8-0DF25A635884}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -13,13 +13,17 @@ public class HardwareApi
     }
 
     public async Task<IEnumerable<HardwareResponse>?> GetHardwaresAsync()
-        {
+    {
             return await _httpClient.GetFromJsonAsync<IEnumerable<HardwareResponse>>("Hardware/ExibirTodos");
-        }
+    }
     public async Task CreateHardwareAsync(HardwareRequest hardware)
     {
         var response = await _httpClient.PostAsJsonAsync("Hardware/CriarHardware", hardware);
         response.EnsureSuccessStatusCode();
+    }
+    public async Task<HardwareResponse?> GetHardwareId(int hardwareId)
+    {
+        return await _httpClient.GetFromJsonAsync<HardwareResponse>($"Hardware/ExibirHardwarePorId?id={hardwareId}");
     }
     public async Task EditHardwareAsync(HardwareRequest hardware)
     {
@@ -32,6 +36,7 @@ public class HardwareApi
         {
             var response = await _httpClient.DeleteAsync($"Hardware/DeleteHardware/?hardwareId={hardwareId}");
             response.EnsureSuccessStatusCode();
+
         }catch(Exception)
         {
             throw new Exception("Erro request");

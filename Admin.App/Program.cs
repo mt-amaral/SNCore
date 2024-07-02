@@ -10,6 +10,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddMudServices();
 
 builder.Services.AddTransient<HardwareApi>();
+builder.Services.AddTransient<SnmpApi>();
 
 builder.Services.AddHttpClient("Api", client => {
     client.BaseAddress = new Uri(builder.Configuration["ApiServer:Url"]!);
