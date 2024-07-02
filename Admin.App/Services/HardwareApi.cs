@@ -7,9 +7,9 @@ public class HardwareApi
 {
     private readonly HttpClient _httpClient;
 
-    public HardwareApi(HttpClient httpClient)
+    public HardwareApi(IHttpClientFactory factory)
     {
-        _httpClient = httpClient;
+        _httpClient = factory.CreateClient("Api");
     }
 
     public async Task<IEnumerable<HardwareResponse>?> GetHardwaresAsync()

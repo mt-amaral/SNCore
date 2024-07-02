@@ -9,8 +9,11 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddMudServices();
 
-builder.Services.AddScoped<HardwareApi>();
+builder.Services.AddTransient<HardwareApi>();
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:8081/") });
+builder.Services.AddHttpClient("Api", client => {
+    client.BaseAddress = new Uri(builder.Configuration["ApiServer:Url"]!);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
 
 await builder.Build().RunAsync();
