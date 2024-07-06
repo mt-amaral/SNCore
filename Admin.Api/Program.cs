@@ -1,7 +1,9 @@
 using Admin.Api;
 using Admin.Application.Mappings;
-using Admin.Infrustructure; 
+using Admin.Infrustructure;
+using Admin.Persistence.Context;
 using Microsoft.AspNetCore.Cors.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -58,6 +60,12 @@ if (app.Environment.IsStaging())
     app.UseSwagger();
     app.UseSwaggerUI();
     app.UseHttpsRedirection();
+
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>(); 
+        dbContext.Database.Migrate();
+    }
 }
 app.UseAuthorization();
 
