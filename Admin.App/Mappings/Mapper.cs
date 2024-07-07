@@ -14,6 +14,7 @@ public class Mapper
             return new HardwareRequest()
             {
                 Id = hardwareEdit.Id,
+                Name = hardwareEdit.Name,
                 Description = hardwareEdit.Description,
                 Model = hardwareEdit.Model,
                 Ipv4 = hardwareEdit.Ipv4

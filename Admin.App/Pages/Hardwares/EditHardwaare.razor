@@ -3,17 +3,24 @@
 @inject HardwareApi hardwareApi
 @inject NavigationManager NavigationManager
 @inject ISnackbar Snackbar
-
-<EditForm Model="@hardwareEdit" OnValidSubmit="HandleValidSubmit">
-    <MudContainer MaxWidth="MaxWidth.Small">
-        <MudTextField @bind-Value="hardwareEdit.Description"  Label="Description" Required="true" />
-        <MudTextField @bind-Value="hardwareEdit.Model" Label="Model"  Required="true" />
-        <MudTextField @bind-Value="hardwareEdit.Ipv4" Label="IPv4"  Required="true"/>
-
-        <MudButton OnClick="HandleValidSubmit" Variant="Variant.Outlined">Salvar</MudButton>
-        <MudButton OnClick="Cancel" Color="Color.Secondary">Cancel</MudButton>
-    </MudContainer>
-</EditForm>
+<MudContainer MaxWidth="MaxWidth.False">
+    <MudGrid>
+        <MudItem xs="12" sm="7">
+            <MudPaper Class="pa-4">
+                <EditForm Model="@hardwareEdit" OnValidSubmit="HandleValidSubmit">
+                    <MudTextField @bind-Value="hardwareEdit.Name" Label="Name" Required="true" />
+                    <MudTextField @bind-Value="hardwareEdit.Description"  Label="Description" Required="true" />
+                    <MudTextField @bind-Value="hardwareEdit.Model" Label="Model"  Required="true" />
+                    <MudTextField @bind-Value="hardwareEdit.Ipv4" Label="IPv4"  Required="true"/>
+                </EditForm>
+            </MudPaper>
+            <MudPaper Class="pa-4 mt-4">
+                <MudButton OnClick="HandleValidSubmit" Variant="Variant.Outlined">Salvar</MudButton>
+                <MudButton OnClick="Cancel" Color="Color.Secondary">Cancel</MudButton>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
 
 @code {
     [Parameter] public int hardwareId { get; set; }
@@ -30,6 +37,7 @@
     {
         try
         {
+            Console.Write("aqui nobre", hardwareEdit);
             var validationResult = validator.Validate(hardwareEdit);
             if (!validationResult.IsValid)
             {

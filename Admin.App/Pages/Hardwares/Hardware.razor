@@ -19,16 +19,16 @@
             <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.FilterAltOff" OnClick="@clearFilter"></MudIconButton>
         </ToolBarContent>
         <Columns>
-            <PropertyColumn Property="x => x.Id" Title="Id" IsEditable="false" />
-                <TemplateColumn CellClass="d-flex justify-start" Title="Status" >
+            <PropertyColumn Property="x => x.Id" Title="Id" IsEditable="false"   />
+            <TemplateColumn CellClass="d-flex justify-start" Title="Status" ShowColumnOptions="false" Sortable="false">
                 <CellTemplate>
                     @if (context.Item.IsOnline)
                     {
-                        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Link" Color="Color.Tertiary"></MudIconButton>
+                        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Link" Color="Color.Tertiary" Title="Link On" ></MudIconButton>
                     }
                     else
                     {
-                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.LinkOff"  Title="Status" ></MudIconButton> 
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.LinkOff"  Title="Link Off" ></MudIconButton> 
                     }
                 </CellTemplate>
             </TemplateColumn>
@@ -36,7 +36,7 @@
             <PropertyColumn Property="x => x.Description" Title="Description" />
             <PropertyColumn Property="x => x.Model" Title="Model" />
             <PropertyColumn Property="x => x.Ipv4" Title="IPv4" />
-            <TemplateColumn CellClass="d-flex justify-end">
+            <TemplateColumn CellClass="d-flex justify-end" ShowColumnOptions="false" Sortable="false">
                 <CellTemplate>
                     <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@(() => NavigateToEdit(context.Item.Id))" />
                     <MudIconButton Color="Color.Error" Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="() => ShowDeleteConfirmation(context.Item)" />
