@@ -1,15 +1,15 @@
 ﻿@namespace Admin.App.Componentes.Hardware
 
 
-<MudDialog >
+<MudDialog>
     <TitleContent>
         <MudText Typo="Typo.h6">
-            <MudIcon Icon="@Icons.Material.Filled.Create" Class="mr-3 mb-n1" />
-            New Hardware?
+            <MudIcon Icon="@Icons.Material.Filled.DeleteForever" Class="mr-3 mb-n1" />
+            Delete Hardware?
         </MudText>
     </TitleContent>
     <DialogContent>
-        <MudTextField Value="@hardware.Id.ToString()" Label="Server ID" ReadOnly="true" />
+        <MudTextField AdornmentColor="Color.Inherit" Value="@hardware.Id.ToString()" Label="Server ID" ReadOnly="true" />
         <MudTextField Value="@hardware.Model" Label="Server Name" ReadOnly="true" />
         <MudTextField Value="@hardware.Description" Label="Location" ReadOnly="true" />
         <MudTextField Value="@hardware.Ipv4" Label="IP Address" ReadOnly="true" />
