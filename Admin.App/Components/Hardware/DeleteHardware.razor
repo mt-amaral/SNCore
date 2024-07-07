@@ -10,8 +10,9 @@
     </TitleContent>
     <DialogContent>
         <MudTextField AdornmentColor="Color.Inherit" Value="@hardware.Id.ToString()" Label="Server ID" ReadOnly="true" />
-        <MudTextField Value="@hardware.Model" Label="Server Name" ReadOnly="true" />
+         <MudTextField Value="@hardware.Name" Label="Name" ReadOnly="true" />
         <MudTextField Value="@hardware.Description" Label="Location" ReadOnly="true" />
+        <MudTextField Value="@hardware.Model" Label="Model" ReadOnly="true" />
         <MudTextField Value="@hardware.Ipv4" Label="IP Address" ReadOnly="true" />
     </DialogContent>
     <DialogActions>

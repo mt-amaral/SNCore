@@ -6,6 +6,8 @@ namespace Admin.Domain.Entities
     public class Hardware : BaseEntity
     {
         public string Description { get; private set; }
+        public string Name { get; private set; }
+        public bool IsOnline { get; private set; }
         public string Model { get; private set; }
         public string Ipv4 { get; private set; }
 
@@ -14,10 +16,12 @@ namespace Admin.Domain.Entities
 
         private readonly IValidator<Hardware> _validator;
 
-        public Hardware(int id, string description, string model, string ipv4)
+        public Hardware(int id, string name, string description, string model, string ipv4)
         {
             _validator = new HardwareValidation();
             Id = id;
+            Name = name;
+            IsOnline = false;
             Description = description;
             Model = model;
             Ipv4 = ipv4;
@@ -25,8 +29,9 @@ namespace Admin.Domain.Entities
             _validator.ValidateAndThrow(this);
         }
 
-        public void Update(string description, string model, string ipv4)
+        public void Update(string description, string name, string model, string ipv4)
         {
+            name = name.ToLower();
             Description = description;
             Model = model;
             Ipv4 = ipv4;

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Admin.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class New_Base_Sql : Migration
+    public partial class HardwareBaseConfiguration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,6 +21,8 @@ namespace Admin.Persistence.Migrations
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    IsOnline = table.Column<bool>(type: "bit", nullable: false),
                     Model = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Ipv4 = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false)
                 },

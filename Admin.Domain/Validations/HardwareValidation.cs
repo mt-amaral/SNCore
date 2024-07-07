@@ -9,6 +9,10 @@ namespace Admin.Domain.Validations
             RuleFor(hardware => hardware.Id)
                 .GreaterThanOrEqualTo(0).WithMessage("Id não pode ser negativo");
 
+            RuleFor(hardware => hardware.Model)
+                .NotEmpty().WithMessage("Nome não pode ser vazio")
+                .MaximumLength(50).WithMessage("Nome de modelo muito longa");
+
             RuleFor(hardware => hardware.Description)
                 .NotEmpty().WithMessage("Descrição não pode ser vazia")
                 .MaximumLength(50).WithMessage("Descrição muito longa");

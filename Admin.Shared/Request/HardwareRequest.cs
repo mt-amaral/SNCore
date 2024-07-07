@@ -8,6 +8,10 @@ namespace Admin.Share.Request
         [IgnoreDataMember]
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "Nome é obrigatória")]
+        [StringLength(50, ErrorMessage = "Nome muito longo")]
+        public string Name { get; set; }
+
         [Required(ErrorMessage = "Descricao é obrigatória")]
         [StringLength(50, ErrorMessage = "Descrição muito longa")]
         public string Description { get; set; }

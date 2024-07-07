@@ -1,4 +1,5 @@
 ﻿using Admin.Domain.Entities;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -10,6 +11,7 @@ internal class HardwareConfig : BaseEntityConfig<Hardware>
     {
         base.Configure(builder);
 
+        builder.Property(x => x.Name).HasMaxLength(50).IsRequired();
         builder.Property(x => x.Description).HasMaxLength(50).IsRequired();
         builder.Property(x => x.Model).HasMaxLength(50).IsRequired();
         builder.Property(x => x.Ipv4).HasMaxLength(15).IsRequired();
