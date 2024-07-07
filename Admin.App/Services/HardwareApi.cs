@@ -13,7 +13,7 @@ public class HardwareApi
     }
 
     public async Task<IEnumerable<HardwareResponse>?> GetHardwaresAsync()
-    {
+    {  
             return await _httpClient.GetFromJsonAsync<IEnumerable<HardwareResponse>>("Hardware/ExibirTodos");
     }
     public async Task CreateHardwareAsync(HardwareRequest hardware)

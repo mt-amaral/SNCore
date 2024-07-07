@@ -2,16 +2,13 @@
 
 @inject HardwareApi hardwareApi
 @inject NavigationManager NavigationManager
-
+@inject ISnackbar Snackbar
 
 <EditForm Model="@hardwareEdit" OnValidSubmit="HandleValidSubmit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-
-    <MudContainer MaxWidth="MaxWidth.Small" >
-        <MudTextField @bind-Value="hardwareEdit.Description" Label="Description" />
-        <MudTextField @bind-Value="hardwareEdit.Model" Label="Model" />
-        <MudTextField @bind-Value="hardwareEdit.Ipv4" Label="IPv4" />
+    <MudContainer MaxWidth="MaxWidth.Small">
+        <MudTextField @bind-Value="hardwareEdit.Description"  Label="Description" Required="true" />
+        <MudTextField @bind-Value="hardwareEdit.Model" Label="Model"  Required="true" />
+        <MudTextField @bind-Value="hardwareEdit.Ipv4" Label="IPv4"  Required="true"/>
 
         <MudButton OnClick="HandleValidSubmit" Variant="Variant.Outlined">Salvar</MudButton>
         <MudButton OnClick="Cancel" Color="Color.Secondary">Cancel</MudButton>
@@ -22,30 +19,7 @@
     [Parameter] public int hardwareId { get; set; }
     private HardwareResponse hardwareEdit = new HardwareResponse();
     private HardwareRequest hardwareEdited = new HardwareRequest();
-    private SnmpRequest snpmEdit = new SnmpRequest();
-    private SnmpResponse snpmEdited = new SnmpResponse();
-
-    private HardwareRequest MapHardware(HardwareResponse hardwareEdit)
-    {
-        return new HardwareRequest()
-        {
-                Id = hardwareEdit.Id,
-                Description = hardwareEdit.Description,
-                Model = hardwareEdit.Model,
-                Ipv4 = hardwareEdit.Ipv4
-        };
-    }
-    private SnmpRequest MapSnmp(SnmpResponse snpmEdited)
-    {
-        return new SnmpRequest()
-        {
-            Id = snpmEdit.Id,
-            Version = snpmEdit.Version,
-            Community = snpmEdit.Community,
-            Port = snpmEdit.Port,
-            HardwareId = snpmEdit.HardwareId
-        };
-    }
+    private HardwareValidation validator = new HardwareValidation();
 
     protected override async Task OnInitializedAsync()
     {
@@ -56,16 +30,25 @@
     {
         try
         {
-            hardwareEdited = MapHardware(hardwareEdit);
+            var validationResult = validator.Validate(hardwareEdit);
+            if (!validationResult.IsValid)
+            {
+                foreach (var error in validationResult.Errors)
+                {
+                    Snackbar.Add(error.ErrorMessage, Severity.Error);
+                }
+                return;
+            }
+            hardwareEdited = Mapper.MapperToJson(hardwareEdit);
             await hardwareApi.EditHardwareAsync(hardwareEdited);
             NavigationManager.NavigateTo("/hardware");
         }
-        catch
+        catch (Exception ex)
         {
-            ;
+            Snackbar.Add("Ocorreu um erro ao tentar salvar o hardware.", Severity.Error);
         }
-
     }
+
     private void Cancel()
     {
         NavigationManager.NavigateTo("/hardware");
