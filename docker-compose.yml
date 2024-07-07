@@ -15,7 +15,7 @@ services:
       - "8080:8080"
       - "8081:8081"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Staging
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
     restart: unless-stopped
@@ -41,6 +41,25 @@ services:
     restart: unless-stopped
     depends_on:
       - sql_server
+
+  app_admin:
+    container_name: app_admin
+    hostname: app_admin
+    image: app_admin:1.0.0
+    build:
+      context: .
+      dockerfile: admin.App/Dockerfile
+    networks:
+      cisco-api:
+        ipv4_address: 172.19.254.3
+    ports:
+      - "8091:8091"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_HTTP_PORTS=8091
+    restart: unless-stopped
+    depends_on:
+      - api-admin
   
 
   sql_server:
@@ -69,13 +88,16 @@ networks:
           gateway: 172.19.254.30
 
 # -- Rebuild Api
-# docker build -t api_admin:1.0.0 --target api -f Admin.Api/Dockerfile .;docker-compose up -d
+# docker build -t api_admin:1.0.0 --target api -f Admin.Api/Dockerfile .
 
 # --- Rebuild Api Connection Control
-# docker build -t api_connection_control:1.0.0 --target api_connection -f ConnectionControl.Api/Dockerfile .;docker-compose up -d
+# docker build -t api_connection_control:1.0.0 --target api_connection -f ConnectionControl.Api/Dockerfile .
+
+# --- Rebuild App
+# docker build -t app_admin:1.0.0 --target app -f Admin.App/Dockerfile .
 
 # --- Rebuild Sql
-# docker build -t sql_server:1.0.0 --target sql -f Admin.Sql.Test/Dockerfile .;docker-compose up -d
+# docker build -t sql_server:1.0.0 --target sql -f Admin.Sql.Test/Dockerfile .
 
-# -- Deleta default tables
-#docker exec -it sql_server_admin sh -c "/usr/scripts/run_sql.sh"
+# --- Run Compose
+# docker-compose up -d
