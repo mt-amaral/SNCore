@@ -18,7 +18,8 @@ namespace Admin.App.Validations
             RuleFor(hardware => hardware.Ipv4)
                 .NotEmpty().WithMessage("Ipv4 não pode ser vazio")
                 .MaximumLength(15).WithMessage("Ipv4 inválido")
-                .Matches(@"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$").WithMessage("Formato de Ipv4 inválido");
+                .Matches(@"^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$")
+                .WithMessage("Formato de Ipv4 inválido");
         }
     }
 }
