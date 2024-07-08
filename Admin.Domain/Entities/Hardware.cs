@@ -29,9 +29,9 @@ namespace Admin.Domain.Entities
             _validator.ValidateAndThrow(this);
         }
 
-        public void Update(string description, string name, string model, string ipv4)
+        public void Uptime(string description, string name, string model, string ipv4)
         {
-            name = name.ToLower();
+            Name = name.ToLower();
             Description = description;
             Model = model;
             Ipv4 = ipv4;
