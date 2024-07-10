@@ -3,7 +3,7 @@
 
 namespace Admin.Domain.Interfaces
 {
-    public interface ISnmpRepository : IRepositoryBase<Snmp>
+    public interface ISnmpRepository : IBaseRepository<Snmp>
     {
 
     }

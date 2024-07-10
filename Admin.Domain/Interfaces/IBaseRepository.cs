@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Admin.Domain.Interfaces
 {
-    public interface IRepositoryBase<T> where T : class
+    public interface IBaseRepository<T> where T : class
     {
         Task<bool> SaveAllAsync();
         Task<T> SelectByPk(int? id);

@@ -1,15 +1,16 @@
 ﻿using Admin.Domain.Interfaces;
+using Admin.Domain.Entities;
 using Admin.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace Admin.Persistence.Repositories
 {
-    public class RepositoryBase<T> : IRepositoryBase<T> where T : class
+    public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
         protected readonly ApplicationDbContext _context;
         protected readonly DbSet<T> _dbSet;
 
-        public RepositoryBase(ApplicationDbContext context)
+        public BaseRepository(ApplicationDbContext context)
         {
             _context = context;
             _dbSet = _context.Set<T>();

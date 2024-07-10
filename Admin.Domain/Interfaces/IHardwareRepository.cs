@@ -3,7 +3,7 @@
 
 namespace Admin.Domain.Interfaces
 {
-    public interface IHardwareRepository : IRepositoryBase<Hardware>
+    public interface IHardwareRepository : IBaseRepository<Hardware>
     {
 
     }

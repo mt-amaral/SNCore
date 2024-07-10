@@ -5,7 +5,7 @@ public abstract class BaseService<TEntity, TRequest, TResponse, TRepository>
     where TEntity : class
     where TRequest : class
     where TResponse : class
-    where TRepository : IRepositoryBase<TEntity>
+    where TRepository : IBaseRepository<TEntity>
 {
     protected readonly TRepository _repository;
     protected readonly IMapper _mapper;

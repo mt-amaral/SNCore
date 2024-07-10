@@ -4,7 +4,7 @@ using Admin.Persistence.Context;
 
 namespace Admin.Persistence.Repositories
 {
-    public class TelnetRepository : RepositoryBase<Telnet>, ITelnetRepository
+    public class TelnetRepository : BaseRepository<Telnet>, ITelnetRepository
     {
         public TelnetRepository(ApplicationDbContext context) : base(context)
         {
