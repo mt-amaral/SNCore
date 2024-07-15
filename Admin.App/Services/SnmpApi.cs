@@ -32,4 +32,9 @@ public class SnmpApi
             throw new Exception("Erro request");
         }
     }
+    public async Task<SnmpResponse?> SelectByHardware(int hardwareId)
+    {
+
+        return await _httpClient.GetFromJsonAsync<SnmpResponse>($"/Snmp/ExibirSnmpPorHardwareId?id={hardwareId}");
+    }
 }

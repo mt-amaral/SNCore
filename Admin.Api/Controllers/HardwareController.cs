@@ -38,7 +38,6 @@ public class HardwareController : Controller
     {
         try
         {
-
             var hardware = await _hardwareService.SelectByPk(id);
             return Ok(hardware);
 

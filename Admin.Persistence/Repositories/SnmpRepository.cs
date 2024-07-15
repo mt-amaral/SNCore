@@ -13,12 +13,8 @@ namespace Admin.Persistence.Repositories
         }
         public  Snmp? SelectByHardware(int id)
         {
-            var de = _context.Snmp.Where(x => x.HardwareId == id);
-            if (de.Any())
-            {
-                return de.FirstOrDefault();
-            }
-            return null;
+            var snmp = _context.Snmp.Where(x => x.HardwareId == id);
+            return snmp.Any() ? snmp.FirstOrDefault(): null;
         }
     }
 }

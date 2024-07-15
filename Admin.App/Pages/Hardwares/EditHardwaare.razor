@@ -1,8 +1,10 @@
 ﻿@page "/hardware/edit/{hardwareId:int}"
 
 @inject HardwareApi hardwareApi
+@inject SnmpApi snmpApi
 @inject NavigationManager NavigationManager
 @inject ISnackbar Snackbar
+
 <MudContainer MaxWidth="MaxWidth.False">
     <MudGrid>
         <MudItem xs="12" sm="7">
@@ -19,6 +21,19 @@
                 <MudButton OnClick="Cancel" Color="Color.Secondary">Cancel</MudButton>
             </MudPaper>
         </MudItem>
+        <MudItem xs="12" sm="3">
+            <MudPaper Class="pa-1">
+                <EditForm Model="@hardwareSnmp" OnValidSubmit="HandleValidSubmit">
+                    <MudTextField @bind-Value="hardwareSnmp.Version" Label="Name" Required="true" />
+                    <MudTextField @bind-Value="hardwareSnmp.Community" Label="Description" Required="true" />
+                    <MudTextField @bind-Value="hardwareSnmp.Port" Label="Model" Required="true" />
+                </EditForm>
+            </MudPaper>
+            <MudPaper Class="pa-4 mt-4">
+                <MudButton OnClick="HandleValidSubmit" Variant="Variant.Outlined">Salvar</MudButton>
+                <MudButton OnClick="Cancel" Color="Color.Secondary">Cancel</MudButton>
+            </MudPaper>
+        </MudItem>
     </MudGrid>
 </MudContainer>
 
@@ -28,9 +43,12 @@
     private HardwareRequest hardwareEdited = new HardwareRequest();
     private HardwareValidation validator = new HardwareValidation();
 
+    private SnmpResponse hardwareSnmp = new SnmpResponse();
+
     protected override async Task OnInitializedAsync()
     {
         hardwareEdit = await hardwareApi.GetHardwareId(hardwareId);
+        hardwareSnmp = await snmpApi.SelectByHardware(hardwareId);
     }
 
     private async Task HandleValidSubmit()

@@ -35,19 +35,18 @@ public class SnmpController : Controller
     [HttpGet]
     [Route("ExibirSnmpPorHardwareId")]
 
-    public async Task<ActionResult<SnmpResponse>?> SelectByHardware(int id)
+    public ActionResult<SnmpResponse> SelectByHardware(int id)
     {
         try
         {
             var snmp =  _snmpService.SnmpSelectByHarware(id);
-            return snmp;
+            return Ok(snmp);
         }
         catch (Exception ex)
         {
             return BadRequest(ex.Message);
         }
     }
-
     [HttpPost]
     [Route("CriarSnmp")]
     public async Task<ActionResult> CreateSnmp(SnmpRequest SnmpNew)

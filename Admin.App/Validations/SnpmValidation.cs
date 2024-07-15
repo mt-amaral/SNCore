@@ -8,7 +8,6 @@ namespace Admin.App.Validations
     {
         public SnmpValidation()
         {
-
             RuleFor(snmp => snmp.Version)
                 .NotEmpty().WithMessage("Versão não pode ser vazia")
                 .MaximumLength(10).WithMessage("Versão muito longa");
