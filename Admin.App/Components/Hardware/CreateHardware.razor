@@ -1,4 +1,5 @@
 ﻿@namespace Admin.App.Componentes.Hardware
+@inject ISnackbar Snackbar
 
 <MudDialog>
     <TitleContent>
@@ -8,10 +9,10 @@
         </MudText>
     </TitleContent>
     <DialogContent>
-        <MudTextField @bind-Value="newHardware.Name" Label="Name" />
-        <MudTextField @bind-Value="newHardware.Description" Label="Description" />
-        <MudTextField @bind-Value="newHardware.Model" Label="Modelo" />
-        <MudTextField @bind-Value="newHardware.Ipv4" Label="IP Address" />
+        <MudTextField @bind-Value="hardwareNew.Name" Label="Name" Required="true" />
+        <MudTextField @bind-Value="hardwareNew.Description" Label="Description" Required="true" />
+        <MudTextField @bind-Value="hardwareNew.Model" Label="Modelo" Required="true" />
+        <MudTextField @bind-Value="hardwareNew.Ipv4" Label="IP Address" Required="true" />
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
@@ -21,7 +22,9 @@
 
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-    [Parameter] public HardwareRequest newHardware { get; set; } = new HardwareRequest();
+    [Parameter] public HardwareResponse hardwareNew { get; set; } = new HardwareResponse();
+    private HardwareRequest hardwareValid { get; set; } = new HardwareRequest();
+    private HardwareValidation validator = new HardwareValidation();
 
     private void Cancel()
     {
@@ -30,6 +33,23 @@
 
     private void Add()
     {
-        MudDialog.Close(DialogResult.Ok(newHardware));
+        try
+        {
+            var validationResult = validator.Validate(hardwareNew);
+            if (!validationResult.IsValid)
+            {
+                foreach (var error in validationResult.Errors)
+                {
+                    Snackbar.Add(error.ErrorMessage, Severity.Error);
+                }
+                return;
+            }
+            hardwareValid = Mapper.MapperToJson(hardwareNew);
+            MudDialog.Close(DialogResult.Ok(hardwareValid));
+        }
+        catch (Exception ex)
+        {
+            
+        }
     }
 }

@@ -20,7 +20,7 @@
         </ToolBarContent>
         <Columns>
             <PropertyColumn Property="x => x.Id" Title="Id" IsEditable="false"   />
-            <TemplateColumn CellClass="d-flex justify-start" Title="Status" ShowColumnOptions="false" Sortable="false">
+            <TemplateColumn Title="Status" ShowColumnOptions="false" Sortable="false">
                 <CellTemplate>
                     <MudIconButton Size="@Size.Small" Icon="@(context.Item.IsOnline ? Icons.Material.Filled.Link: Icons.Material.Filled.LinkOff)" Color="@(context.Item.IsOnline ? Color.Tertiary: Color.Default)" Title="Link On"></MudIconButton>
                 </CellTemplate>
@@ -72,7 +72,7 @@
 
         var parameters = new DialogParameters
         {
-            { "newHardware", new HardwareRequest() }
+            { "hardwareNew", new HardwareResponse() }
         };
         var dialog = DialogService.Show<CreateHardware>("Create Hardware", parameters);
         var result = await dialog.Result;
