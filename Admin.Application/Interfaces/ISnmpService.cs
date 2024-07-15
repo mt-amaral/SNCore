@@ -11,4 +11,5 @@ public interface ISnmpService
     Task Create(SnmpRequest snmpRequest);
     Task Edit(SnmpRequest snmpRequest);
     Task Delete(int snmpId);
+    SnmpResponse SnmpSelectByHarware(int id);
 }

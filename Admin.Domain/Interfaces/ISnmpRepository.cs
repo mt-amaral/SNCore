@@ -5,6 +5,6 @@ namespace Admin.Domain.Interfaces
 {
     public interface ISnmpRepository : IBaseRepository<Snmp>
     {
-
+        Snmp? SelectByHardware(int id);
     }
 }

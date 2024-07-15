@@ -3,6 +3,7 @@ using Admin.Domain.Entities;
 using Admin.Share.Request;
 using Admin.Share.Response;
 using Microsoft.AspNetCore.Mvc;
+using System.Formats.Asn1;
 
 namespace ConnectionControl.Api.Controllers;
 
@@ -31,6 +32,22 @@ public class SnmpController : Controller
             return BadRequest(ex.Message);
         }
     }
+    [HttpGet]
+    [Route("ExibirSnmpPorHardwareId")]
+
+    public async Task<ActionResult<SnmpResponse>?> SelectByHardware(int id)
+    {
+        try
+        {
+            var snmp =  _snmpService.SnmpSelectByHarware(id);
+            return snmp;
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
     [HttpPost]
     [Route("CriarSnmp")]
     public async Task<ActionResult> CreateSnmp(SnmpRequest SnmpNew)

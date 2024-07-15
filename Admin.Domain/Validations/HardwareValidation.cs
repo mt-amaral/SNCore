@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
-
+using Admin.Domain.Entities;
 namespace Admin.Domain.Validations
 {
-    public class HardwareValidation: AbstractValidator<Entities.Hardware>
+    public class HardwareValidation: AbstractValidator<Hardware>
     {
         public HardwareValidation()
         {
