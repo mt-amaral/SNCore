@@ -34,7 +34,8 @@ public class SnmpApi
     }
     public async Task<SnmpResponse?> SelectByHardware(int hardwareId)
     {
-
-        return await _httpClient.GetFromJsonAsync<SnmpResponse>($"/Snmp/ExibirSnmpPorHardwareId?id={hardwareId}");
+        var snmp = await _httpClient.GetAsync($"/Snmp/ExibirPorHardwareId?id={hardwareId}");
+        return snmp.IsSuccessStatusCode
+            ? await snmp.Content.ReadFromJsonAsync<SnmpResponse>() : new SnmpResponse();
     }
 }

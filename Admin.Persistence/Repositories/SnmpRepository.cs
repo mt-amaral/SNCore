@@ -1,6 +1,8 @@
 ﻿using Admin.Domain.Entities;
 using Admin.Domain.Interfaces;
 using Admin.Persistence.Context;
+using Azure.Core;
+using Microsoft.EntityFrameworkCore;
 
 namespace Admin.Persistence.Repositories
 {
@@ -11,10 +13,11 @@ namespace Admin.Persistence.Repositories
         {
             _context = context;
         }
-        public  Snmp? SelectByHardware(int id)
+        public async Task<Snmp> SelectByHardwareId(int? id)
         {
-            var snmp = _context.Snmp.Where(x => x.HardwareId == id);
-            return snmp.Any() ? snmp.FirstOrDefault(): null;
+            var snmp = await _dbSet.Where(x => x.HardwareId == id).FirstOrDefaultAsync();
+            return snmp == null ? throw new InvalidOperationException() : snmp;
+                
         }
     }
 }

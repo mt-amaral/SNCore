@@ -23,12 +23,9 @@ namespace Admin.Persistence.Repositories
 
         public async Task<T> SelectByPk(int? id)
         {
-            var entity = await _dbSet.FindAsync(id);
-            if (entity == null)
-            {
-                throw new InvalidOperationException();
-            }
-            return entity;
+           var entity = await _dbSet.FindAsync(id);
+           return entity == null ? throw new InvalidOperationException() : entity;
+   
         }
 
         public async Task<IEnumerable<T>> SelectAll()

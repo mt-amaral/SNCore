@@ -33,13 +33,12 @@ public class SnmpController : Controller
         }
     }
     [HttpGet]
-    [Route("ExibirSnmpPorHardwareId")]
-
-    public ActionResult<SnmpResponse> SelectByHardware(int id)
+    [Route("ExibirPorHardwareId")]
+    public async Task<ActionResult> SelectByHardwareId(int id)
     {
         try
         {
-            var snmp =  _snmpService.SnmpSelectByHarware(id);
+            var snmp = await _snmpService.SelectByHardwareId(id);
             return Ok(snmp);
         }
         catch (Exception ex)

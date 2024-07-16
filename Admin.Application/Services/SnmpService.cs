@@ -20,10 +20,9 @@ public class SnmpService : BaseService<Snmp, SnmpRequest, SnmpResponse, ISnmpRep
         _mapper = mapper;
     }
 
-    public SnmpResponse SnmpSelectByHarware(int id) 
+    public async Task<SnmpResponse> SelectByHardwareId(int id)
     {
-        var snmp = _snmpRepository.SelectByHardware(id);
+        var snmp = await _snmpRepository.SelectByHardwareId(id);
         return _mapper.Map<SnmpResponse>(snmp);
-        
     }
 }
