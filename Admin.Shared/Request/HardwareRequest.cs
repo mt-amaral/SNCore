@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
+using Admin.Share.Enums;
 
 namespace Admin.Share.Request
 {
@@ -17,8 +18,7 @@ namespace Admin.Share.Request
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Model é obrigatória")]
-        [StringLength(50, ErrorMessage = "Modelo muito longo")]
-        public string Model { get; set; }
+        public Model HardwareModel { get; set; }
 
         [Required(ErrorMessage = "Ipv4 é obrigatória")]
         [StringLength(15, ErrorMessage = "IPv4 inválido")]

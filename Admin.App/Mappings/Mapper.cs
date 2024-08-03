@@ -16,7 +16,7 @@ public class Mapper
                 Id = hardwareEdit.Id,
                 Name = hardwareEdit.Name,
                 Description = hardwareEdit.Description,
-                Model = hardwareEdit.Model,
+                HardwareModel = hardwareEdit.HardwareModel,
                 Ipv4 = hardwareEdit.Ipv4
             };
 

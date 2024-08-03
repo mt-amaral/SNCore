@@ -17,9 +17,8 @@ namespace Admin.Domain.Validations
                 .NotEmpty().WithMessage("Descrição não pode ser vazia")
                 .MaximumLength(50).WithMessage("Descrição muito longa");
 
-            RuleFor(hardware => hardware.Model)
-                .NotEmpty().WithMessage("Modelo não pode ser vazio")
-                .MaximumLength(50).WithMessage("Descrição de modelo muito longa");
+            RuleFor(hardware => hardware.HardwareModel)
+                .IsInEnum().WithMessage("Modelo inválido");
 
             RuleFor(hardware => hardware.Ipv4)
                 .NotEmpty().WithMessage("Ipv4 não pode ser vazio")

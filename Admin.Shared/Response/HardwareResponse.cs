@@ -1,5 +1,5 @@
 ﻿
-
+using Admin.Share.Enums;
 namespace Admin.Share.Response;
 
 public class HardwareResponse
@@ -8,6 +8,6 @@ public class HardwareResponse
     public string Name { get; set; }
     public bool IsOnline  {  get; set; }
     public string Description { get; set; }
-    public string Model { get; set; }
+    public  Model HardwareModel  { get; set; }
     public string Ipv4 { get; set; }
 }

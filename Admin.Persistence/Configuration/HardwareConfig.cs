@@ -13,7 +13,7 @@ internal class HardwareConfig : BaseEntityConfig<Hardware>
 
         builder.Property(x => x.Name).HasMaxLength(50).IsRequired();
         builder.Property(x => x.Description).HasMaxLength(50).IsRequired();
-        builder.Property(x => x.Model).HasMaxLength(50).IsRequired();
+        builder.Property(x => x.HardwareModel).HasConversion<short>().IsRequired();
         builder.Property(x => x.Ipv4).HasMaxLength(15).IsRequired();
 
         builder.HasOne(x => x.Snmp)
