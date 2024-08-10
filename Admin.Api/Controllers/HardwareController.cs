@@ -19,6 +19,8 @@ public class HardwareController : Controller
     }
 
     [HttpGet]
+    [ProducesResponseType(typeof(IEnumerable<HardwareResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [Route("ExibirTodos")]
     public async Task<ActionResult<IEnumerable<HardwareResponse>>> GetHardware()
     {
@@ -33,6 +35,8 @@ public class HardwareController : Controller
         }
     }
     [HttpGet]
+    [ProducesResponseType(typeof(HardwareResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("ExibirHardwarePorId")]
     public async Task<ActionResult> SelectHardware(int id)
     {
@@ -44,10 +48,12 @@ public class HardwareController : Controller
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return NotFound(ex.Message);
         }
     }
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
     [Route("CriarHardware")]
     public async Task<ActionResult> CreateHardware(HardwareRequest hardwareNew)
     {
@@ -62,13 +68,15 @@ public class HardwareController : Controller
         }
     }
     [HttpPut]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [Route("EditarHardware")]
     public async Task<ActionResult> EditHardware(HardwareRequest hardwareRequest)
     {
         try
         {
             await _hardwareService.Edit(hardwareRequest);
-            return Created();
+            return NoContent();
         }
         catch (Exception ex)
         {
@@ -76,6 +84,8 @@ public class HardwareController : Controller
         }
     }
     [HttpDelete]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("DeleteHardware")]
     public async Task<ActionResult> DeleteHardware(int hardwareId)
     {
@@ -86,7 +96,7 @@ public class HardwareController : Controller
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return NotFound(ex.Message);
         }
     }
 }
