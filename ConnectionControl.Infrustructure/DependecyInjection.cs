@@ -22,7 +22,7 @@ public static class DependecyInjection
                 m => m.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName));
         });
         // Services
-        services.AddScoped<IHardwareService, HardwareService> ();
+        services.AddScoped<IConnectionSNMPService, ConnectionSNMPService> ();
 
         // Repositories
         services.AddScoped<IHardwareRepository, HardwareRepository>();
