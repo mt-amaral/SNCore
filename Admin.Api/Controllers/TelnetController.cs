@@ -17,6 +17,8 @@ public class TelnetController : Controller
         _telnetService = telnetService;
     }
     [HttpGet]
+    [ProducesResponseType(typeof(TelnetResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("ExibirTelnetPorId")]
     public async Task<ActionResult> SelectSnmp(int id)
     {
@@ -24,14 +26,15 @@ public class TelnetController : Controller
         {
             var snmp = await _telnetService.SelectByPk(id);
             return Ok(snmp);
-
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return NotFound(ex.Message);
         }
     }
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [Route("CriarTelnet")]
     public async Task<ActionResult> CreateSnmp(TelnetRequest TelnetNew)
     {
@@ -46,20 +49,24 @@ public class TelnetController : Controller
         }
     }
     [HttpPut]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [Route("EditarTelnet")]
     public async Task<ActionResult> EditSnmp(TelnetRequest telnetRequest)
     {
         try
         {
             await _telnetService.Edit(telnetRequest);
-            return Created();
+            return NoContent();
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return NotFound(ex.Message);
         }
     }
     [HttpDelete]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [Route("DeleteTelnet")]
     public async Task<ActionResult> DeleteHardware(int telnetId)
     {

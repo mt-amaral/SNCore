@@ -1,22 +1,11 @@
 ﻿using System;
 
-namespace Admin.Domain.Entities
-{
-    public abstract class BaseEntity
-    {
-        public int Id { get; set; }
-        public DateTime CreationDate { get; set; }
-        public DateTime? UpdateDate { get; set; }
-        public bool Active { get; set; }
+namespace Admin.Domain.Entities;
 
-        protected BaseEntity()
-        {
-            CreationDate = DateTime.Now;
-            Active = true;
-        }
-        public void UpDate()
-        {
-            UpdateDate = DateTime.Now;
-        }
-    }
+public abstract class BaseEntity
+{
+    public int Id { get; set; }
+    public DateTime CreationDate { get; set; }
+    public DateTime? UpdateDate { get; set; }
+    public bool Active { get; set; }
 }

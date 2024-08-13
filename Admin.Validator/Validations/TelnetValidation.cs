@@ -1,9 +1,9 @@
-﻿using Admin.Domain.Entities;
+﻿using Admin.Share.Request;
 using FluentValidation;
 
-namespace Admin.Domain.Validations;
+namespace Admin.Validator.Validations;
 
-public class TelnetValidation : AbstractValidator<Telnet>
+public class TelnetValidation : AbstractValidator<TelnetRequest>
 {
     public TelnetValidation()
     {

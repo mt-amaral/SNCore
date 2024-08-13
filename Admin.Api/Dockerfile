@@ -17,6 +17,7 @@ COPY ["Admin.Application/Admin.Application.csproj", "Admin.Application/"]
 COPY ["Admin.Persistence/Admin.Persistence.csproj", "Admin.Persistence/"]
 COPY ["Admin.Infrustructure/Admin.Infrustructure.csproj", "Admin.Infrustructure/"]
 COPY ["Admin.Shared/Admin.Shared.csproj", "Admin.Shared/"]
+COPY ["Admin.Validator/Admin.Shared.Validator", "Admin.Validator/"]
 
 RUN dotnet restore "./Admin.Api/Admin.Api.csproj"
 COPY . .

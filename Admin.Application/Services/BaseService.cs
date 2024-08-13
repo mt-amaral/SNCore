@@ -44,8 +44,7 @@ public abstract class BaseService<TEntity, TRequest, TResponse, TRepository>
     {
         var entity = await _repository.SelectByPk(id);
         if (entity != null)
-        {
             await _repository.Delete(entity);
-        }
+
     }
 }

@@ -7,6 +7,7 @@ EXPOSE 8091
 # Copy project files and restore as distinct layers
 COPY ["Admin.App/Admin.App.csproj", "Admin.App/"]
 COPY ["Admin.Shared/Admin.Shared.csproj", "Admin.Shared/"]
+COPY ["Admin.Validator/Admin.Validator.csproj", "Admin.Validator/"]
 RUN dotnet restore "Admin.App/Admin.App.csproj"
 
 # Copy the rest of the files and build

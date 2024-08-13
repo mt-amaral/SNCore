@@ -2,7 +2,6 @@ using Admin.Api;
 using Admin.Application.Mappings;
 using Admin.Infrustructure;
 using Admin.Persistence.Context;
-using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -63,7 +62,7 @@ if (app.Environment.IsStaging())
 
     using (var scope = app.Services.CreateScope())
     {
-        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>(); 
+        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         dbContext.Database.Migrate();
     }
 }

@@ -18,8 +18,10 @@ public class SnmpController : Controller
         _snmpService = snmpService;
     }
     [HttpGet]
+    [ProducesResponseType(typeof(SnmpResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [Route("ExibirSnmpPorId")]
-    public async Task<ActionResult> SelectSnmp(int id)
+    public async Task<ActionResult> SelectByPk(int id)
     {
         try
         {
@@ -33,6 +35,8 @@ public class SnmpController : Controller
         }
     }
     [HttpGet]
+    [ProducesResponseType(typeof(SnmpResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [Route("ExibirPorHardwareId")]
     public async Task<ActionResult> SelectByHardwareId(int id)
     {
@@ -43,10 +47,12 @@ public class SnmpController : Controller
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return NotFound(ex.Message);
         }
     }
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [Route("CriarSnmp")]
     public async Task<ActionResult> CreateSnmp(SnmpRequest SnmpNew)
     {
@@ -61,13 +67,15 @@ public class SnmpController : Controller
         }
     }
     [HttpPut]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [Route("EditarSnmp")]
     public async Task<ActionResult> EditSnmp(SnmpRequest snmpRequest)
     {
         try
         {
             await _snmpService.Edit(snmpRequest);
-            return Created();
+            return NoContent();
         }
         catch (Exception ex)
         {
@@ -75,6 +83,8 @@ public class SnmpController : Controller
         }
     }
     [HttpDelete]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("DeleteSnmp")]
     public async Task<ActionResult> DeleteHardware(int snmpId)
     {
@@ -85,7 +95,7 @@ public class SnmpController : Controller
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return NotFound(ex.Message);
         }
     }
 }

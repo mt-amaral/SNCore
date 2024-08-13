@@ -16,7 +16,7 @@ namespace Admin.Persistence.Repositories
         public async Task<Snmp> SelectByHardwareId(int? id)
         {
             var snmp = await _dbSet.Where(x => x.HardwareId == id).FirstOrDefaultAsync();
-            return snmp == null ? throw new InvalidOperationException() : snmp;
+            return snmp == null ? throw new InvalidOperationException($"Não encontrado HardwareId:{id}") : snmp;
                 
         }
     }

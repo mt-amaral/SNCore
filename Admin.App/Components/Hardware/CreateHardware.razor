@@ -25,7 +25,7 @@
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
     [Parameter] public HardwareResponse hardwareNew { get; set; } = new HardwareResponse();
     private HardwareRequest hardwareValid { get; set; } = new HardwareRequest();
-    private HardwareValidation validator = new HardwareValidation();
+    private HardwareValidation<HardwareResponse> validator = new HardwareValidation<HardwareResponse>();
 
     private void Cancel()
     {
