@@ -39,6 +39,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConnectionControl.Applicati
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConnectionsControl.ConnectionLibrary", "ConnectionsControl.ConnectionLibrary\ConnectionsControl.ConnectionLibrary.csproj", "{AA340366-1854-4E0B-A9F8-0DF25A635884}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Admin.Validator", "Admin.Validator\Admin.Validator.csproj", "{FE561929-A9B5-418E-B981-6D6699C48391}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +95,10 @@ Global
 		{AA340366-1854-4E0B-A9F8-0DF25A635884}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA340366-1854-4E0B-A9F8-0DF25A635884}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA340366-1854-4E0B-A9F8-0DF25A635884}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE561929-A9B5-418E-B981-6D6699C48391}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE561929-A9B5-418E-B981-6D6699C48391}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE561929-A9B5-418E-B981-6D6699C48391}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE561929-A9B5-418E-B981-6D6699C48391}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -109,6 +115,7 @@ Global
 		{4D01DE91-7133-45E0-AA00-4B95169AFB2A} = {68C90E22-2B2E-491D-96F8-60C475EB644E}
 		{EFD20EA0-7414-454F-A35C-5C9BA44CD212} = {E711394E-7FE3-4011-8B0D-CDC678C24503}
 		{AA340366-1854-4E0B-A9F8-0DF25A635884} = {E711394E-7FE3-4011-8B0D-CDC678C24503}
+		{FE561929-A9B5-418E-B981-6D6699C48391} = {BA62798C-DF4A-4A68-B361-4339A6BB9FEF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {914E1866-9657-4FCD-8763-3CAA0F1662FC}

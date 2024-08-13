@@ -2,8 +2,8 @@
 using Admin.Application.Interfaces;
 using Admin.Share.Request;
 using Admin.Share.Response;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using FluentValidation;
 
 namespace Admin.Api.Controllers;
 
@@ -11,11 +11,13 @@ namespace Admin.Api.Controllers;
 [Route("[controller]")]
 public class HardwareController : Controller
 {
+    private readonly IValidator<HardwareRequest> _validator;
     private readonly IHardwareService _hardwareService;
 
-    public HardwareController(IHardwareService hardwareService)
+    public HardwareController(IHardwareService hardwareService, IValidator<HardwareRequest> validator)
     {
         _hardwareService = hardwareService;
+        _validator = validator;
     }
 
     [HttpGet]
@@ -57,6 +59,10 @@ public class HardwareController : Controller
     [Route("CriarHardware")]
     public async Task<ActionResult> CreateHardware(HardwareRequest hardwareNew)
     {
+        var validationResult = await _validator.ValidateAsync(hardwareNew);
+        if (!validationResult.IsValid)
+            return BadRequest(validationResult.Errors);
+
         try
         {
             await _hardwareService.Create(hardwareNew);
@@ -70,17 +76,21 @@ public class HardwareController : Controller
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("EditarHardware")]
-    public async Task<ActionResult> EditHardware(HardwareRequest hardwareRequest)
+    public async Task<ActionResult> EditHardware(HardwareRequest hardwareEdit)
     {
+        var validationResult = await _validator.ValidateAsync(hardwareEdit);
+        if (!validationResult.IsValid)
+            return BadRequest(validationResult.Errors);
         try
         {
-            await _hardwareService.Edit(hardwareRequest);
+            await _hardwareService.Edit(hardwareEdit);
             return NoContent();
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return NotFound(ex.Message);
         }
     }
     [HttpDelete]

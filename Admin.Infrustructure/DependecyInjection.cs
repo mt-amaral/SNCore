@@ -1,12 +1,15 @@
 ﻿using Admin.Application.Interfaces;
 using Admin.Application.Services;
+using Admin.Domain.Entities;
 using Admin.Domain.Interfaces;
 using Admin.Persistence.Context;
 using Admin.Persistence.Repositories;
+using Admin.Share.Request;
+using Admin.Validator.Validations;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
 namespace Admin.Infrustructure;
 
 public static class DependecyInjection
@@ -30,7 +33,8 @@ public static class DependecyInjection
         services.AddScoped<ISnmpRepository, SnmpRepository>();
         services.AddScoped<ITelnetRepository, TelnetRepository>();
 
-
+        // Validation
+        services.AddScoped<IValidator<HardwareRequest>, HardwareValidation>();
 
         return services;
     }
