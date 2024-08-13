@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Admin.Shared\Admin.Shared.csproj" />
+    <ProjectReference Include="..\Admin.Validator\Admin.Validator.csproj" />
   </ItemGroup>
 
   <ItemGroup>

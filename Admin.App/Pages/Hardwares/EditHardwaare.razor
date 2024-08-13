@@ -55,7 +55,7 @@
     [Parameter] public int hardwareId { get; set; }
     private HardwareResponse hardwareEdit = new HardwareResponse();
     private HardwareRequest hardwareEdited = new HardwareRequest();
-    private HardwareValidation validator = new HardwareValidation();
+    private HardwareValidation<HardwareResponse> validator = new HardwareValidation<HardwareResponse>();
 
     private SnmpResponse hardwareSnmp = new SnmpResponse();
 

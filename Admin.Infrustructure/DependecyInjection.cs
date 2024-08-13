@@ -34,7 +34,7 @@ public static class DependecyInjection
         services.AddScoped<ITelnetRepository, TelnetRepository>();
 
         // Validation
-        services.AddScoped<IValidator<HardwareRequest>, HardwareValidation>();
+        services.AddScoped<IValidator<HardwareRequest>, HardwareValidation<HardwareRequest>>();
 
         return services;
     }

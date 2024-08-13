@@ -4,6 +4,7 @@ using Admin.Share.Request;
 using Admin.Share.Response;
 using Microsoft.AspNetCore.Mvc;
 using FluentValidation;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Admin.Api.Controllers;
 
@@ -61,7 +62,12 @@ public class HardwareController : Controller
     {
         var validationResult = await _validator.ValidateAsync(hardwareNew);
         if (!validationResult.IsValid)
-            return BadRequest(validationResult.Errors);
+        {
+            var errors = validationResult.Errors
+                .Select(error => error.ErrorMessage)
+                .ToList();
+            return BadRequest(new { Errors = errors });
+        }
 
         try
         {
