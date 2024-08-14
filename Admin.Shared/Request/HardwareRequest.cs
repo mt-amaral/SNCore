@@ -4,5 +4,6 @@ namespace Admin.Shared.Request
 {
     public class HardwareRequest : HardwareBase
     {
+        public int Id { get; set; }
     }
 }
