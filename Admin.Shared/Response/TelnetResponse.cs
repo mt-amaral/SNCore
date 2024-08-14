@@ -1,9 +1,4 @@
-﻿
-
-using System.ComponentModel.DataAnnotations;
-using System.Runtime.Serialization;
-
-namespace Admin.Share.Response;
+﻿namespace Admin.Share.Response;
 
 public class TelnetResponse
 {

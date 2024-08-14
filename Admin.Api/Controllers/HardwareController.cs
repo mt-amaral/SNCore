@@ -2,9 +2,8 @@
 using Admin.Application.Interfaces;
 using Admin.Share.Request;
 using Admin.Share.Response;
-using Microsoft.AspNetCore.Mvc;
 using FluentValidation;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Admin.Api.Controllers;
 

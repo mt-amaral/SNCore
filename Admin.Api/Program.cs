@@ -16,7 +16,7 @@ builder.Services.AddCors(
         Configuration.CorsPolicy,
         policy => policy
         .WithOrigins([
-            Configuration.AdminAppUrl, 
+            Configuration.AdminAppUrl,
             Configuration.AdminApiUrl,
             Configuration.AdminAppConteiner,
             Configuration.AdminApiConteiner,

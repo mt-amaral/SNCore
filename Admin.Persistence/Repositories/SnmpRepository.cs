@@ -1,7 +1,6 @@
 ﻿using Admin.Domain.Entities;
 using Admin.Domain.Interfaces;
 using Admin.Persistence.Context;
-using Azure.Core;
 using Microsoft.EntityFrameworkCore;
 
 namespace Admin.Persistence.Repositories
@@ -17,7 +16,7 @@ namespace Admin.Persistence.Repositories
         {
             var snmp = await _dbSet.Where(x => x.HardwareId == id).FirstOrDefaultAsync();
             return snmp == null ? throw new InvalidOperationException($"Não encontrado HardwareId:{id}") : snmp;
-                
+
         }
     }
 }

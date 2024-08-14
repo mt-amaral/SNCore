@@ -1,6 +1,5 @@
 ﻿using Admin.Application.Interfaces;
 using Admin.Application.Services;
-using Admin.Domain.Entities;
 using Admin.Domain.Interfaces;
 using Admin.Persistence.Context;
 using Admin.Persistence.Repositories;
@@ -23,7 +22,7 @@ public static class DependecyInjection
                 m => m.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName));
         });
         // Services
-        services.AddScoped<IHardwareService, HardwareService> ();
+        services.AddScoped<IHardwareService, HardwareService>();
         services.AddScoped<ISnmpService, SnmpService>();
         services.AddScoped<ITelnetService, TelnetService>();
 

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Admin.Domain.Entities;
+﻿namespace Admin.Domain.Entities;
 
 public abstract class BaseEntity
 {

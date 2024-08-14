@@ -1,5 +1,5 @@
-﻿using AutoMapper;
-using Admin.Domain.Interfaces;
+﻿using Admin.Domain.Interfaces;
+using AutoMapper;
 
 public abstract class BaseService<TEntity, TRequest, TResponse, TRepository>
     where TEntity : class

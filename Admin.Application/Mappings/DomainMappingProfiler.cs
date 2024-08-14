@@ -1,13 +1,13 @@
-﻿using Admin.Share.Response;
+﻿using Admin.Domain.Entities;
 using Admin.Share.Request;
-using Admin.Domain.Entities;
+using Admin.Share.Response;
 using AutoMapper;
 
 namespace Admin.Application.Mappings;
 
 public class DomainMappingProfile : Profile
 {
-    public DomainMappingProfile() 
+    public DomainMappingProfile()
     {
         CreateMap<Hardware, HardwareRequest>().ReverseMap();
         CreateMap<Hardware, HardwareResponse>().ReverseMap();

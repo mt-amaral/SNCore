@@ -1,5 +1,4 @@
 ﻿using Admin.Application.Interfaces;
-using Admin.Domain.Entities;
 using Admin.Share.Request;
 using Admin.Share.Response;
 using Microsoft.AspNetCore.Mvc;

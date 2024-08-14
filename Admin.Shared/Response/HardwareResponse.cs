@@ -4,6 +4,6 @@ namespace Admin.Share.Response;
 
 public class HardwareResponse : HardwareBase
 {
-    public bool IsOnline  {  get; set; }
+    public bool IsOnline { get; set; }
 
 }
