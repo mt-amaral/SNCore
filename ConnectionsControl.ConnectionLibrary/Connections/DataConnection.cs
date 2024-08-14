@@ -1,9 +1,7 @@
-﻿
-using System.Collections.Generic;
-using System.Net;
+﻿using ConnectionsControl.ConnectionLibrary.Interfaces;
 using Lextm.SharpSnmpLib;
 using Lextm.SharpSnmpLib.Messaging;
-using ConnectionsControl.ConnectionLibrary.Interfaces;
+using System.Net;
 
 namespace ConnectionsControl.ConnectionLibrary.Connections;
 

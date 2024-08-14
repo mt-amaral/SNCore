@@ -1,5 +1,6 @@
 ﻿
 using Admin.Application.Interfaces;
+using Admin.Shared.Base;
 using Admin.Shared.Request;
 using Admin.Shared.Response;
 using FluentValidation;
@@ -12,12 +13,16 @@ namespace Admin.Api.Controllers;
 public class HardwareController : Controller
 {
     private readonly IValidator<HardwareRequest> _validator;
+    private readonly IValidator<HardwareBase> _validatorBase;
     private readonly IHardwareService _hardwareService;
 
-    public HardwareController(IHardwareService hardwareService, IValidator<HardwareRequest> validator)
+    public HardwareController(IHardwareService hardwareService,
+        IValidator<HardwareRequest> validator,
+        IValidator<HardwareBase> validatorBase)
     {
         _hardwareService = hardwareService;
         _validator = validator;
+        _validatorBase = validatorBase;
     }
 
     [HttpGet]
@@ -57,9 +62,9 @@ public class HardwareController : Controller
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [Route("CriarHardware")]
-    public async Task<ActionResult> CreateHardware(HardwareRequest hardwareNew)
+    public async Task<ActionResult> CreateHardware(HardwareBase hardwareNew)
     {
-        var validationResult = await _validator.ValidateAsync(hardwareNew);
+        var validationResult = await _validatorBase.ValidateAsync(hardwareNew);
         if (!validationResult.IsValid)
         {
             var errors = validationResult.Errors
@@ -83,14 +88,14 @@ public class HardwareController : Controller
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("EditarHardware")]
-    public async Task<ActionResult> EditHardware(HardwareRequest hardwareEdit)
+    public async Task<ActionResult> EditHardware(HardwareBase hardwareEdit, [FromQuery] int Id)
     {
-        var validationResult = await _validator.ValidateAsync(hardwareEdit);
+        var validationResult = await _validatorBase.ValidateAsync(hardwareEdit);
         if (!validationResult.IsValid)
             return BadRequest(validationResult.Errors);
         try
         {
-            await _hardwareService.Edit(hardwareEdit);
+            await _hardwareService.Edit(Id, hardwareEdit);
             return NoContent();
         }
         catch (Exception ex)

@@ -1,9 +1,7 @@
-﻿using ConnectionControl.Application.Dtos.Request;
+﻿using AutoMapper;
+using ConnectionControl.Application.Dtos.Request;
 using ConnectionControl.Application.Interfaces;
-using AutoMapper;
 using ConnectionsControl.ConnectionLibrary.Interfaces;
-using Lextm.SharpSnmpLib;
-using System.Collections.Generic;
 
 namespace ConnectionControl.Application.Services;
 
@@ -23,7 +21,7 @@ public class ConnectionSNMPService : IConnectionSNMPService
         {
             var resultado = _dataConnection.PerformSnmpOperation(connectionSNMPD.Ipv4, connectionSNMPD.Port, connectionSNMPD.Community, connectionSNMPD.Oid);
         }
-        catch (Exception ex) 
+        catch (Exception ex)
         {
             throw new Exception($"Erro de conexão com {connectionSNMPD.Ipv4}. Erro: {ex}");
         }

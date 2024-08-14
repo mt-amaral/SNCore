@@ -51,11 +51,11 @@ public class TelnetController : Controller
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [Route("EditarTelnet")]
-    public async Task<ActionResult> EditSnmp(TelnetRequest telnetRequest)
+    public async Task<ActionResult> EditSnmp(TelnetRequest telnetRequest, [FromQuery] int Id)
     {
         try
         {
-            await _telnetService.Edit(telnetRequest);
+            await _telnetService.Edit(Id, telnetRequest);
             return NoContent();
         }
         catch (Exception ex)

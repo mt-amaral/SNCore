@@ -1,10 +1,9 @@
-﻿namespace Admin.Shared.Response;
+﻿using Admin.Shared.Base;
 
-public class TelnetResponse
+namespace Admin.Shared.Response;
+
+public class TelnetResponse : TelnetBase
 {
     public int Id { get; set; }
-    public string User { get; set; }
-    public string Password { get; set; }
-    public int Port { get; set; }
-    public int HardwareId { get; set; }
+
 }

@@ -1,14 +1,13 @@
-﻿using Admin.Shared.Request;
+﻿using Admin.Shared.Base;
 using FluentValidation;
 
 namespace Admin.Validator.Validations;
 
-public class TelnetValidation : AbstractValidator<TelnetRequest>
+public class TelnetValidation<T> : AbstractValidator<T>
+    where T : TelnetBase
 {
     public TelnetValidation()
     {
-        RuleFor(telnet => telnet.Id)
-            .GreaterThanOrEqualTo(0).WithMessage("Id não pode ser negativo");
 
         RuleFor(telnet => telnet.User)
             .NotEmpty().WithMessage("Usuario não pode ser vazio")

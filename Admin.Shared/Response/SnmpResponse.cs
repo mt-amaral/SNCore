@@ -1,11 +1,9 @@
 ﻿
+using Admin.Shared.Base;
 
 namespace Admin.Shared.Response;
 
-public class SnmpResponse
+public class SnmpResponse : SnmpBase
 {
-    public string Version { get; set; }
-    public string Community { get; set; }
-    public int Port { get; set; }
-    public int HardwareId { get; set; }
+    public int Id { get; set; }
 }

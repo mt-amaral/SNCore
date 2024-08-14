@@ -68,11 +68,11 @@ public class SnmpController : Controller
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [Route("EditarSnmp")]
-    public async Task<ActionResult> EditSnmp(SnmpRequest snmpRequest)
+    public async Task<ActionResult> EditSnmp(SnmpRequest snmpRequest, [FromQuery] int Id)
     {
         try
         {
-            await _snmpService.Edit(snmpRequest);
+            await _snmpService.Edit(Id, snmpRequest);
             return NoContent();
         }
         catch (Exception ex)

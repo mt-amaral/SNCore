@@ -3,6 +3,7 @@ using Admin.Application.Services;
 using Admin.Domain.Interfaces;
 using Admin.Persistence.Context;
 using Admin.Persistence.Repositories;
+using Admin.Shared.Base;
 using Admin.Shared.Request;
 using Admin.Validator.Validations;
 using FluentValidation;
@@ -34,6 +35,7 @@ public static class DependecyInjection
 
         // Validation
         services.AddScoped<IValidator<HardwareRequest>, HardwareValidation<HardwareRequest>>();
+        services.AddScoped<IValidator<HardwareBase>, HardwareValidation<HardwareBase>>();
 
         return services;
     }

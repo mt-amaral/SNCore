@@ -1,5 +1,5 @@
-﻿using FluentValidation;
-using Admin.Shared.Base;
+﻿using Admin.Shared.Base;
+using FluentValidation;
 
 
 namespace Admin.Validator.Validations;
