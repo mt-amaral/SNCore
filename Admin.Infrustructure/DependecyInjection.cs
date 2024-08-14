@@ -3,7 +3,7 @@ using Admin.Application.Services;
 using Admin.Domain.Interfaces;
 using Admin.Persistence.Context;
 using Admin.Persistence.Repositories;
-using Admin.Share.Request;
+using Admin.Shared.Request;
 using Admin.Validator.Validations;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;

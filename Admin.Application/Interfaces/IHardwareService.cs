@@ -1,5 +1,5 @@
-﻿using Admin.Share.Response;
-using Admin.Share.Request;
+﻿using Admin.Shared.Response;
+using Admin.Shared.Request;
 
 
 namespace Admin.Application.Interfaces;

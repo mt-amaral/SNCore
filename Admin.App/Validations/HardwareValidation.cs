@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Admin.Share.Response;
+using Admin.Shared.Response;
 
 namespace Admin.App.Validations;
 

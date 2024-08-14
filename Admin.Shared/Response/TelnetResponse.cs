@@ -1,4 +1,4 @@
-﻿namespace Admin.Share.Response;
+﻿namespace Admin.Shared.Response;
 
 public class TelnetResponse
 {

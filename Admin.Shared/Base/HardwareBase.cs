@@ -1,4 +1,4 @@
-﻿using Admin.Share.Enums;
+﻿using Admin.Shared.Enums;
 namespace Admin.Shared.Base;
 
 public class HardwareBase

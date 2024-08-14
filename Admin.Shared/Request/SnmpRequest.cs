@@ -1,4 +1,4 @@
-﻿namespace Admin.Share.Request;
+﻿namespace Admin.Shared.Request;
 
 public class SnmpRequest
 {

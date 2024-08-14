@@ -1,5 +1,5 @@
-﻿using Admin.Share.Request;
-using Admin.Share.Response;
+﻿using Admin.Shared.Request;
+using Admin.Shared.Response;
 
 namespace Admin.App.Mappers;
 

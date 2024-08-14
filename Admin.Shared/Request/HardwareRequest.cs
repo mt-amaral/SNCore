@@ -1,6 +1,6 @@
 ﻿using Admin.Shared.Base;
 
-namespace Admin.Share.Request
+namespace Admin.Shared.Request
 {
     public class HardwareRequest : HardwareBase
     {

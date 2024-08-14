@@ -1,6 +1,6 @@
 ﻿
 using Admin.Shared.Base;
-namespace Admin.Share.Response;
+namespace Admin.Shared.Response;
 
 public class HardwareResponse : HardwareBase
 {

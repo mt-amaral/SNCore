@@ -1,4 +1,4 @@
-﻿using Admin.Share.Request;
+﻿using Admin.Shared.Request;
 using FluentValidation;
 
 namespace Admin.Validator.Validations;

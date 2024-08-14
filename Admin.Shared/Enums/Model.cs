@@ -1,6 +1,6 @@
 ﻿
 
-namespace Admin.Share.Enums;
+namespace Admin.Shared.Enums;
 
 public enum Model : short
 {
