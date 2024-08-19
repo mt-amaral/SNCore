@@ -4,6 +4,7 @@ using Admin.Domain.Interfaces;
 using Admin.Shared.Base;
 using Admin.Shared.Response;
 using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace Admin.Application.Services;
 
@@ -40,6 +41,15 @@ public class HardwareService : IHardwareService
         var entityDb = await _repository.SelectByPk(Id);
         var entity = _mapper.Map<Hardware>(request);
         await _repository.Edit(entity);
+    }
+
+    public virtual async Task EditPartial(int Id, JsonPatchDocument<HardwareBase> request)
+    {
+        var entityDb  = await _repository.SelectByPk(Id);
+        var entityForUpdate = _mapper.Map<HardwareBase>(entityDb);
+        request.ApplyTo(entityForUpdate);
+        _mapper.Map(entityForUpdate, entityDb);
+        await _repository.Edit(entityDb);
     }
 
     public virtual async Task Delete(int id)

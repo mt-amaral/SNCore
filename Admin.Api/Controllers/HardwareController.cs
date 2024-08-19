@@ -4,6 +4,7 @@ using Admin.Shared.Base;
 using Admin.Shared.Request;
 using Admin.Shared.Response;
 using FluentValidation;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Admin.Api.Controllers;
@@ -96,6 +97,23 @@ public class HardwareController : Controller
         try
         {
             await _hardwareService.Edit(Id, hardwareEdit);
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
+    [HttpPatch]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Route("EditPartialHardware")]
+    public async Task<ActionResult> EditPartialHardware([FromQuery] int Id, [FromBody] JsonPatchDocument<HardwareBase> hardwareEdit)
+    {
+        try
+        {
+            await _hardwareService.EditPartial(Id, hardwareEdit);
             return NoContent();
         }
         catch (Exception ex)
