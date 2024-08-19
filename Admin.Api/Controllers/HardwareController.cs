@@ -89,11 +89,16 @@ public class HardwareController : Controller
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("EditarHardware")]
-    public async Task<ActionResult> EditHardware(HardwareBase hardwareEdit, [FromQuery] int Id)
+    public async Task<ActionResult> EditHardware([FromQuery] int Id, HardwareBase hardwareEdit)
     {
         var validationResult = await _validatorBase.ValidateAsync(hardwareEdit);
         if (!validationResult.IsValid)
-            return BadRequest(validationResult.Errors);
+        {
+            var errors = validationResult.Errors
+                .Select(error => error.ErrorMessage)
+                .ToList();
+            return BadRequest(new { Errors = errors });
+        }
         try
         {
             await _hardwareService.Edit(Id, hardwareEdit);
@@ -115,6 +120,13 @@ public class HardwareController : Controller
         {
             await _hardwareService.EditPartial(Id, hardwareEdit);
             return NoContent();
+        }
+        catch (ValidationException ex)
+        {
+            var errors = ex.Errors
+            .Select(error => error.ErrorMessage)
+            .ToList();
+            return BadRequest(new { Errors = errors });
         }
         catch (Exception ex)
         {

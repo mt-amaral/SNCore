@@ -4,16 +4,19 @@ using Admin.Domain.Interfaces;
 using Admin.Shared.Base;
 using Admin.Shared.Response;
 using AutoMapper;
+using FluentValidation;
 using Microsoft.AspNetCore.JsonPatch;
 
 namespace Admin.Application.Services;
 
 public class HardwareService : IHardwareService
 {
+    private readonly IValidator<HardwareBase> _validatorBase;
     private readonly IHardwareRepository _repository;
     private readonly IMapper _mapper;
-    public HardwareService(IHardwareRepository repository, IMapper mapper)
+    public HardwareService(IHardwareRepository repository, IMapper mapper, IValidator<HardwareBase> validatorBase)
     {
+        _validatorBase = validatorBase;
         _repository = repository;
         _mapper = mapper;
     }
@@ -45,9 +48,14 @@ public class HardwareService : IHardwareService
 
     public virtual async Task EditPartial(int Id, JsonPatchDocument<HardwareBase> request)
     {
-        var entityDb  = await _repository.SelectByPk(Id);
+        var entityDb = await _repository.SelectByPk(Id);
         var entityForUpdate = _mapper.Map<HardwareBase>(entityDb);
         request.ApplyTo(entityForUpdate);
+
+        var validationResult = await _validatorBase.ValidateAsync(entityForUpdate);
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
+
         _mapper.Map(entityForUpdate, entityDb);
         await _repository.Edit(entityDb);
     }
