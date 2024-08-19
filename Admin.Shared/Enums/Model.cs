@@ -1,8 +1,8 @@
 ﻿
 
-namespace Admin.Share.Enums;
+namespace Admin.Shared.Enums;
 
-public enum Model: short
+public enum Model : short
 {
     model1 = 0,
     model2 = 1,

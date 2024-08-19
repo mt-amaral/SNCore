@@ -16,7 +16,7 @@ builder.Services.AddCors(
         Configuration.CorsPolicy,
         policy => policy
         .WithOrigins([
-            Configuration.AdminAppUrl, 
+            Configuration.AdminAppUrl,
             Configuration.AdminApiUrl,
             Configuration.AdminAppConteiner,
             Configuration.AdminApiConteiner,
@@ -30,7 +30,7 @@ builder.Services.AddCors(
 
 builder.Services.AddAutoMapper(typeof(DomainMappingProfile));
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

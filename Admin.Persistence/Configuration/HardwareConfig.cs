@@ -1,6 +1,4 @@
 ﻿using Admin.Domain.Entities;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Admin.Persistence.Configuration;

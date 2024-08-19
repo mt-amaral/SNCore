@@ -1,9 +1,10 @@
 ﻿
 using Admin.Shared.Base;
-namespace Admin.Share.Response;
+namespace Admin.Shared.Response;
 
 public class HardwareResponse : HardwareBase
 {
-    public bool IsOnline  {  get; set; }
+    public int Id { get; set; }
+    public bool IsOnline { get; set; }
 
 }

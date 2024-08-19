@@ -1,14 +1,13 @@
-﻿using Admin.Share.Request;
+﻿using Admin.Shared.Base;
 using FluentValidation;
 
 namespace Admin.Validator.Validations;
 
-public class SnmpValidation : AbstractValidator<SnmpRequest>
+public class SnmpValidation<T> : AbstractValidator<T>
+    where T : SnmpBase
 {
     public SnmpValidation()
     {
-        RuleFor(snmp => snmp.Id)
-            .GreaterThanOrEqualTo(0).WithMessage("Id não pode ser negativo");
 
         RuleFor(snmp => snmp.Version)
             .NotEmpty().WithMessage("Versão não pode ser vazia")

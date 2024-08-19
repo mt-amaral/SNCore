@@ -1,5 +1,5 @@
-﻿using Admin.Share.Response;
-using Admin.Share.Request;
+﻿using Admin.Shared.Base;
+using Admin.Shared.Response;
 
 
 namespace Admin.Application.Interfaces;
@@ -8,7 +8,7 @@ public interface ITelnetService
 {
     Task<TelnetResponse> SelectByPk(int id);
     Task<IEnumerable<TelnetResponse>> SelectAll();
-    Task Create(TelnetRequest telnetRequest);
-    Task Edit(TelnetRequest telnetRequest);
+    Task Create(TelnetBase telnetRequest);
+    Task Edit(int Id, TelnetBase telnetRequest);
     Task Delete(int snmpId);
 }

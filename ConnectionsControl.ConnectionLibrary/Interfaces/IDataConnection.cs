@@ -1,6 +1,4 @@
-﻿using Lextm.SharpSnmpLib;
-
-namespace ConnectionsControl.ConnectionLibrary.Interfaces;
+﻿namespace ConnectionsControl.ConnectionLibrary.Interfaces;
 
 public interface IDataConnection
 {

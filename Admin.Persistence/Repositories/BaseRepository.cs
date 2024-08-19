@@ -1,8 +1,6 @@
 ﻿using Admin.Domain.Interfaces;
-using Admin.Domain.Entities;
 using Admin.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Admin.Persistence.Repositories
 {
@@ -24,8 +22,8 @@ namespace Admin.Persistence.Repositories
 
         public async Task<T> SelectByPk(int? id)
         {
-           var entity = await _dbSet.FindAsync(id);
-           return entity == null ? throw new InvalidOperationException($"Não encontrado {typeof(T).Name} id:{id}") : entity;
+            var entity = await _dbSet.FindAsync(id);
+            return entity == null ? throw new InvalidOperationException($"Não encontrado {typeof(T).Name} id:{id}") : entity;
         }
 
         public async Task<IEnumerable<T>> SelectAll()

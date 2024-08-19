@@ -1,6 +1,6 @@
-﻿using System.Net.Http.Json;
-using Admin.Share.Request;
-using Admin.Share.Response;
+﻿using Admin.Shared.Request;
+using Admin.Shared.Response;
+using System.Net.Http.Json;
 
 namespace Admin.App.Services;
 public class SnmpApi
@@ -27,7 +27,8 @@ public class SnmpApi
         {
             var response = await _httpClient.DeleteAsync($"Snmp/DeleteSnmp/?snmpId={snmpId}");
             response.EnsureSuccessStatusCode();
-        }catch(Exception)
+        }
+        catch (Exception)
         {
             throw new Exception("Erro request");
         }

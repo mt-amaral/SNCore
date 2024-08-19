@@ -1,7 +1,6 @@
 ﻿using Admin.Application.Interfaces;
-using Admin.Domain.Entities;
-using Admin.Share.Request;
-using Admin.Share.Response;
+using Admin.Shared.Request;
+using Admin.Shared.Response;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConnectionControl.Api.Controllers;
@@ -52,11 +51,11 @@ public class TelnetController : Controller
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [Route("EditarTelnet")]
-    public async Task<ActionResult> EditSnmp(TelnetRequest telnetRequest)
+    public async Task<ActionResult> EditSnmp(TelnetRequest telnetRequest, [FromQuery] int Id)
     {
         try
         {
-            await _telnetService.Edit(telnetRequest);
+            await _telnetService.Edit(Id, telnetRequest);
             return NoContent();
         }
         catch (Exception ex)

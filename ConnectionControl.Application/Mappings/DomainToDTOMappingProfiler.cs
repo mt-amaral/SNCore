@@ -1,12 +1,10 @@
-﻿using Admin.Domain.Entities;
-using AutoMapper;
-using ConnectionControl.Application.Dtos.Request;
+﻿using AutoMapper;
 
 namespace ConnectionControl.Application.Mappings;
 
 public class DomainToDTOMappingProfile : Profile
 {
-    public DomainToDTOMappingProfile() 
+    public DomainToDTOMappingProfile()
     {
         ;
     }

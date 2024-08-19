@@ -1,10 +1,11 @@
 ﻿
 using Admin.Application.Interfaces;
-using Admin.Share.Request;
-using Admin.Share.Response;
-using Microsoft.AspNetCore.Mvc;
+using Admin.Shared.Base;
+using Admin.Shared.Request;
+using Admin.Shared.Response;
 using FluentValidation;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Admin.Api.Controllers;
 
@@ -13,12 +14,16 @@ namespace Admin.Api.Controllers;
 public class HardwareController : Controller
 {
     private readonly IValidator<HardwareRequest> _validator;
+    private readonly IValidator<HardwareBase> _validatorBase;
     private readonly IHardwareService _hardwareService;
 
-    public HardwareController(IHardwareService hardwareService, IValidator<HardwareRequest> validator)
+    public HardwareController(IHardwareService hardwareService,
+        IValidator<HardwareRequest> validator,
+        IValidator<HardwareBase> validatorBase)
     {
         _hardwareService = hardwareService;
         _validator = validator;
+        _validatorBase = validatorBase;
     }
 
     [HttpGet]
@@ -58,9 +63,9 @@ public class HardwareController : Controller
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [Route("CriarHardware")]
-    public async Task<ActionResult> CreateHardware(HardwareRequest hardwareNew)
+    public async Task<ActionResult> CreateHardware(HardwareBase hardwareNew)
     {
-        var validationResult = await _validator.ValidateAsync(hardwareNew);
+        var validationResult = await _validatorBase.ValidateAsync(hardwareNew);
         if (!validationResult.IsValid)
         {
             var errors = validationResult.Errors
@@ -84,15 +89,44 @@ public class HardwareController : Controller
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("EditarHardware")]
-    public async Task<ActionResult> EditHardware(HardwareRequest hardwareEdit)
+    public async Task<ActionResult> EditHardware([FromQuery] int Id, HardwareBase hardwareEdit)
     {
-        var validationResult = await _validator.ValidateAsync(hardwareEdit);
+        var validationResult = await _validatorBase.ValidateAsync(hardwareEdit);
         if (!validationResult.IsValid)
-            return BadRequest(validationResult.Errors);
+        {
+            var errors = validationResult.Errors
+                .Select(error => error.ErrorMessage)
+                .ToList();
+            return BadRequest(new { Errors = errors });
+        }
         try
         {
-            await _hardwareService.Edit(hardwareEdit);
+            await _hardwareService.Edit(Id, hardwareEdit);
             return NoContent();
+        }
+        catch (Exception ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
+    [HttpPatch]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Route("EditPartialHardware")]
+    public async Task<ActionResult> EditPartialHardware([FromQuery] int Id, [FromBody] JsonPatchDocument<HardwareBase> hardwareEdit)
+    {
+        try
+        {
+            await _hardwareService.EditPartial(Id, hardwareEdit);
+            return NoContent();
+        }
+        catch (ValidationException ex)
+        {
+            var errors = ex.Errors
+            .Select(error => error.ErrorMessage)
+            .ToList();
+            return BadRequest(new { Errors = errors });
         }
         catch (Exception ex)
         {

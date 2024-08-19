@@ -1,6 +1,4 @@
-﻿using Admin.Domain.Entities;
-using ConnectionControl.Application.Dtos;
-using ConnectionControl.Application.Dtos.Request;
+﻿using ConnectionControl.Application.Dtos.Request;
 using ConnectionControl.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 

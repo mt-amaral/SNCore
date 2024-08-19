@@ -1,6 +1,6 @@
-﻿using System.Net.Http.Json;
-using Admin.Share.Request;
-using Admin.Share.Response;
+﻿using Admin.Shared.Request;
+using Admin.Shared.Response;
+using System.Net.Http.Json;
 
 namespace Admin.App.Services;
 public class HardwareApi
@@ -13,8 +13,8 @@ public class HardwareApi
     }
 
     public async Task<IEnumerable<HardwareResponse>?> GetHardwaresAsync()
-    {  
-            return await _httpClient.GetFromJsonAsync<IEnumerable<HardwareResponse>>("Hardware/ExibirTodos");
+    {
+        return await _httpClient.GetFromJsonAsync<IEnumerable<HardwareResponse>>("Hardware/ExibirTodos");
     }
     public async Task CreateHardwareAsync(HardwareRequest hardware)
     {
@@ -37,7 +37,8 @@ public class HardwareApi
             var response = await _httpClient.DeleteAsync($"Hardware/DeleteHardware/?hardwareId={hardwareId}");
             response.EnsureSuccessStatusCode();
 
-        }catch(Exception)
+        }
+        catch (Exception)
         {
             throw new Exception("Erro request");
         }

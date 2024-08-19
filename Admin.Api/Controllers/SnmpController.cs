@@ -1,9 +1,7 @@
 ﻿using Admin.Application.Interfaces;
-using Admin.Domain.Entities;
-using Admin.Share.Request;
-using Admin.Share.Response;
+using Admin.Shared.Request;
+using Admin.Shared.Response;
 using Microsoft.AspNetCore.Mvc;
-using System.Formats.Asn1;
 
 namespace ConnectionControl.Api.Controllers;
 
@@ -70,11 +68,11 @@ public class SnmpController : Controller
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [Route("EditarSnmp")]
-    public async Task<ActionResult> EditSnmp(SnmpRequest snmpRequest)
+    public async Task<ActionResult> EditSnmp(SnmpRequest snmpRequest, [FromQuery] int Id)
     {
         try
         {
-            await _snmpService.Edit(snmpRequest);
+            await _snmpService.Edit(Id, snmpRequest);
             return NoContent();
         }
         catch (Exception ex)
