@@ -3,7 +3,7 @@ using Admin.Shared.Request;
 using Admin.Shared.Response;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ConnectionControl.Api.Controllers;
+namespace Admin.Api.Controllers.v1;
 
 [ApiController]
 [Route("[controller]")]
