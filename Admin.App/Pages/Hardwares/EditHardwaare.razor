@@ -7,7 +7,8 @@
 
 
 <MudContainer MaxWidth="MaxWidth.False">
-    <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
+    <MudText Typo="Typo.h5" Color="Color.Dark" Class="mb-4">Settings</MudText>
+    <MudTabs Elevation="25" SliderColor="Color.Dark" PanelClass="mt-4" ApplyEffectsToContainer="false">
         <MudTabPanel Text="Hardware">
             <MudGrid>
                 <MudItem xs="12" sm="7">
@@ -22,19 +23,17 @@
                                 }
                             </MudSelect>
                             <MudTextField @bind-Value="hardwareEdit.Ipv4" Label="IPv4" Required="true" />
+                            <MudButton OnClick="HandleValidSubmit" Variant="Variant.Outlined">Salvar</MudButton>
+                            <MudButton OnClick="Cancel" Color="Color.Secondary">Cancel</MudButton>
                         </EditForm>
-                    </MudPaper>
-                    <MudPaper Class="pa-4 mt-4">
-                        <MudButton OnClick="HandleValidSubmit" Variant="Variant.Outlined">Salvar</MudButton>
-                        <MudButton OnClick="Cancel" Color="Color.Secondary">Cancel</MudButton>
                     </MudPaper>
                 </MudItem>
             </MudGrid>
         </MudTabPanel>
         <MudTabPanel Text="SNMP">
             <MudGrid>
-                <MudItem xs="12" sm="3">
-                    <MudPaper Class="pa-1">
+                <MudItem xs="12" sm="7">
+                    <MudPaper Class="pa-4">
                         <EditForm Model="@hardwareSnmp" OnValidSubmit="HandleValidSubmit">
                             <MudTextField @bind-Value="hardwareSnmp.Version" Label="Version" Required="true" />
                             <MudTextField @bind-Value="hardwareSnmp.Community" Label="Community" Required="true" />
