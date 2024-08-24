@@ -1,30 +1,60 @@
 ﻿@namespace Admin.App.Componentes.Hardware
 @inject ISnackbar Snackbar
 
-<MudDialog>
+<MudDialog MaxWidth="MaxWidth.Medium" FullWidth="true" Style="width: 600px;height: 400px;">
     <TitleContent>
         <MudText Typo="Typo.h6">
             <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-3 mb-n1" />
-            Add New Server
+            New Hardware
         </MudText>
     </TitleContent>
     <DialogContent>
-        <MudTextField @bind-Value="hardwareNew.Name" Label="Name" Required="true" />
-        <MudTextField @bind-Value="hardwareNew.Description" Label="Description" Required="true" />
-        <MudTextField @bind-Value="hardwareNew.HardwareModel" Label="Modelo" Required="true" />
-        <MudTextField @bind-Value="hardwareNew.Ipv4" Label="IP Address" Required="true" />
+        <MudForm Model="@hardwareNew">
+            <MudContainer>
+                <MudTabs>
+                    <MudTabPanel Text="Hardware">
+                        <MudTextField @bind-Value="hardwareNew.Name" Label="Name" Required="true" />
+                        <MudTextField @bind-Value="hardwareNew.Description" Label="Description" Required="true" />
+                        <MudSelect T="Model" Label="Model" @bind-Value="hardwareNew.HardwareModel">
+                            @foreach (Model model in Enum.GetValues(typeof(Model)))
+                            {
+                                <MudSelectItem Value="model">@model</MudSelectItem>
+                            }
+                        </MudSelect>
+                        <MudTextField 
+                            @bind-Value="hardwareNew.Ipv4" 
+                            Label="IP Address"
+                            MaxLength="15"
+                            Required="true" />
+
+                    </MudTabPanel>
+                    <MudTabPanel Text="Snmp">
+                        <MudTextField @bind-Value="snmpNew.Community" Label="Community" Required="true" />
+                        <MudTextField @bind-Value="snmpNew.Port" Label="Port" Required="true" />
+                    </MudTabPanel>
+                </MudTabs>
+            </MudContainer>
+        </MudForm>
     </DialogContent>
-    <DialogActions>
+    <DialogActions >
         <MudButton OnClick="Cancel">Cancel</MudButton>
-        <MudButton Color="Color.Primary" OnClick="Add">Add Server</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Add">Add Hardware</MudButton>
     </DialogActions>
 </MudDialog>
 
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-    [Parameter] public HardwareResponse hardwareNew { get; set; } = new HardwareResponse();
-    private HardwareRequest hardwareValid { get; set; } = new HardwareRequest();
-    private HardwareValidation<HardwareResponse> validator = new HardwareValidation<HardwareResponse>();
+    [Parameter] public HardwareResponse hardwareNew { get; set; } = new ();
+    private SnmpRequest snmpNew { get; set; } = new();
+    private HardwareRequest hardwareValid { get; set; } = new ();
+    private HardwareValidation<HardwareResponse> validator = new ();
+
+    protected override void OnInitialized()
+    {
+        snmpNew.Community = "public";
+        snmpNew.Port = 161;
+        hardwareNew.Ipv4 = "0.0.0.0";
+    }
 
     private void Cancel()
     {

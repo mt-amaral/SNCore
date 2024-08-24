@@ -78,17 +78,23 @@
         var result = await dialog.Result;
         if (!result.Cancelled)
         {
-            var newHardware = (HardwareRequest)result.Data;
-            await hardwareApi.CreateHardwareAsync(newHardware);
-            hardwareList = await hardwareApi.GetHardwaresAsync();
+            try
+            {
+                var newHardware = (HardwareRequest)result.Data;
+                await hardwareApi.CreateHardwareAsync(newHardware);
+                Snackbar.Add($"Created {newHardware.Name}", Severity.Success);
+                hardwareList = await hardwareApi.GetHardwaresAsync();
+            }
+            catch (Exception ex)
+            {
+                
+            }
         }
     }
     private void NavigateToEdit(int hardwareId)
     {
         NavigationManager.NavigateTo($"/hardware/edit/{hardwareId}");
     }
-
-    
 
     async Task ShowDeleteConfirmation(HardwareResponse item)
     {
@@ -106,7 +112,6 @@
 
         }
     }
-
     async Task DeleteItem(HardwareResponse item)
     {
         try
@@ -117,7 +122,7 @@
         }
         catch (Exception ex)
         {
-            Snackbar.Add($"Esse fela{item.Id}, {item.HardwareModel}", Severity.Info);
+            Snackbar.Add($"Erro {item.Id}, {item.HardwareModel}", Severity.Info);
             Snackbar.Add($"{ex}", Severity.Error);
         }
     }
