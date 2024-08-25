@@ -97,14 +97,12 @@ namespace Admin.Persistence.Migrations
                     b.Property<int>("Port")
                         .HasColumnType("int");
 
+                    b.Property<short>("SnmpVersion")
+                        .HasColumnType("smallint");
+
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2")
                         .HasColumnOrder(2);
-
-                    b.Property<string>("Version")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
 
                     b.HasKey("Id");
 

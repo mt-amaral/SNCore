@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Admin.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class CreatedMigration : Migration
+    public partial class AddMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -40,7 +40,7 @@ namespace Admin.Persistence.Migrations
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Active = table.Column<bool>(type: "bit", nullable: false),
-                    Version = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    SnmpVersion = table.Column<short>(type: "smallint", nullable: false),
                     Community = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Port = table.Column<int>(type: "int", nullable: false),
                     HardwareId = table.Column<int>(type: "int", nullable: false)

@@ -1,4 +1,5 @@
-﻿using Admin.Shared.Request;
+﻿using Admin.Shared.Base;
+using Admin.Shared.Request;
 using Admin.Shared.Response;
 
 namespace Admin.App.Mappers;
@@ -15,6 +16,22 @@ public class Mapper
             Description = hardwareEdit.Description,
             Model = hardwareEdit.Model,
             Ipv4 = hardwareEdit.Ipv4
+        };
+    }
+    public static HardwareBase MapperToJson(HardwareBase hardwareEdit,SnmpBase snmpEdit)
+    {
+        return new HardwareBase()
+        {
+            Name = hardwareEdit.Name,
+            Description = hardwareEdit.Description,
+            Model = hardwareEdit.Model,
+            Ipv4 = hardwareEdit.Ipv4,
+            Snmp = new SnmpBase()
+            {
+                SnmpVersion = snmpEdit.SnmpVersion,
+                Community = snmpEdit.Community,
+                Port = snmpEdit.Port,
+            }
         };
     }
 }

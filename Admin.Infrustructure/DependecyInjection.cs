@@ -37,6 +37,9 @@ public static class DependecyInjection
         services.AddScoped<IValidator<HardwareRequest>, HardwareValidation<HardwareRequest>>();
         services.AddScoped<IValidator<HardwareBase>, HardwareValidation<HardwareBase>>();
 
+        services.AddScoped<IValidator<SnmpRequest>, SnmpValidation<SnmpRequest>>();
+        services.AddScoped<IValidator<SnmpBase>, SnmpValidation<SnmpBase>>();
+
         return services;
     }
 }

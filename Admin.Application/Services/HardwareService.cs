@@ -12,13 +12,21 @@ namespace Admin.Application.Services;
 public class HardwareService : IHardwareService
 {
     private readonly IValidator<HardwareBase> _validatorBase;
+    private readonly IValidator<SnmpBase> _validatorSnmp;
     private readonly IHardwareRepository _repository;
+    private readonly ISnmpRepository _snmpRepository;
     private readonly IMapper _mapper;
-    public HardwareService(IHardwareRepository repository, IMapper mapper, IValidator<HardwareBase> validatorBase)
+    public HardwareService(IHardwareRepository repository, 
+        IMapper mapper, 
+        IValidator<HardwareBase> validatorBase, 
+        IValidator<SnmpBase> validatorSnmp, 
+        ISnmpRepository snmpRepository)
     {
         _validatorBase = validatorBase;
         _repository = repository;
         _mapper = mapper;
+        _validatorSnmp = validatorSnmp;
+        _snmpRepository = snmpRepository;
     }
 
     public virtual async Task<IEnumerable<HardwareResponse>> SelectAll()
@@ -37,6 +45,12 @@ public class HardwareService : IHardwareService
     {
         var entity = _mapper.Map<Hardware>(request);
         await _repository.Create(entity);
+        if (request.Snmp != null) 
+        {
+            var snmpEntity = _mapper.Map<Snmp>(request.Snmp);
+            snmpEntity.SetHardwareId(entity.Id);
+            await _snmpRepository.Create(snmpEntity);
+        }
     }
 
     public virtual async Task Edit(int Id, HardwareBase request)

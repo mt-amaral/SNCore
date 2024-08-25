@@ -13,13 +13,16 @@ namespace Admin.Api.Controllers.v1;
 public class HardwareController : BaseController<HardwareBase, HardwareRequest>
 {
     private readonly IHardwareService _hardwareService;
+    private readonly IValidator<SnmpBase> _snmpValidator;
 
     public HardwareController(IHardwareService hardwareService,
                               IValidator<HardwareRequest> hardwareRequestValidator,
-                              IValidator<HardwareBase> hardwareBaseValidator)
+                              IValidator<HardwareBase> hardwareBaseValidator,
+                              IValidator<SnmpBase> snmpValidator)
         : base(hardwareRequestValidator, hardwareBaseValidator)
     {
         _hardwareService = hardwareService;
+        _snmpValidator = snmpValidator;
     }
 
     [HttpGet]
@@ -64,6 +67,12 @@ public class HardwareController : BaseController<HardwareBase, HardwareRequest>
         try
         {
             ValidationBase(hardwareNew);
+            if(hardwareNew.Snmp != null)
+            {
+                var validationResult = _snmpValidator.Validate(hardwareNew.Snmp);
+                if (!validationResult.IsValid)
+                    throw new ValidationException(validationResult.Errors);
+            }
             await _hardwareService.Create(hardwareNew);
             return Created();
         }
