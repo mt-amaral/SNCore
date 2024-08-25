@@ -27,7 +27,7 @@
             </TemplateColumn>
             <PropertyColumn Property="x => x.Name" Title="Name" />
             <PropertyColumn Property="x => x.Description" Title="Description" />
-            <PropertyColumn Property="x => x.HardwareModel" Title="Model" />
+            <PropertyColumn Property="x => x.Model" Title="Model" />
             <PropertyColumn Property="x => x.Ipv4" Title="IPv4" />
             <TemplateColumn CellClass="d-flex justify-end" ShowColumnOptions="false" Sortable="false">
                 <CellTemplate>
@@ -122,7 +122,7 @@
         }
         catch (Exception ex)
         {
-            Snackbar.Add($"Erro {item.Id}, {item.HardwareModel}", Severity.Info);
+            Snackbar.Add($"Erro {item.Id}, {item.Model}", Severity.Info);
             Snackbar.Add($"{ex}", Severity.Error);
         }
     }

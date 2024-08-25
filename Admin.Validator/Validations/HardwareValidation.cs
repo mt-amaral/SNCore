@@ -23,7 +23,7 @@ public class HardwareValidation<T> : AbstractValidator<T>
             .NotEmpty().WithMessage("Descrição não pode ser vazia")
             .MaximumLength(50).WithMessage("Descrição muito longa");
 
-        RuleFor(entity => entity.HardwareModel)
+        RuleFor(entity => entity.Model)
             .IsInEnum().WithMessage("Modelo inválido");
 
         RuleFor(entity => entity.Ipv4)

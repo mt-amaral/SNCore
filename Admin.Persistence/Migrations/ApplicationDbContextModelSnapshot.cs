@@ -44,9 +44,6 @@ namespace Admin.Persistence.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<short>("HardwareModel")
-                        .HasColumnType("smallint");
-
                     b.Property<string>("Ipv4")
                         .IsRequired()
                         .HasMaxLength(15)
@@ -54,6 +51,9 @@ namespace Admin.Persistence.Migrations
 
                     b.Property<bool>("IsOnline")
                         .HasColumnType("bit");
+
+                    b.Property<short>("Model")
+                        .HasColumnType("smallint");
 
                     b.Property<string>("Name")
                         .IsRequired()

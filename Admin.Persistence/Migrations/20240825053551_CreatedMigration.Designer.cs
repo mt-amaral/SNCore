@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Admin.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240707212907_HardwareBaseConfiguration")]
-    partial class HardwareBaseConfiguration
+    [Migration("20240825053551_CreatedMigration")]
+    partial class CreatedMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,10 +55,8 @@ namespace Admin.Persistence.Migrations
                     b.Property<bool>("IsOnline")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Model")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<short>("Model")
+                        .HasColumnType("smallint");
 
                     b.Property<string>("Name")
                         .IsRequired()

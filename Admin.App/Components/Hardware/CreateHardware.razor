@@ -15,8 +15,8 @@
                     <MudTabPanel Text="Hardware">
                         <MudTextField @bind-Value="hardwareNew.Name" Label="Name" Required="true" />
                         <MudTextField @bind-Value="hardwareNew.Description" Label="Description" Required="true" />
-                        <MudSelect T="Model" Label="Model" @bind-Value="hardwareNew.HardwareModel">
-                            @foreach (Model model in Enum.GetValues(typeof(Model)))
+                        <MudSelect T="HardwareModel" Label="Model" @bind-Value="hardwareNew.Model">
+                            @foreach (HardwareModel model in Enum.GetValues(typeof(HardwareModel)))
                             {
                                 <MudSelectItem Value="model">@model</MudSelectItem>
                             }

@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace Admin.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class HardwareBaseConfiguration : Migration
+    public partial class CreatedMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -22,7 +23,7 @@ namespace Admin.Persistence.Migrations
                     Description = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     IsOnline = table.Column<bool>(type: "bit", nullable: false),
-                    Model = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Model = table.Column<short>(type: "smallint", nullable: false),
                     Ipv4 = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false)
                 },
                 constraints: table =>

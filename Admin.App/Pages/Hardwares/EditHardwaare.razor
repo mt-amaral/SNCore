@@ -16,8 +16,8 @@
                         <EditForm Model="@hardwareEdit" OnValidSubmit="HandleValidSubmit">
                             <MudTextField @bind-Value="hardwareEdit.Name" Label="Name" Required="true" />
                             <MudTextField @bind-Value="hardwareEdit.Description" Label="Description" Required="true" />
-                            <MudSelect T="Model" Label="Model" @bind-Value="hardwareEdit.HardwareModel">
-                                @foreach (Model model in Enum.GetValues(typeof(Model)))
+                            <MudSelect T="HardwareModel" Label="Model" @bind-Value="hardwareEdit.Model">
+                                @foreach (HardwareModel model in Enum.GetValues(typeof(HardwareModel)))
                                 {
                                     <MudSelectItem Value="model">@model</MudSelectItem>
                                 }
