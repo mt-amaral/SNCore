@@ -9,9 +9,8 @@ public class SnmpValidation<T> : AbstractValidator<T>
     public SnmpValidation()
     {
 
-        RuleFor(snmp => snmp.Version)
-            .NotEmpty().WithMessage("Versão não pode ser vazia")
-            .MaximumLength(10).WithMessage("Versão muito longa");
+        RuleFor(snmp => snmp.SnmpVersion)
+            .IsInEnum().WithMessage("SNMP Inválido");
 
         RuleFor(snmp => snmp.Community)
             .NotEmpty().WithMessage("Community não pode ser vazia")

@@ -13,32 +13,54 @@
             <MudContainer>
                 <MudTabs>
                     <MudTabPanel Text="Hardware">
-                        <MudTextField @bind-Value="hardwareNew.Name" Label="Name" Required="true" />
-                        <MudTextField @bind-Value="hardwareNew.Description" Label="Description" Required="true" />
-                        <MudSelect T="HardwareModel" Label="Model" @bind-Value="hardwareNew.Model">
-                            @foreach (HardwareModel model in Enum.GetValues(typeof(HardwareModel)))
-                            {
-                                <MudSelectItem Value="model">@model</MudSelectItem>
-                            }
-                        </MudSelect>
+                        
                         <MudTextField 
-                            @bind-Value="hardwareNew.Ipv4" 
-                            Label="IP Address"
-                            MaxLength="15"
-                            Required="true" />
-
+                            @bind-Value="hardwareNew.Name" Label="Name" Required="true" Margin="Margin.Dense" />
+                        <MudTextField @bind-Value="hardwareNew.Description" Label="Description" Required="true" Margin="Margin.Dense" />
+                        <MudGrid>
+                        <MudItem xs="6">
+                                <MudSelect T="HardwareModel" Label="Model" @bind-Value="hardwareNew.Model" Margin="Margin.Dense" Dense="true">
+                                @foreach (HardwareModel model in Enum.GetValues(typeof(HardwareModel)))
+                                {
+                                    <MudSelectItem Value="model">@model</MudSelectItem>
+                                }
+                            </MudSelect>
+                        </MudItem>
+                        <MudItem xs="6">
+                            <MudTextField @bind-Value="hardwareNew.Ipv4" Label="IP Address" MaxLength="15" Required="true" Margin="Margin.Dense" />
+                        </MudItem>
+                        <MudItem xs="2">
+                            <MudCheckBox @bind-Value="boleanSnmp">SNMP</MudCheckBox>
+                        </MudItem>
+                        </MudGrid>
                     </MudTabPanel>
-                    <MudTabPanel Text="Snmp">
-                        <MudTextField @bind-Value="snmpNew.Community" Label="Community" Required="true" />
-                        <MudTextField @bind-Value="snmpNew.Port" Label="Port" Required="true" />
+                    <MudTabPanel Text="Snmp" Disabled="@(boleanSnmp ? false : true)">
+                        <MudGrid>
+                            <MudItem xs="6">
+                                <MudTextField @bind-Value="snmpNew.Community" Label="Community" Required="true" Margin="Margin.Dense" />
+                            </MudItem>
+                            <MudItem xs="3">
+                                <MudSelect T="SNMPVersion" Label="Model" @bind-Value="snmpNew.SnmpVersion"  Margin="Margin.Dense" Dense="true" >
+                                    @foreach (SNMPVersion model in Enum.GetValues(typeof(SNMPVersion)))
+                                    {
+                                        <MudSelectItem Value="model">@model</MudSelectItem>
+                                    }
+                                </MudSelect>
+                            </MudItem>
+                            <MudItem xs="3">
+                                <MudTextField @bind-Value="snmpNew.Port" Label="Port" Required="true" Margin="Margin.Dense" />
+                            </MudItem>
+                        </MudGrid>
                     </MudTabPanel>
                 </MudTabs>
             </MudContainer>
         </MudForm>
     </DialogContent>
     <DialogActions >
+        <div style="display: flex; justify-content: flex-end;">
         <MudButton OnClick="Cancel">Cancel</MudButton>
         <MudButton Color="Color.Primary" OnClick="Add">Add Hardware</MudButton>
+        </div>
     </DialogActions>
 </MudDialog>
 
@@ -48,6 +70,7 @@
     private SnmpRequest snmpNew { get; set; } = new();
     private HardwareRequest hardwareValid { get; set; } = new ();
     private HardwareValidation<HardwareResponse> validator = new ();
+    public bool boleanSnmp { get; set; }
 
     protected override void OnInitialized()
     {

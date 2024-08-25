@@ -1,5 +1,4 @@
 ﻿
-
 namespace Admin.Domain.Entities;
 public enum HardwareModel : short
 {

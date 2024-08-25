@@ -35,7 +35,12 @@
                 <MudItem xs="12" sm="7">
                     <MudPaper Class="pa-4">
                         <EditForm Model="@hardwareSnmp" OnValidSubmit="HandleValidSubmit">
-                            <MudTextField @bind-Value="hardwareSnmp.Version" Label="Version" Required="true" />
+                            <MudSelect T="SNMPVersion" Label="Model" @bind-Value="hardwareSnmp.SnmpVersion">
+                                @foreach (SNMPVersion model in Enum.GetValues(typeof(SNMPVersion)))
+                                {
+                                    <MudSelectItem Value="model">@model</MudSelectItem>
+                                }
+                            </MudSelect>
                             <MudTextField @bind-Value="hardwareSnmp.Community" Label="Community" Required="true" />
                             <MudTextField @bind-Value="hardwareSnmp.Port" Label="Port" Required="true" />
                         </EditForm>
