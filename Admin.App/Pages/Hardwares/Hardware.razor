@@ -31,7 +31,7 @@
             <PropertyColumn Property="x => x.Ipv4" Title="IPv4" />
             <TemplateColumn CellClass="d-flex justify-end" ShowColumnOptions="false" Sortable="false">
                 <CellTemplate>
-                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@(() => NavigateToEdit(context.Item.Id))" />
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@(() => ToEdit(context.Item))" />
                     <MudIconButton Color="Color.Error" Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="() => ShowDeleteConfirmation(context.Item)" />
                 </CellTemplate>
             </TemplateColumn>
@@ -91,10 +91,24 @@
             }
         }
     }
-    private void NavigateToEdit(int hardwareId)
+    private async Task ToEdit(HardwareResponse hardware)
     {
-        NavigationManager.NavigateTo($"/hardware/edit/{hardwareId}");
+        var parameters = new DialogParameters
+    {
+        { "hardwareEdit", hardware }
+    };
+
+        var dialog = DialogService.Show<EditHardware>("Edit Hardware", parameters);
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+            Snackbar.Add($"Hardware '{hardware.Name}' editado com sucesso!", Severity.Success);
+            // Handle the updated hardware object from the dialog result if necessary
+            var updatedHardware = (HardwareResponse)result.Data;
+        }
     }
+
 
     async Task ShowDeleteConfirmation(HardwareResponse item)
     {

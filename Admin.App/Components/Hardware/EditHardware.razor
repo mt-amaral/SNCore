@@ -1,0 +1,96 @@
+﻿@namespace Admin.App.Componentes.Hardware
+@inject SnmpApi snmpApi
+@inject ISnackbar Snackbar
+
+<MudDialog MaxWidth="MaxWidth.Medium" FullWidth="true" Style="width: 600px;height: 400px;">
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-3 mb-n1" />
+            Edit Hardware
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudForm Model="@hardwareEdit">
+            <MudContainer>
+                <MudTabs>
+                    <MudTabPanel Text="Hardware">
+                        <MudTextField @bind-Value="hardwareEdit.Name" Label="Name" Required="true" Margin="Margin.Dense" />
+                        <MudTextField @bind-Value="hardwareEdit.Description" Label="Description" Required="true" Margin="Margin.Dense" />
+                        <MudGrid>
+                            <MudItem xs="6">
+                                <MudSelect T="HardwareModel" Label="Model" @bind-Value="hardwareEdit.Model" Margin="Margin.Dense" Dense="true">
+                                    @foreach (HardwareModel model in Enum.GetValues(typeof(HardwareModel)))
+                                    {
+                                        <MudSelectItem Value="model">@model</MudSelectItem>
+                                    }
+                                </MudSelect>
+                            </MudItem>
+                            <MudItem xs="6">
+                                <MudTextField @bind-Value="hardwareEdit.Ipv4" Label="IP Address" MaxLength="15" Required="true" Margin="Margin.Dense" />
+                            </MudItem>
+                            <MudItem xs="2">
+                                <MudCheckBox @bind-Value="boleanSnmp">SNMP</MudCheckBox>
+                            </MudItem>
+                        </MudGrid>
+                    </MudTabPanel>
+                    <MudTabPanel Text="Snmp" Disabled="@(boleanSnmp ? false : true)">
+                        <MudGrid>
+                            <MudItem xs="6">
+                                <MudTextField @bind-Value="snmpEdit.Community" Label="Community" Required="true" Margin="Margin.Dense" />
+                            </MudItem>
+                            <MudItem xs="3">
+                                <MudSelect T="SNMPVersion" Label="SNMP Version" @bind-Value="snmpEdit.SnmpVersion" Margin="Margin.Dense" Dense="true">
+                                    @foreach (SNMPVersion model in Enum.GetValues(typeof(SNMPVersion)))
+                                    {
+                                        <MudSelectItem Value="model">@model</MudSelectItem>
+                                    }
+                                </MudSelect>
+                            </MudItem>
+                            <MudItem xs="3">
+                                <MudTextField @bind-Value="snmpEdit.Port" Label="Port" Required="true" Margin="Margin.Dense" />
+                            </MudItem>
+                        </MudGrid>
+                    </MudTabPanel>
+                </MudTabs>
+            </MudContainer>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <div style="display: flex; justify-content: flex-end;">
+            <MudButton OnClick="Cancel">Cancel</MudButton>
+            <MudButton Color="Color.Primary" OnClick="Commit">Edit Hardware</MudButton>
+        </div>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [Parameter] public HardwareResponse hardwareEdit { get; set; }
+    private SnmpResponse snmpEdit { get; set; }
+
+    private HardwareValidation<HardwareBase> validatorHardware = new();
+    private SnmpValidation<SnmpBase> validatorSNMP = new();
+
+    public bool boleanSnmp { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        snmpEdit = await snmpApi.SelectByHardware(hardwareEdit.Id);
+        ExistSnmp(snmpEdit);
+    }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+    private void ExistSnmp(SnmpResponse snmpEdit)
+    {
+        boleanSnmp = snmpEdit != null;
+    }
+
+    private void Commit()
+    {
+        MudDialog.Close(DialogResult.Ok(hardwareEdit));
+    }
+}
