@@ -12,5 +12,4 @@ public class HardwareBase
     public string Description { get; set; }
     public HardwareModel Model { get; set; }
     public string Ipv4 { get; set; }
-    public SnmpBase? Snmp { get; set; }
 }

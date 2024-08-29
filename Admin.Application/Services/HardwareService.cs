@@ -45,12 +45,12 @@ public class HardwareService : IHardwareService
     {
         var entity = _mapper.Map<Hardware>(request);
         await _repository.Create(entity);
-        if (request.Snmp != null) 
+/*        if (request.Snmp != null) 
         {
             var snmpEntity = _mapper.Map<Snmp>(request.Snmp);
             snmpEntity.SetHardwareId(entity.Id);
             await _snmpRepository.Create(snmpEntity);
-        }
+        }*/
     }
 
     public virtual async Task Edit(int Id, HardwareBase request)
