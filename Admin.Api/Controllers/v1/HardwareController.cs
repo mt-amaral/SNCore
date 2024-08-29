@@ -1,5 +1,6 @@
 ﻿using Admin.Application.Interfaces;
 using Admin.Shared.Base;
+using Admin.Shared.Full;
 using Admin.Shared.Request;
 using Admin.Shared.Response;
 using FluentValidation;
@@ -65,6 +66,30 @@ public class HardwareController : BaseController<HardwareBase, HardwareRequest>
         {
             ValidationBase(hardwareNew);
             await _hardwareService.Create(hardwareNew);
+            return Created();
+        }
+        catch (ValidationException ex)
+        {
+            var errors = ex.Errors
+            .Select(error => error.ErrorMessage)
+            .ToList();
+            return BadRequest(new { Errors = errors });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [Route("CriarHardwareFull")]
+    public async Task<ActionResult> CriarHardwareFull(HardwareFull hardwareNew)
+    {
+        try
+        {
+            ValidationBase(hardwareNew);
+            await _hardwareService.CreateFull(hardwareNew);
             return Created();
         }
         catch (ValidationException ex)

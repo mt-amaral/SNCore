@@ -9,4 +9,7 @@ internal class ValidationException : Exception
     {
         Errors = errors;
     }
+    public ValidationException(string message) : base(message)
+    {
+    }
 }

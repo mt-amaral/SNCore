@@ -10,4 +10,8 @@ public class Telnet : BaseEntity
     public int HardwareId { get; set; }
     public Hardware Hardware { get; set; }
 
+    public void SetHardwareId(int hardwareId)
+    {
+        HardwareId = hardwareId;
+    }
 };

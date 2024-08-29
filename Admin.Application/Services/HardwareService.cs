@@ -2,6 +2,7 @@
 using Admin.Domain.Entities;
 using Admin.Domain.Interfaces;
 using Admin.Shared.Base;
+using Admin.Shared.Full;
 using Admin.Shared.Response;
 using AutoMapper;
 using FluentValidation;
@@ -15,18 +16,21 @@ public class HardwareService : IHardwareService
     private readonly IValidator<SnmpBase> _validatorSnmp;
     private readonly IHardwareRepository _repository;
     private readonly ISnmpRepository _snmpRepository;
+    private readonly ITelnetRepository _telnetRepository;
     private readonly IMapper _mapper;
     public HardwareService(IHardwareRepository repository, 
         IMapper mapper, 
         IValidator<HardwareBase> validatorBase, 
         IValidator<SnmpBase> validatorSnmp, 
-        ISnmpRepository snmpRepository)
+        ISnmpRepository snmpRepository,
+        ITelnetRepository telnetRepository)
     {
         _validatorBase = validatorBase;
         _repository = repository;
         _mapper = mapper;
         _validatorSnmp = validatorSnmp;
         _snmpRepository = snmpRepository;
+        _telnetRepository = telnetRepository;
     }
 
     public virtual async Task<IEnumerable<HardwareResponse>> SelectAll()
@@ -44,19 +48,34 @@ public class HardwareService : IHardwareService
     public virtual async Task Create(HardwareBase request)
     {
         var entity = _mapper.Map<Hardware>(request);
+        entity.NewEntity();
         await _repository.Create(entity);
-/*        if (request.Snmp != null) 
+    }
+    public virtual async Task CreateFull(HardwareFull request)
+    {
+        var entity = _mapper.Map<Hardware>(request);
+        await _repository.Create(entity);
+       if (request.Snmp != null) 
         {
             var snmpEntity = _mapper.Map<Snmp>(request.Snmp);
+            snmpEntity.NewEntity();
             snmpEntity.SetHardwareId(entity.Id);
             await _snmpRepository.Create(snmpEntity);
-        }*/
+        }
+        if (request.Telnet != null)
+        {
+            var telnetEntity = _mapper.Map<Telnet>(request.Snmp);
+            telnetEntity.NewEntity();
+            telnetEntity.SetHardwareId(entity.Id);
+            await _telnetRepository.Create(telnetEntity);
+        }
     }
 
     public virtual async Task Edit(int Id, HardwareBase request)
     {
-        var entityDb = await _repository.SelectByPk(Id);
-        var entity = _mapper.Map<Hardware>(request);
+        var entity = await _repository.SelectByPk(Id);
+        _mapper.Map(request, entity);
+        entity.UpTime();
         await _repository.Edit(entity);
     }
 
