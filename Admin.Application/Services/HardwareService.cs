@@ -3,6 +3,7 @@ using Admin.Domain.Entities;
 using Admin.Domain.Interfaces;
 using Admin.Shared.Base;
 using Admin.Shared.Full;
+using Admin.Shared.Request;
 using Admin.Shared.Response;
 using AutoMapper;
 using FluentValidation;
@@ -54,6 +55,7 @@ public class HardwareService : IHardwareService
     public virtual async Task CreateFull(HardwareFull request)
     {
         var entity = _mapper.Map<Hardware>(request);
+        entity.NewEntity();
         await _repository.Create(entity);
        if (request.Snmp != null) 
         {
@@ -64,7 +66,7 @@ public class HardwareService : IHardwareService
         }
         if (request.Telnet != null)
         {
-            var telnetEntity = _mapper.Map<Telnet>(request.Snmp);
+            var telnetEntity = _mapper.Map<Telnet>(request.Telnet);
             telnetEntity.NewEntity();
             telnetEntity.SetHardwareId(entity.Id);
             await _telnetRepository.Create(telnetEntity);
@@ -78,8 +80,31 @@ public class HardwareService : IHardwareService
         entity.UpTime();
         await _repository.Edit(entity);
     }
+    public virtual async Task EditFull(int Id, HardwareFull request)
+    {
+        var entity = await _repository.SelectByPk(Id);
+        _mapper.Map(request, entity);
+        entity.UpTime();
+        await _repository.Edit(entity);
+        if (request.Snmp != null)
+        {
+            var snmpDB = await _snmpRepository.SelectByPk(entity.Id);
+            _mapper.Map(request.Snmp, snmpDB);
+            snmpDB.UpTime();
+            snmpDB.SetHardwareId(entity.Id);
+            await _snmpRepository.Edit(snmpDB);
+        }
+        if (request.Telnet != null)
+        {
+            var telnetDB = await _telnetRepository.SelectByPk(entity.Id);
+            _mapper.Map(request.Telnet, telnetDB);
+            telnetDB.UpTime();
+            telnetDB.SetHardwareId(entity.Id);
+            await _telnetRepository.Create(telnetDB);
+        }
+    }
 
-    public virtual async Task EditPartial(int Id, JsonPatchDocument<HardwareBase> request)
+    public virtual async Task EditPartial(int Id, JsonPatchDocument<HardwareFull> request)
     {
         var entityDb = await _repository.SelectByPk(Id);
         var entityForUpdate = _mapper.Map<HardwareBase>(entityDb);

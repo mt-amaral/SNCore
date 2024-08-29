@@ -40,6 +40,9 @@ public static class DependecyInjection
         services.AddScoped<IValidator<SnmpRequest>, SnmpValidation<SnmpRequest>>();
         services.AddScoped<IValidator<SnmpBase>, SnmpValidation<SnmpBase>>();
 
+        services.AddScoped<IValidator<TelnetRequest>, TelnetValidation<TelnetRequest>>();
+        services.AddScoped<IValidator<TelnetBase>, TelnetValidation<TelnetBase>>();
+
         return services;
     }
 }

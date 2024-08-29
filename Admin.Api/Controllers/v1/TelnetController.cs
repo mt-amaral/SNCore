@@ -1,6 +1,8 @@
 ﻿using Admin.Application.Interfaces;
+using Admin.Shared.Base;
 using Admin.Shared.Request;
 using Admin.Shared.Response;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -8,11 +10,14 @@ namespace Admin.Api.Controllers.v1;
 
 [ApiController]
 [Route("[controller]")]
-public class TelnetController : Controller
+public class TelnetController : BaseController<TelnetBase, TelnetResponse>
 {
     private readonly ITelnetService _telnetService;
 
-    public TelnetController(ITelnetService telnetService)
+    public TelnetController(ITelnetService telnetService,
+                            IValidator<TelnetBase> telnetBaseValidator,
+                            IValidator<TelnetResponse> TelnetResponseValidator)
+        : base(TelnetResponseValidator, telnetBaseValidator)
     {
         _telnetService = telnetService;
     }
@@ -20,7 +25,7 @@ public class TelnetController : Controller
     [ProducesResponseType(typeof(TelnetResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("ExibirTelnetPorId")]
-    public async Task<ActionResult> SelectSnmp(int id)
+    public async Task<ActionResult> SelectSnmp([FromQuery] int id)
     {
         try
         {
@@ -52,11 +57,12 @@ public class TelnetController : Controller
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [Route("EditarTelnet")]
-    public async Task<ActionResult> EditSnmp(TelnetRequest telnetRequest, [FromQuery] int Id)
+    public async Task<ActionResult> EditSnmp([FromQuery] int id, TelnetRequest telnetRequest)
     {
         try
         {
-            await _telnetService.Edit(Id, telnetRequest);
+            ValidateInt(id);
+            await _telnetService.Edit(id, telnetRequest);
             return NoContent();
         }
         catch (Exception ex)

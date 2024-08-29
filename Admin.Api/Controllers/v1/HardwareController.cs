@@ -5,7 +5,7 @@ using Admin.Shared.Request;
 using Admin.Shared.Response;
 using FluentValidation;
 using Microsoft.AspNetCore.JsonPatch;
-using Microsoft.AspNetCore.Mvc; 
+using Microsoft.AspNetCore.Mvc;
 
 namespace Admin.Api.Controllers.v1;
 
@@ -14,13 +14,18 @@ namespace Admin.Api.Controllers.v1;
 public class HardwareController : BaseController<HardwareBase, HardwareRequest>
 {
     private readonly IHardwareService _hardwareService;
-
+    private readonly IValidator<SnmpBase> _snmpValidator;
+    private readonly IValidator<TelnetBase> _telnetValidator;
     public HardwareController(IHardwareService hardwareService,
                               IValidator<HardwareRequest> hardwareRequestValidator,
-                              IValidator<HardwareBase> hardwareBaseValidator)
+                              IValidator<HardwareBase> hardwareBaseValidator,
+                              IValidator<SnmpBase> snmpValidator,
+                              IValidator<TelnetBase> telnetValidator)
         : base(hardwareRequestValidator, hardwareBaseValidator)
     {
         _hardwareService = hardwareService;
+        _snmpValidator = snmpValidator;
+        _telnetValidator = telnetValidator;
     }
 
     [HttpGet]
@@ -47,9 +52,17 @@ public class HardwareController : BaseController<HardwareBase, HardwareRequest>
     {
         try
         {
+            ValidateInt(id);
             var hardware = await _hardwareService.SelectByPk(id);
             return Ok(hardware);
 
+        }
+        catch (ValidationException ex)
+        {
+            var errors = ex.Errors
+            .Select(error => error.ErrorMessage)
+            .ToList();
+            return BadRequest(new { Errors = errors });
         }
         catch (Exception ex)
         {
@@ -89,6 +102,12 @@ public class HardwareController : BaseController<HardwareBase, HardwareRequest>
         try
         {
             ValidationBase(hardwareNew);
+            if (hardwareNew.Snmp != null)
+                ValidateEntity(hardwareNew.Snmp, _snmpValidator);
+
+            if (hardwareNew.Telnet != null)
+                ValidateEntity(hardwareNew.Telnet, _telnetValidator);
+
             await _hardwareService.CreateFull(hardwareNew);
             return Created();
         }
@@ -108,13 +127,45 @@ public class HardwareController : BaseController<HardwareBase, HardwareRequest>
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [Route("EditarHardware")]
-    public async Task<ActionResult> EditHardware([FromQuery] int Id, [FromBody] HardwareBase hardwareEdit)
+    [Route("EditHardwareFull")]
+    public async Task<ActionResult> EditHardwareFull([FromQuery] int id, [FromBody] HardwareFull hardwareEdit)
     {
         try
         {
+            ValidateInt(id);
             ValidationBase(hardwareEdit);
-            await _hardwareService.Edit(Id, hardwareEdit);
+            if (hardwareEdit.Snmp != null)
+                ValidateEntity(hardwareEdit.Snmp, _snmpValidator);
+            if (hardwareEdit.Telnet != null)
+                ValidateEntity(hardwareEdit.Telnet, _telnetValidator);
+
+            await _hardwareService.EditFull(id, hardwareEdit);
+            return NoContent();
+        }
+        catch (ValidationException ex)
+        {
+            var errors = ex.Errors
+            .Select(error => error.ErrorMessage)
+            .ToList();
+            return BadRequest(new { Errors = errors });
+        }
+        catch (Exception ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
+    [HttpPut]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Route("EditarHardware")]
+    public async Task<ActionResult> EditHardware([FromQuery] int id, [FromBody] HardwareBase hardwareEdit)
+    {
+        try
+        {
+            ValidateInt(id);
+            ValidationBase(hardwareEdit);
+            await _hardwareService.Edit(id, hardwareEdit);
             return NoContent();
         }
         catch (ValidationException ex)
@@ -134,12 +185,13 @@ public class HardwareController : BaseController<HardwareBase, HardwareRequest>
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("EditPartialHardware")]
-    public async Task<ActionResult> EditPartialHardware([FromQuery] int Id, [FromBody] JsonPatchDocument<HardwareBase> hardwareEdit)
+    public async Task<ActionResult> EditPartialHardware([FromQuery] int id, [FromBody] JsonPatchDocument<HardwareBase> hardwareEdit)
     {
         try
         {
             // Validation admin.Application
-            await _hardwareService.EditPartial(Id, hardwareEdit);
+            ValidateInt(id);
+            await _hardwareService.EditPartial(id, hardwareEdit);
             return NoContent();
         }
         catch (ValidationException ex)
@@ -162,8 +214,16 @@ public class HardwareController : BaseController<HardwareBase, HardwareRequest>
     {
         try
         {
+            ValidateInt(hardwareId);
             await _hardwareService.Delete(hardwareId);
             return Ok();
+        }
+        catch (ValidationException ex)
+        {
+            var errors = ex.Errors
+            .Select(error => error.ErrorMessage)
+            .ToList();
+            return BadRequest(new { Errors = errors });
         }
         catch (Exception ex)
         {

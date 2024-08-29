@@ -13,6 +13,7 @@ public interface IHardwareService
     Task Create(HardwareBase hardwareCreate);
     Task CreateFull(HardwareFull hardwareCreate);
     Task Edit(int Id, HardwareBase hardwareEdit);
+    Task EditFull(int Id, HardwareFull hardwareEdit);
     Task EditPartial(int Id, JsonPatchDocument<HardwareBase> request);
     Task Delete(int hardwareId);
 }
