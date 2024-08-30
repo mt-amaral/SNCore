@@ -104,7 +104,7 @@ public class HardwareService : IHardwareService
         }
     }
 
-    public virtual async Task EditPartial(int Id, JsonPatchDocument<HardwareFull> request)
+    public virtual async Task EditPartial(int Id, JsonPatchDocument<HardwareBase> request)
     {
         var entityDb = await _repository.SelectByPk(Id);
         var entityForUpdate = _mapper.Map<HardwareBase>(entityDb);
