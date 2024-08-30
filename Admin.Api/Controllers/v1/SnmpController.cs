@@ -48,6 +48,7 @@ public class SnmpController : BaseController<SnmpBase, SnmpRequest>
     [HttpGet]
     [ProducesResponseType(typeof(SnmpResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("ExibirPorHardwareId")]
     public async Task<ActionResult> SelectByHardwareId(int id)
     {
@@ -72,13 +73,15 @@ public class SnmpController : BaseController<SnmpBase, SnmpRequest>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("CriarSnmp")]
-    public async Task<ActionResult> CreateSnmp(SnmpBase SnmpNew)
+    public async Task<ActionResult> CreateSnmp([FromQuery] int hardwareId, [FromBody] SnmpBase snmpNew)
     {
         try
         {
-            ValidationBase(SnmpNew);
-            await _snmpService.Create(SnmpNew);
+            ValidateInt(hardwareId);
+            ValidationBase(snmpNew);
+            await _snmpService.Create(hardwareId, snmpNew);
             return Created();
         }
         catch (ValidationException ex)
@@ -90,14 +93,14 @@ public class SnmpController : BaseController<SnmpBase, SnmpRequest>
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return NotFound(ex.Message);
         }
     }
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [Route("EditarSnmp")]
-    public async Task<ActionResult> EditSnmp(SnmpBase snmpEdit, [FromQuery] int id)
+    public async Task<ActionResult> EditSnmp([FromQuery] int id, [FromBody] SnmpBase snmpEdit)
     {
         try
         {

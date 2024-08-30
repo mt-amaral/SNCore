@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using System.Runtime.ConstrainedExecution;
 
 namespace Admin.Api.Controllers;
 
@@ -26,7 +25,7 @@ public class BaseController<TBase, TRequest> : ControllerBase
     protected void ValidateInt(int num)
     {
         if (num <= 0)
-            throw new ValidationException("O número deve ser maior que zero.");
+            throw new ValidationException("O número deve ser maior ou igual a zero.");
     }
     protected void ValidationBase(TBase entityBase)
     {

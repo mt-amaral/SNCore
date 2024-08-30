@@ -1,10 +1,11 @@
-﻿using Admin.Domain.Interfaces;
+﻿using Admin.Domain.Entities;
+using Admin.Domain.Interfaces;
 using Admin.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace Admin.Persistence.Repositories
 {
-    public class BaseRepository<T> : IBaseRepository<T> where T : class
+    public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     {
         protected readonly ApplicationDbContext _context;
         protected readonly DbSet<T> _dbSet;
@@ -33,12 +34,14 @@ namespace Admin.Persistence.Repositories
 
         public async Task Create(T entity)
         {
+            entity.NewEntity();
             await _dbSet.AddAsync(entity);
             await _context.SaveChangesAsync();
         }
 
         public async Task Edit(T entity)
         {
+            entity.UpTime();
             _dbSet.Update(entity);
             await _context.SaveChangesAsync();
         }

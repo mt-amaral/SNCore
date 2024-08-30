@@ -18,7 +18,7 @@ public class Mapper
             Ipv4 = hardwareEdit.Ipv4
         };
     }
-    public static HardwareBase MapperToJson(HardwareBase hardwareEdit,SnmpBase snmpEdit)
+    public static HardwareBase MapperToJson(HardwareBase hardwareEdit, SnmpBase snmpEdit)
     {
         return new HardwareBase()
         {

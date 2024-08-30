@@ -12,11 +12,9 @@ namespace Admin.Persistence.Repositories
         {
             _context = context;
         }
-        public async Task<Snmp> SelectByHardwareId(int? id)
+        public async Task<Snmp?> SelectByHardwareId(int id)
         {
-            var snmp = await _dbSet.Where(x => x.HardwareId == id).FirstOrDefaultAsync();
-            return snmp == null ? throw new InvalidOperationException($"Não encontrado HardwareId:{id}") : snmp;
-
+            return await _dbSet.Where(x => x.HardwareId == id).FirstOrDefaultAsync() ?? throw new InvalidOperationException($"Não encontrado HardwareId:{id}");
         }
     }
 }
