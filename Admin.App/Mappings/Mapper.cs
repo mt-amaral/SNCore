@@ -1,37 +1,19 @@
-﻿using Admin.Shared.Request;
+﻿using Admin.Shared.Payload;
+using Admin.Shared.Request;
 using Admin.Shared.Response;
+using AutoMapper;
 
-namespace Admin.App.Mappers;
+namespace Admin.App.Mappings;
 
-public class Mapper
+public class MappingProfile : Profile
 {
-    public static HardwareRequest MapperToJson(HardwareResponse hardwareEdit)
+    public MappingProfile()
     {
-
-        return new HardwareRequest()
-        {
-            Id = hardwareEdit.Id,
-            Name = hardwareEdit.Name,
-            Description = hardwareEdit.Description,
-            Model = hardwareEdit.Model,
-            Ipv4 = hardwareEdit.Ipv4
-        };
-    }
-    public static HardwareBase MapperToJson(HardwareBase hardwareEdit, SnmpBase snmpEdit)
-    {
-        return new HardwareBase()
-        {
-            Name = hardwareEdit.Name,
-            Description = hardwareEdit.Description,
-            Model = hardwareEdit.Model,
-            Ipv4 = hardwareEdit.Ipv4,
-            Snmp = new SnmpBase()
-            {
-                SnmpVersion = snmpEdit.SnmpVersion,
-                Community = snmpEdit.Community,
-                Port = snmpEdit.Port,
-            }
-        };
+        CreateMap<HardwarePayload, HardwareRequest>().ReverseMap();
+        CreateMap<HardwarePayload, HardwareResponse>().ReverseMap();
+        CreateMap<SnmpPayload, SnmpRequest>().ReverseMap();
+        CreateMap<SnmpPayload, SnmpResponse>().ReverseMap();
+        CreateMap<TelnetPayload, TelnetRequest>().ReverseMap();
+        CreateMap<TelnetPayload, TelnetResponse>().ReverseMap();
     }
 }
-
