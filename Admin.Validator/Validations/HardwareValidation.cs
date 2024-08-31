@@ -1,11 +1,12 @@
-﻿using Admin.Shared.Base;
+﻿
+using Admin.Shared.Payload;
 using FluentValidation;
 
 
 namespace Admin.Validator.Validations;
 
 public class HardwareValidation<T> : AbstractValidator<T>
-    where T : HardwareBase
+    where T : HardwarePayload
 {
     public HardwareValidation()
     {

@@ -1,4 +1,4 @@
-﻿namespace Admin.Shared.Base;
+﻿namespace Admin.Shared.Payload;
 
 public enum SNMPVersion : short
 {
@@ -6,7 +6,7 @@ public enum SNMPVersion : short
     v2 = 1,
     v3 = 2
 }
-public class SnmpBase
+public class SnmpPayload
 {
     public SNMPVersion SnmpVersion { get; set; }
     public string Community { get; set; }

@@ -1,10 +1,11 @@
-﻿using Admin.Shared.Base;
+﻿
+using Admin.Shared.Payload;
 using FluentValidation;
 
 namespace Admin.Validator.Validations;
 
 public class TelnetValidation<T> : AbstractValidator<T>
-    where T : TelnetBase
+    where T : TelnetPayload
 {
     public TelnetValidation()
     {

@@ -1,4 +1,4 @@
-﻿namespace Admin.Shared.Base;
+﻿namespace Admin.Shared.Payload;
 
 public enum HardwareModel : short
 {
@@ -6,7 +6,7 @@ public enum HardwareModel : short
     model2 = 1,
     model3 = 3
 }
-public class HardwareBase
+public class HardwarePayload
 {
     public string Name { get; set; }
     public string Description { get; set; }

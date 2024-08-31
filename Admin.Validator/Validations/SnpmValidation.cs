@@ -1,10 +1,11 @@
-﻿using Admin.Shared.Base;
+﻿
+using Admin.Shared.Payload;
 using FluentValidation;
 
 namespace Admin.Validator.Validations;
 
 public class SnmpValidation<T> : AbstractValidator<T>
-    where T : SnmpBase
+    where T : SnmpPayload
 {
     public SnmpValidation()
     {
