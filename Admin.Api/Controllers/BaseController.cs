@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Admin.Api.Controllers;
 
 [ApiController]
-public class BaseController: ControllerBase
+public class BaseController : ControllerBase
 
 {
     protected void ValidateEntity<T>(T entity, IValidator<T> validator)

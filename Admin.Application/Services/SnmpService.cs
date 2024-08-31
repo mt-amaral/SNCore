@@ -2,7 +2,7 @@
 using Admin.Application.Interfaces;
 using Admin.Domain.Entities;
 using Admin.Domain.Interfaces;
-using Admin.Shared.Base;
+using Admin.Shared.Payload;
 using Admin.Shared.Response;
 using AutoMapper;
 
@@ -20,19 +20,19 @@ public class SnmpService : ISnmpService
         _hardwareRepository = hardwareRepository;
         _mapper = mapper;
     }
-    public virtual async Task<IEnumerable<SnmpResponse>> SelectAll()
+    public async Task<IEnumerable<SnmpResponse>> SelectAll()
     {
         var entityList = await _repository.SelectAll();
         return _mapper.Map<IEnumerable<SnmpResponse>>(entityList);
     }
 
-    public virtual async Task<SnmpResponse> SelectByPk(int id)
+    public async Task<SnmpResponse> SelectByPk(int id)
     {
         var entity = await _repository.SelectByPk(id);
         return _mapper.Map<SnmpResponse>(entity);
     }
 
-    public virtual async Task Create(int HardwareId, SnmpBase request)
+    public async Task Create(int HardwareId, SnmpPayload request)
     {
         await _hardwareRepository.SelectByPk(HardwareId);
         var entity = _mapper.Map<Snmp>(request);
@@ -40,14 +40,14 @@ public class SnmpService : ISnmpService
         await _repository.Create(entity);
     }
 
-    public virtual async Task Edit(int Id, SnmpBase request)
+    public async Task Edit(int Id, SnmpPayload request)
     {
         var entityDb = await _repository.SelectByPk(Id);
         var entity = _mapper.Map<Snmp>(request);
         await _repository.Edit(entity);
     }
 
-    public virtual async Task Delete(int id)
+    public async Task Delete(int id)
     {
         var entity = await _repository.SelectByPk(id);
         if (entity != null)

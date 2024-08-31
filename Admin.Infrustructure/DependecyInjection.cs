@@ -3,7 +3,7 @@ using Admin.Application.Services;
 using Admin.Domain.Interfaces;
 using Admin.Persistence.Context;
 using Admin.Persistence.Repositories;
-using Admin.Shared.Base;
+using Admin.Shared.Payload;
 using Admin.Shared.Request;
 using Admin.Validator.Validations;
 using FluentValidation;
@@ -35,13 +35,13 @@ public static class DependecyInjection
 
         // Validation
         services.AddScoped<IValidator<HardwareRequest>, HardwareValidation<HardwareRequest>>();
-        services.AddScoped<IValidator<HardwareBase>, HardwareValidation<HardwareBase>>();
+        services.AddScoped<IValidator<HardwarePayload>, HardwareValidation<HardwarePayload>>();
 
         services.AddScoped<IValidator<SnmpRequest>, SnmpValidation<SnmpRequest>>();
-        services.AddScoped<IValidator<SnmpBase>, SnmpValidation<SnmpBase>>();
+        services.AddScoped<IValidator<SnmpPayload>, SnmpValidation<SnmpPayload>>();
 
         services.AddScoped<IValidator<TelnetRequest>, TelnetValidation<TelnetRequest>>();
-        services.AddScoped<IValidator<TelnetBase>, TelnetValidation<TelnetBase>>();
+        services.AddScoped<IValidator<TelnetPayload>, TelnetValidation<TelnetPayload>>();
 
         return services;
     }

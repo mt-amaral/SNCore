@@ -12,5 +12,5 @@ public interface ITelnetService
     Task Create(TelnetPayload telnetRequest);
     Task Edit(int Id, TelnetPayload telnetRequest);
     Task Delete(int snmpId);
-    Task<SnmpResponse> SelectByHardwareId(int id);
+    Task<TelnetResponse> SelectByHardwareId(int id);
 }

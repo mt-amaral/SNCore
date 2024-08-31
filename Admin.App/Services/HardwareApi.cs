@@ -1,5 +1,4 @@
-﻿using Admin.Shared.Base;
-using Admin.Shared.Request;
+﻿using Admin.Shared.Request;
 using Admin.Shared.Response;
 using System.Net.Http.Json;
 
