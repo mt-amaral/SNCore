@@ -15,5 +15,10 @@ public class MappingProfile : Profile
         CreateMap<SnmpPayload, SnmpResponse>().ReverseMap();
         CreateMap<TelnetPayload, TelnetRequest>().ReverseMap();
         CreateMap<TelnetPayload, TelnetResponse>().ReverseMap();
+
+        CreateMap<SnmpPayload, CreateHardwareFull>()
+            .ForMember(dest => dest.Snmp, opt => opt.MapFrom(src => src));
+        CreateMap<TelnetPayload, CreateHardwareFull>()
+    .       ForMember(dest => dest.Telnet, opt => opt.MapFrom(src => src));
     }
 }

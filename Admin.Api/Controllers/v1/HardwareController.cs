@@ -15,13 +15,19 @@ public class HardwareController : BaseController
     private readonly IHardwareService _hardwareService;
     private readonly IValidator<HardwarePayload> _validatorPayload;
     private readonly IValidator<HardwareRequest> _validatorRequest;
+    private readonly IValidator<SnmpPayload> _validatorSnmp;
+    private readonly IValidator<TelnetPayload> _validatorTelnet;
     public HardwareController(IHardwareService hardwareService,
                               IValidator<HardwareRequest> hardwareRequestValidator,
-                              IValidator<HardwarePayload> HardwarePayloadValidator)
+                              IValidator<HardwarePayload> HardwarePayloadValidator,
+                              IValidator<SnmpPayload> validatorSnmp,
+                              IValidator<TelnetPayload> validatorTelnet)
     {
         _hardwareService = hardwareService;
         _validatorRequest = hardwareRequestValidator;
         _validatorPayload = HardwarePayloadValidator;
+        _validatorSnmp = validatorSnmp;
+        _validatorTelnet = validatorTelnet;
     }
 
     [HttpGet]
@@ -75,6 +81,35 @@ public class HardwareController : BaseController
         {
             ValidateEntity(hardwareNew, _validatorPayload);
             await _hardwareService.Create(hardwareNew);
+            return Created();
+        }
+        catch (ValidationException ex)
+        {
+            var errors = ex.Errors
+            .Select(error => error.ErrorMessage)
+            .ToList();
+            return BadRequest(new { Errors = errors });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [Route("CriarHardwareCompleto")]
+    public async Task<ActionResult> CreateHardwareFull([FromBody] CreateHardwareFull hardwareNew)
+    {
+        try
+        {
+            ValidateEntity(hardwareNew, _validatorPayload);
+            if (hardwareNew.Snmp != null)
+                ValidateEntity(hardwareNew.Snmp, _validatorSnmp);
+            if (hardwareNew.Telnet != null)
+                ValidateEntity(hardwareNew.Telnet, _validatorTelnet);
+
+            await _hardwareService.CreateFull(hardwareNew);
             return Created();
         }
         catch (ValidationException ex)

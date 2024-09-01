@@ -1,4 +1,5 @@
-﻿using Admin.Shared.Request;
+﻿using Admin.Shared.Payload;
+using Admin.Shared.Request;
 using Admin.Shared.Response;
 using System.Net.Http.Json;
 
@@ -16,9 +17,14 @@ public class HardwareApi
     {
         return await _httpClient.GetFromJsonAsync<IEnumerable<HardwareResponse>>("Hardware/ExibirTodos");
     }
-    public async Task CreateHardwareAsync(HardwareBase hardware)
+    public async Task CreateHardwareAsync(HardwarePayload hardware)
     {
         var response = await _httpClient.PostAsJsonAsync("Hardware/CriarHardware", hardware);
+        response.EnsureSuccessStatusCode();
+    }
+    public async Task CreateHardwareFullAsync(CreateHardwareFull hardware)
+    {
+        var response = await _httpClient.PostAsJsonAsync("Hardware/CriarHardwareCompleto", hardware);
         response.EnsureSuccessStatusCode();
     }
     public async Task<HardwareResponse?> GetHardwareId(int hardwareId)

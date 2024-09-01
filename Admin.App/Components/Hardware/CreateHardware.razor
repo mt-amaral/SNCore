@@ -1,7 +1,8 @@
 ﻿@namespace Admin.App.Componentes.Hardware
 @inject ISnackbar Snackbar
+@inject IMapper mapper
 
-<MudDialog MaxWidth="MaxWidth.Medium" FullWidth="true" Style="width: 600px;height: 400px;">
+<MudDialog MaxWidth="MaxWidth.Medium" FullWidth="true" Style="width: 900px;height: 530px;">
     <TitleContent>
         <MudText Typo="Typo.h6">
             <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-3 mb-n1" />
@@ -11,27 +12,26 @@
     <DialogContent>
         <MudForm Model="@hardwareNew">
             <MudContainer>
-                <MudTabs>
+                <MudTabs Style="width: 100%;height: 300px;" PanelClass="pa-4">
                     <MudTabPanel Text="Hardware">
-                        
-                        <MudTextField 
-                            @bind-Value="hardwareNew.Name" Label="Name" Required="true" Margin="Margin.Dense" />
-                        <MudTextField @bind-Value="hardwareNew.Description" Label="Description" Required="true" Margin="Margin.Dense" />
+                        <MudItem xs="12">
+                            <MudTextField @bind-Value="hardwareNew.Name" Label="Name" Required="true" Margin="Margin.Dense" />
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudTextField @bind-Value="hardwareNew.Description" Label="Description" Required="true" Margin="Margin.Dense" />
+                        </MudItem>
                         <MudGrid>
-                        <MudItem xs="6">
+                            <MudItem xs="6">
                                 <MudSelect T="HardwareModel" Label="Model" @bind-Value="hardwareNew.Model" Margin="Margin.Dense" Dense="true">
-                                @foreach (HardwareModel model in Enum.GetValues(typeof(HardwareModel)))
-                                {
-                                    <MudSelectItem Value="model">@model</MudSelectItem>
-                                }
-                            </MudSelect>
-                        </MudItem>
-                        <MudItem xs="6">
-                            <MudTextField @bind-Value="hardwareNew.Ipv4" Label="IP Address" MaxLength="15" Required="true" Margin="Margin.Dense" />
-                        </MudItem>
-                        <MudItem xs="2">
-                            <MudCheckBox @bind-Value="boleanSnmp">SNMP</MudCheckBox>
-                        </MudItem>
+                                    @foreach (HardwareModel model in Enum.GetValues(typeof(HardwareModel)))
+                                    {
+                                        <MudSelectItem Value="model">@model</MudSelectItem>
+                                    }
+                                </MudSelect>
+                            </MudItem>
+                            <MudItem xs="6">
+                                <MudTextField @bind-Value="hardwareNew.Ipv4" Label="IP Address" MaxLength="15" Required="true" Margin="Margin.Dense" />
+                            </MudItem>
                         </MudGrid>
                     </MudTabPanel>
                     <MudTabPanel Text="Snmp" Disabled="@(boleanSnmp ? false : true)">
@@ -40,7 +40,7 @@
                                 <MudTextField @bind-Value="snmpNew.Community" Label="Community" Required="true" Margin="Margin.Dense" />
                             </MudItem>
                             <MudItem xs="3">
-                                <MudSelect T="SNMPVersion" Label="Model" @bind-Value="snmpNew.SnmpVersion"  Margin="Margin.Dense" Dense="true" >
+                                <MudSelect T="SNMPVersion" Label="Model" @bind-Value="snmpNew.SnmpVersion" Margin="Margin.Dense" Dense="true">
                                     @foreach (SNMPVersion model in Enum.GetValues(typeof(SNMPVersion)))
                                     {
                                         <MudSelectItem Value="model">@model</MudSelectItem>
@@ -52,27 +52,58 @@
                             </MudItem>
                         </MudGrid>
                     </MudTabPanel>
+                    <MudTabPanel Text="Telnet" Disabled="@(boleanTelnet ? false : true)">
+                        <MudGrid>
+                            <MudItem xs="6">
+                                <MudTextField @bind-Value="telnetNew.User" Label="User" Required="true" Margin="Margin.Dense" />
+                            </MudItem>
+                            <MudItem xs="6">
+                                <MudTextField @bind-Value="telnetNew.Password"
+                                              Label="Password"
+                                              Required="true"
+                                              Margin="Margin.Dense"
+                                              InputType="@PasswordInput"
+                                              Adornment="Adornment.End"
+                                              AdornmentIcon="@PasswordInputIcon"
+                                              OnAdornmentClick="ButtonTestclick"
+                                              AdornmentAriaLabel="Show Password" />
+                            </MudItem>
+                            <MudItem xs="3">
+                                <MudTextField @bind-Value="telnetNew.Port" Label="Port" Required="true" Margin="Margin.Dense" />
+                            </MudItem>
+                        </MudGrid>
+                    </MudTabPanel>
                 </MudTabs>
+                <MudGrid Style="width: 100%;">
+                    <MudCheckBox @bind-Value="boleanSnmp">SNMP</MudCheckBox>
+                    <MudCheckBox @bind-Value="boleanTelnet">Telnet</MudCheckBox>
+                </MudGrid>
             </MudContainer>
         </MudForm>
     </DialogContent>
-    <DialogActions >
-        <div style="display: flex; justify-content: flex-end;">
+    <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
-        <MudButton Color="Color.Primary" OnClick="Add">Add Hardware</MudButton>
-        </div>
+        <MudButton Color="Color.Primary" OnClick="Add">Create</MudButton>
     </DialogActions>
 </MudDialog>
 
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-    [Parameter] public HardwareBase hardwareNew { get; set; } = new();
-    private SnmpBase snmpNew { get; set; } = new();
+    [Parameter] public CreateHardwareFull hardwareNew { get; set; } = new();
+    private SnmpPayload snmpNew { get; set; } = new();
+    private TelnetPayload telnetNew { get; set; } = new();
 
-    private HardwareValidation<HardwareBase> validatorHardware = new ();
-    private SnmpValidation<SnmpBase> validatorSNMP = new();
+    private HardwareValidation<HardwarePayload> validatorHardware = new();
+    private SnmpValidation<SnmpPayload> validatorSNMP = new();
+    private TelnetValidation<TelnetPayload> validatorTelnet = new();
 
-    public bool boleanSnmp { get; set; }
+    private InputType PasswordInput = InputType.Password;
+    private string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+
+    private bool boleanSnmp { get; set; }
+    private bool boleanTelnet { get; set; }
+    private bool isShow { get; set; }
+    bool closeDialog = true;
 
     protected override void OnInitialized()
     {
@@ -80,23 +111,37 @@
         snmpNew.Port = 161;
         snmpNew.SnmpVersion = SNMPVersion.v2;
         hardwareNew.Ipv4 = "0.0.0.0";
+        telnetNew.Port = 23;
+    }
+    private void ButtonTestclick()
+    {
+        isShow = !isShow;
+        PasswordInput = isShow ? InputType.Text : InputType.Password;
+        PasswordInputIcon = isShow ? Icons.Material.Filled.Visibility : Icons.Material.Filled.VisibilityOff;
     }
 
     private void Cancel()
     {
         MudDialog.Cancel();
     }
+
     private bool ValidSnmp()
     {
         var validationSNMPResult = validatorSNMP.Validate(snmpNew);
+        foreach (var error in validationSNMPResult.Errors)
         {
-            foreach (var error in validationSNMPResult.Errors)
-            {
-                Snackbar.Add(error.ErrorMessage, Severity.Error);
-                return false;
-            }
-            return true;
+            Snackbar.Add(error.ErrorMessage, Severity.Error);
         }
+        return !validationSNMPResult.Errors.Any();
+    }
+    private bool ValidTelnet()
+    {
+        var validationTelnetResult = validatorTelnet.Validate(telnetNew);
+        foreach (var error in validationTelnetResult.Errors)
+        {
+            Snackbar.Add(error.ErrorMessage, Severity.Error);
+        }
+        return !validationTelnetResult.Errors.Any();
     }
 
     private bool ValidHardware()
@@ -107,15 +152,30 @@
             foreach (var error in validationHardwareResult.Errors)
             {
                 Snackbar.Add(error.ErrorMessage, Severity.Error);
-                return false;
             }
         }
-        return true;
+        return validationHardwareResult.IsValid;
     }
-    private HardwareBase MergeSNMP()
+
+    private void ValidInputSnmp()
     {
-        var hardwareValid = Mapper.MapperToJson(hardwareNew, snmpNew);
-        return hardwareValid;
+        if (!ValidSnmp())
+            closeDialog = false;
+        else
+        {
+            mapper.Map(snmpNew, hardwareNew);
+        }
+
+    }
+    private void ValidInputTelnet()
+    {
+        if (!ValidTelnet())
+            closeDialog = false;
+        else
+        {
+            mapper.Map(telnetNew, hardwareNew);
+        }
+
     }
 
 
@@ -123,22 +183,27 @@
     {
         try
         {
-            if (ValidHardware())
+            if (!ValidHardware()) return;
+
+            if (boleanSnmp)
+                ValidInputSnmp();
+            else if (!boleanSnmp)
+                hardwareNew.Snmp = null;
+
+            if (boleanTelnet)
+                ValidInputTelnet();
+            else if (!boleanTelnet)
+                hardwareNew.Telnet = null;
+
+            if (closeDialog || (!boleanSnmp && !boleanTelnet))
             {
-                if (boleanSnmp && ValidSnmp())
-                {
-                    var hardwareValid = MergeSNMP();
-                    MudDialog.Close(DialogResult.Ok(hardwareValid));
-                }
-                else if (!boleanSnmp)
-                {
-                    MudDialog.Close(DialogResult.Ok(hardwareNew));
-                }
+                MudDialog.Close(DialogResult.Ok(hardwareNew));
             }
         }
         catch (Exception ex)
         {
-            ;
+            Snackbar.Add($"An error occurred: {ex.Message}", Severity.Error);
         }
     }
+
 }

@@ -68,8 +68,8 @@
     [Parameter] public HardwareResponse hardwareEdit { get; set; }
     private SnmpResponse snmpEdit { get; set; }
 
-    private HardwareValidation<HardwareBase> validatorHardware = new();
-    private SnmpValidation<SnmpBase> validatorSNMP = new();
+    private HardwareValidation<HardwarePayload> validatorHardware = new();
+    private SnmpValidation<SnmpPayload> validatorSNMP = new();
 
     public bool boleanSnmp { get; set; }
 
