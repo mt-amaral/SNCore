@@ -16,6 +16,7 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 builder.Services.AddTransient<HardwareApi>();
 builder.Services.AddTransient<SnmpApi>();
+builder.Services.AddTransient<TelnetApi>();
 
 builder.Services.AddHttpClient("Api", client =>
 {

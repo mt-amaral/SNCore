@@ -11,11 +11,13 @@ namespace Admin.Application.Services;
 public class TelnetService : ITelnetService
 {
     private readonly ITelnetRepository _repository;
+    private readonly IHardwareRepository _hardwareRepository;
     private readonly IMapper _mapper;
-    public TelnetService(ITelnetRepository repository, IMapper mapper)
+    public TelnetService(ITelnetRepository repository, IMapper mapper, IHardwareRepository hardwareRepository)
     {
         _repository = repository;
         _mapper = mapper;
+        _hardwareRepository = hardwareRepository;
     }
     public async Task<IEnumerable<TelnetResponse>> SelectAll()
     {
@@ -29,9 +31,11 @@ public class TelnetService : ITelnetService
         return _mapper.Map<TelnetResponse>(entity);
     }
 
-    public async Task Create(TelnetPayload request)
+    public async Task Create(int HardwareId, TelnetPayload request)
     {
+        await _hardwareRepository.SelectByPk(HardwareId);
         var entity = _mapper.Map<Telnet>(request);
+        entity.SetHardwareId(HardwareId);
         await _repository.Create(entity);
     }
 
@@ -51,7 +55,7 @@ public class TelnetService : ITelnetService
     }
     public async Task<TelnetResponse> SelectByHardwareId(int id)
     {
-        var snmp = await _repository.SelectByHardwareId(id);
-        return _mapper.Map<TelnetResponse>(snmp);
+        var telnet = await _repository.SelectByHardwareId(id);
+        return _mapper.Map<TelnetResponse>(telnet);
     }
 }

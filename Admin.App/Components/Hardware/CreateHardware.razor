@@ -12,7 +12,7 @@
     <DialogContent>
         <MudForm Model="@hardwareNew">
             <MudContainer>
-                <MudTabs Style="width: 100%;height: 300px;" PanelClass="pa-4">
+                <MudTabs Style="width: 100%;height: 300px;" PanelClass="pa-4" ActivePanelIndex=@selectIndex>
                     <MudTabPanel Text="Hardware">
                         <MudItem xs="12">
                             <MudTextField @bind-Value="hardwareNew.Name" Label="Name" Required="true" Margin="Margin.Dense" />
@@ -36,47 +36,61 @@
                     </MudTabPanel>
                     <MudTabPanel Text="Snmp" Disabled="@(boleanSnmp ? false : true)">
                         <MudGrid>
-                            <MudItem xs="6">
-                                <MudTextField @bind-Value="snmpNew.Community" Label="Community" Required="true" Margin="Margin.Dense" />
-                            </MudItem>
-                            <MudItem xs="3">
-                                <MudSelect T="SNMPVersion" Label="Model" @bind-Value="snmpNew.SnmpVersion" Margin="Margin.Dense" Dense="true">
-                                    @foreach (SNMPVersion model in Enum.GetValues(typeof(SNMPVersion)))
-                                    {
-                                        <MudSelectItem Value="model">@model</MudSelectItem>
-                                    }
-                                </MudSelect>
-                            </MudItem>
-                            <MudItem xs="3">
-                                <MudTextField @bind-Value="snmpNew.Port" Label="Port" Required="true" Margin="Margin.Dense" />
-                            </MudItem>
+                            @if (boleanSnmp)
+                            {
+                                <MudItem xs="6">
+                                    <MudTextField @bind-Value="snmpNew.Community" Label="Community" Required="true" Margin="Margin.Dense" />
+                                </MudItem>
+                                <MudItem xs="3">
+                                    <MudSelect T="SNMPVersion" Label="Model" @bind-Value="snmpNew.SnmpVersion" Margin="Margin.Dense" Dense="true">
+                                        @foreach (SNMPVersion model in Enum.GetValues(typeof(SNMPVersion)))
+                                        {
+                                            <MudSelectItem Value="model">@model</MudSelectItem>
+                                        }
+                                    </MudSelect>
+                                </MudItem>
+                                <MudItem xs="3">
+                                    <MudTextField @bind-Value="snmpNew.Port" Label="Port" Required="true" Margin="Margin.Dense" />
+                                </MudItem>
+                            }
+                            else
+                            {
+                                
+                            }
                         </MudGrid>
                     </MudTabPanel>
                     <MudTabPanel Text="Telnet" Disabled="@(boleanTelnet ? false : true)">
                         <MudGrid>
-                            <MudItem xs="6">
-                                <MudTextField @bind-Value="telnetNew.User" Label="User" Required="true" Margin="Margin.Dense" />
-                            </MudItem>
-                            <MudItem xs="6">
-                                <MudTextField @bind-Value="telnetNew.Password"
-                                              Label="Password"
-                                              Required="true"
-                                              Margin="Margin.Dense"
-                                              InputType="@PasswordInput"
-                                              Adornment="Adornment.End"
-                                              AdornmentIcon="@PasswordInputIcon"
-                                              OnAdornmentClick="ButtonTestclick"
-                                              AdornmentAriaLabel="Show Password" />
-                            </MudItem>
-                            <MudItem xs="3">
-                                <MudTextField @bind-Value="telnetNew.Port" Label="Port" Required="true" Margin="Margin.Dense" />
-                            </MudItem>
+                            @if (boleanTelnet)
+                            {
+                                <MudItem xs="6">
+                                    <MudTextField @bind-Value="telnetNew.User" Label="User" Required="true" Margin="Margin.Dense" />
+                                </MudItem>
+                                <MudItem xs="6">
+                                    <MudTextField @bind-Value="telnetNew.Password"
+                                                  Label="Password"
+                                                  Required="true"
+                                                  Margin="Margin.Dense"
+                                                  InputType="@PasswordInput"
+                                                  Adornment="Adornment.End"
+                                                  AdornmentIcon="@PasswordInputIcon"
+                                                  OnAdornmentClick="ButtonTestclick"
+                                                  AdornmentAriaLabel="Show Password" />
+                                </MudItem>
+                                <MudItem xs="3">
+                                    <MudTextField @bind-Value="telnetNew.Port" Label="Port" Required="true" Margin="Margin.Dense" />
+                                </MudItem>
+                            }
+                            else
+                            {
+                                
+                            }
                         </MudGrid>
                     </MudTabPanel>
                 </MudTabs>
                 <MudGrid Style="width: 100%;">
-                    <MudCheckBox @bind-Value="boleanSnmp">SNMP</MudCheckBox>
-                    <MudCheckBox @bind-Value="boleanTelnet">Telnet</MudCheckBox>
+                    <MudCheckBox T="bool" @bind-Value="boleanSnmp" CheckedChanged="@(e => SmartInput())">SNMP</MudCheckBox>
+                    <MudCheckBox T="bool" @bind-Value="boleanTelnet" CheckedChanged="@(e => SmartInput())">Telnet</MudCheckBox>
                 </MudGrid>
             </MudContainer>
         </MudForm>
@@ -102,8 +116,10 @@
 
     private bool boleanSnmp { get; set; }
     private bool boleanTelnet { get; set; }
+    private int selectIndex = 0;
     private bool isShow { get; set; }
     bool closeDialog = true;
+
 
     protected override void OnInitialized()
     {
@@ -120,9 +136,26 @@
         PasswordInputIcon = isShow ? Icons.Material.Filled.Visibility : Icons.Material.Filled.VisibilityOff;
     }
 
-    private void Cancel()
+
+    private void SmartInput()
     {
-        MudDialog.Cancel();
+        if (!boleanSnmp && selectIndex == 1)
+        {
+            selectIndex = 0;
+        }
+        else if (boleanSnmp && selectIndex == 0)
+        {
+            selectIndex = 1;
+        }
+        else if (!boleanTelnet && selectIndex == 2)
+        {
+            selectIndex = (boleanSnmp ? 1 : 0);
+        }
+        else if (boleanTelnet && selectIndex == 0)
+        {
+            selectIndex = 2;
+        }
+        selectIndex = Math.Clamp(selectIndex, 0, 2);
     }
 
     private bool ValidSnmp()
@@ -176,6 +209,11 @@
             mapper.Map(telnetNew, hardwareNew);
         }
 
+    }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
     }
 
 
