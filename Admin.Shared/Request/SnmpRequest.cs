@@ -1,8 +1,9 @@
-﻿using Admin.Shared.Base;
+﻿
+using Admin.Shared.Payload;
 
 namespace Admin.Shared.Request;
 
-public class SnmpRequest : SnmpBase
+public class SnmpRequest : SnmpPayload
 {
     public int Id { get; set; }
 

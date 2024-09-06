@@ -1,5 +1,5 @@
 ﻿using Admin.Domain.Entities;
-using Admin.Shared.Base;
+using Admin.Shared.Payload;
 using Admin.Shared.Request;
 using Admin.Shared.Response;
 using AutoMapper;
@@ -12,12 +12,12 @@ public class DomainMappingProfile : Profile
     {
         CreateMap<Hardware, HardwareRequest>().ReverseMap();
         CreateMap<Hardware, HardwareResponse>().ReverseMap();
-        CreateMap<Hardware, HardwareBase>().ReverseMap();
+        CreateMap<Hardware, HardwarePayload>().ReverseMap();
         CreateMap<Snmp, SnmpRequest>().ReverseMap();
         CreateMap<Snmp, SnmpResponse>().ReverseMap();
-        CreateMap<Snmp, SnmpBase>().ReverseMap();
+        CreateMap<Snmp, SnmpPayload>().ReverseMap();
         CreateMap<Telnet, TelnetRequest>().ReverseMap();
         CreateMap<Telnet, TelnetResponse>().ReverseMap();
-        CreateMap<Telnet, TelnetBase>().ReverseMap();
+        CreateMap<Telnet, TelnetPayload>().ReverseMap();
     }
 }

@@ -5,7 +5,7 @@
 namespace Admin.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class HardwareBaseConfiguration : Migration
+    public partial class AddMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -22,7 +22,7 @@ namespace Admin.Persistence.Migrations
                     Description = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     IsOnline = table.Column<bool>(type: "bit", nullable: false),
-                    Model = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Model = table.Column<short>(type: "smallint", nullable: false),
                     Ipv4 = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false)
                 },
                 constraints: table =>
@@ -39,7 +39,7 @@ namespace Admin.Persistence.Migrations
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Active = table.Column<bool>(type: "bit", nullable: false),
-                    Version = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    SnmpVersion = table.Column<short>(type: "smallint", nullable: false),
                     Community = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Port = table.Column<int>(type: "int", nullable: false),
                     HardwareId = table.Column<int>(type: "int", nullable: false)

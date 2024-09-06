@@ -3,7 +3,7 @@ using Admin.Application.Services;
 using Admin.Domain.Interfaces;
 using Admin.Persistence.Context;
 using Admin.Persistence.Repositories;
-using Admin.Shared.Base;
+using Admin.Shared.Payload;
 using Admin.Shared.Request;
 using Admin.Validator.Validations;
 using FluentValidation;
@@ -22,20 +22,12 @@ public static class DependecyInjection
             options.UseSqlServer(configuration.GetConnectionString("ConnectionDev"),
                 m => m.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName));
         });
-        // Services
-        services.AddScoped<IHardwareService, HardwareService>();
-        services.AddScoped<ISnmpService, SnmpService>();
-        services.AddScoped<ITelnetService, TelnetService>();
 
+        services.AddApplicationServices();
 
-        // Repositories
-        services.AddScoped<IHardwareRepository, HardwareRepository>();
-        services.AddScoped<ISnmpRepository, SnmpRepository>();
-        services.AddScoped<ITelnetRepository, TelnetRepository>();
+        services.AddRepositories();
 
-        // Validation
-        services.AddScoped<IValidator<HardwareRequest>, HardwareValidation<HardwareRequest>>();
-        services.AddScoped<IValidator<HardwareBase>, HardwareValidation<HardwareBase>>();
+        services.AddValidators();
 
         return services;
     }

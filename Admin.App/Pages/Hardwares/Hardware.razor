@@ -27,11 +27,11 @@
             </TemplateColumn>
             <PropertyColumn Property="x => x.Name" Title="Name" />
             <PropertyColumn Property="x => x.Description" Title="Description" />
-            <PropertyColumn Property="x => x.HardwareModel" Title="Model" />
+            <PropertyColumn Property="x => x.Model" Title="Model" />
             <PropertyColumn Property="x => x.Ipv4" Title="IPv4" />
             <TemplateColumn CellClass="d-flex justify-end" ShowColumnOptions="false" Sortable="false">
                 <CellTemplate>
-                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@(() => NavigateToEdit(context.Item.Id))" />
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@(() => ToEdit(context.Item))" />
                     <MudIconButton Color="Color.Error" Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="() => ShowDeleteConfirmation(context.Item)" />
                 </CellTemplate>
             </TemplateColumn>
@@ -72,23 +72,43 @@
 
         var parameters = new DialogParameters
         {
-            { "hardwareNew", new HardwareResponse() }
+            { "hardwareNew", new CreateHardwareFull() }
         };
         var dialog = DialogService.Show<CreateHardware>("Create Hardware", parameters);
         var result = await dialog.Result;
         if (!result.Cancelled)
         {
-            var newHardware = (HardwareRequest)result.Data;
-            await hardwareApi.CreateHardwareAsync(newHardware);
-            hardwareList = await hardwareApi.GetHardwaresAsync();
+            try
+            {
+                var newHardware = (CreateHardwareFull)result.Data;
+                await hardwareApi.CreateHardwareFullAsync(newHardware);
+                Snackbar.Add($"Created {newHardware.Name}", Severity.Success);
+                hardwareList = await hardwareApi.GetHardwaresAsync();
+            }
+            catch (Exception ex)
+            {
+                
+            }
         }
     }
-    private void NavigateToEdit(int hardwareId)
+    private async Task ToEdit(HardwareResponse hardware)
     {
-        NavigationManager.NavigateTo($"/hardware/edit/{hardwareId}");
+        var parameters = new DialogParameters
+    {
+        { "hardwareEdit", hardware }
+    };
+
+        var dialog = DialogService.Show<EditHardware>("Edit Hardware", parameters);
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+            Snackbar.Add($"Hardware '{hardware.Name}' editado com sucesso!", Severity.Success);
+            // Handle the updated hardware object from the dialog result if necessary
+            var updatedHardware = (HardwareResponse)result.Data;
+        }
     }
 
-    
 
     async Task ShowDeleteConfirmation(HardwareResponse item)
     {
@@ -106,7 +126,6 @@
 
         }
     }
-
     async Task DeleteItem(HardwareResponse item)
     {
         try
@@ -117,7 +136,7 @@
         }
         catch (Exception ex)
         {
-            Snackbar.Add($"Esse fela{item.Id}, {item.HardwareModel}", Severity.Info);
+            Snackbar.Add($"Erro {item.Id}, {item.Model}", Severity.Info);
             Snackbar.Add($"{ex}", Severity.Error);
         }
     }

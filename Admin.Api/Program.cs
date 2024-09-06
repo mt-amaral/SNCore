@@ -43,14 +43,20 @@ app.UseCors(Configuration.CorsPolicy);
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Admin API V1");
+    });
     app.UseHttpsRedirection();
     app.UseCors("DefaultPolicy");
 }
 if (app.Environment.IsProduction())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Admin API V1");
+    });
     app.UseHttpsRedirection();
     app.UseCors("DefaultPolicy");
 }

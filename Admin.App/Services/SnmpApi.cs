@@ -37,6 +37,6 @@ public class SnmpApi
     {
         var snmp = await _httpClient.GetAsync($"/Snmp/ExibirPorHardwareId?id={hardwareId}");
         return snmp.IsSuccessStatusCode
-            ? await snmp.Content.ReadFromJsonAsync<SnmpResponse>() : new SnmpResponse();
+            ? await snmp.Content.ReadFromJsonAsync<SnmpResponse>() : null;
     }
 }

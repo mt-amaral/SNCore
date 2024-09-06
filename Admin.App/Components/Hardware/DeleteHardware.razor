@@ -1,7 +1,7 @@
 ﻿@namespace Admin.App.Componentes.Hardware
 
 
-<MudDialog>
+<MudDialog MaxWidth="MaxWidth.Medium" FullWidth="true" Style="width: 600px;">
     <TitleContent>
         <MudText Typo="Typo.h6">
             <MudIcon Icon="@Icons.Material.Filled.DeleteForever" Class="mr-3 mb-n1" />
@@ -9,11 +9,11 @@
         </MudText>
     </TitleContent>
     <DialogContent>
-        <MudTextField AdornmentColor="Color.Inherit" Value="@hardware.Id.ToString()" Label="Server ID" ReadOnly="true" />
-         <MudTextField Value="@hardware.Name" Label="Name" ReadOnly="true" />
-        <MudTextField Value="@hardware.Description" Label="Location" ReadOnly="true" />
-        <MudTextField Value="@hardware.HardwareModel" Label="Model" ReadOnly="true" />
-        <MudTextField Value="@hardware.Ipv4" Label="IP Address" ReadOnly="true" />
+        <MudTextField Value="@hardware.Id.ToString()" Label="Server ID" ReadOnly="true" DisableUnderLine="true"/>
+        <MudTextField Value="@hardware.Name" Label="Name" ReadOnly="true" AdornmentColor="Color.Transparent" DisableUnderLine="true" />
+        <MudTextField Value="@hardware.Description" Label="Location" ReadOnly="true" AdornmentColor="Color.Transparent" DisableUnderLine="true" />
+        <MudTextField Value="@hardware.Model" Label="Model" ReadOnly="true" AdornmentColor="Color.Transparent" DisableUnderLine="true" />
+        <MudTextField Value="@hardware.Ipv4" Label="IP Address" ReadOnly="true" AdornmentColor="Color.Transparent" DisableUnderLine="true" />
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
