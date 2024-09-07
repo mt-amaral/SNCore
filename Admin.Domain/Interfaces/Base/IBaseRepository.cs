@@ -1,4 +1,4 @@
-﻿namespace Admin.Domain.Interfaces
+﻿namespace Admin.Domain.Interfaces.Base
 {
     public interface IBaseRepository<T> where T : class
     {

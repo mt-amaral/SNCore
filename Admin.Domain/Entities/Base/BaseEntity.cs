@@ -1,5 +1,4 @@
-﻿
-namespace Admin.Domain.Entities;
+﻿namespace Admin.Domain.Entities.Base;
 
 public abstract class BaseEntity
 {

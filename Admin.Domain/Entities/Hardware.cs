@@ -1,4 +1,6 @@
 ﻿
+using Admin.Domain.Entities.Base;
+
 namespace Admin.Domain.Entities;
 public enum HardwareModel : short
 {

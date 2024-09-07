@@ -1,4 +1,5 @@
 ﻿using Admin.Domain.Entities;
+using Admin.Persistence.Configuration.Base;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Admin.Persistence.Configuration;

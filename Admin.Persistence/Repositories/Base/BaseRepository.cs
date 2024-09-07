@@ -1,9 +1,9 @@
-﻿using Admin.Domain.Entities;
-using Admin.Domain.Interfaces;
+﻿using Admin.Domain.Entities.Base;
+using Admin.Domain.Interfaces.Base;
 using Admin.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace Admin.Persistence.Repositories
+namespace Admin.Persistence.Repositories.Base
 {
     public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     {

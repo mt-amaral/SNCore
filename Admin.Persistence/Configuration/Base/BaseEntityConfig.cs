@@ -1,8 +1,8 @@
-﻿using Admin.Domain.Entities;
+﻿using Admin.Domain.Entities.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Admin.Persistence.Configuration
+namespace Admin.Persistence.Configuration.Base
 {
     public abstract class BaseEntityConfig<TEntity> : IEntityTypeConfiguration<TEntity> where TEntity : BaseEntity
     {
