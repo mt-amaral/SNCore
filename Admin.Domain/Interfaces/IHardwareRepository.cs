@@ -6,6 +6,6 @@ namespace Admin.Domain.Interfaces
 {
     public interface IHardwareRepository : IBaseRepository<Hardware>
     {
-
+        Task<Hardware> SelectByHardware(int id);
     }
 }

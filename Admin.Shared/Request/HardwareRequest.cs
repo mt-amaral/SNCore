@@ -1,10 +1,10 @@
 ﻿
 using Admin.Shared.Payload;
 
-namespace Admin.Shared.Request
+namespace Admin.Shared.Request;
+
+public class HardwareRequest : HardwarePayload
 {
-    public class HardwareRequest : HardwarePayload
-    {
-        public int Id { get; set; }
-    }
+    public SnmpPayload? Snmp { get; set; }
+    public TelnetPayload? Telnet { get; set; }
 }

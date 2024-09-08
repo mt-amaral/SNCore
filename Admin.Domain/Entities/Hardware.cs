@@ -16,7 +16,7 @@ public class Hardware : BaseEntity
     public bool IsOnline { get; private set; }
     public HardwareModel Model { get; private set; }
     public string Ipv4 { get; private set; }
-    public Snmp Snmp { get; set; }
-    public Telnet Telnet { get; set; }
+    public Snmp? Snmp { get; set; }
+    public Telnet? Telnet { get; set; }
 
 }

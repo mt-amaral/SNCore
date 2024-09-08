@@ -7,7 +7,11 @@ public abstract class BaseEntity
     public DateTime? UpdateDate { get; private set; }
     public bool Active { get; private set; }
 
-    public void NewEntity()
+    protected BaseEntity()
+    {
+        NewEntity();
+    }
+    protected void NewEntity()
     {
         Active = true;
         CreationDate = DateTime.Now;

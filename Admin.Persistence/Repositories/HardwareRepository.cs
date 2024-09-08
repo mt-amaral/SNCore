@@ -2,6 +2,7 @@
 using Admin.Domain.Interfaces;
 using Admin.Persistence.Context;
 using Admin.Persistence.Repositories.Base;
+using Microsoft.EntityFrameworkCore;
 
 namespace Admin.Persistence.Repositories
 {
@@ -12,6 +13,13 @@ namespace Admin.Persistence.Repositories
         {
             _context = context;
         }
-
+        public  async Task<Hardware> SelectByHardware(int id)
+        {
+            return await _dbSet
+                .Include(e => e.Snmp)
+                .Include(e => e.Telnet)
+                .FirstOrDefaultAsync(e => e.Id == id)
+                ?? throw new InvalidOperationException($"Não encontrado {typeof(Hardware).Name} id:{id}");
+        }
     }
 }

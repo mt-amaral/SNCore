@@ -3,34 +3,41 @@ using Admin.Application.Mappings;
 using Admin.Infrustructure;
 using Admin.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
-
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddInfrastructure(builder.Configuration);
+
 // Cors config
 builder.Services.AddCors(
    x => x.AddPolicy(
         Configuration.CorsPolicy,
         policy => policy
-        .WithOrigins([
+        .WithOrigins(
             Configuration.AdminAppUrl,
             Configuration.AdminApiUrl,
             Configuration.AdminAppConteiner,
             Configuration.AdminApiConteiner,
-            Configuration.AdminApiConnectionsConteiner,
-            ])
+            Configuration.AdminApiConnectionsConteiner
+        )
         .AllowAnyMethod()
         .AllowAnyHeader()
         .AllowCredentials()
-        )
-    );
+    )
+);
 
 builder.Services.AddAutoMapper(typeof(DomainMappingProfile));
 
-builder.Services.AddControllers().AddNewtonsoftJson();
+// Configure Json.NET to ignore null values
+builder.Services.AddControllers()
+    .AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+    });
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

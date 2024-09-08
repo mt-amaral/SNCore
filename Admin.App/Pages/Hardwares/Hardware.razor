@@ -72,7 +72,7 @@
 
         var parameters = new DialogParameters
         {
-            { "hardwareNew", new CreateHardwareFull() }
+            { "hardwareNew", new HardwareRequest() }
         };
         var dialog = DialogService.Show<CreateHardware>("Create Hardware", parameters);
         var result = await dialog.Result;
@@ -80,7 +80,7 @@
         {
             try
             {
-                var newHardware = (CreateHardwareFull)result.Data;
+                var newHardware = (HardwareRequest)result.Data;
                 await hardwareApi.CreateHardwareFullAsync(newHardware);
                 Snackbar.Add($"Created {newHardware.Name}", Severity.Success);
                 hardwareList = await hardwareApi.GetHardwaresAsync();

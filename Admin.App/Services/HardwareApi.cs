@@ -22,7 +22,7 @@ public class HardwareApi
         var response = await _httpClient.PostAsJsonAsync("Hardware/CriarHardware", hardware);
         response.EnsureSuccessStatusCode();
     }
-    public async Task CreateHardwareFullAsync(CreateHardwareFull hardware)
+    public async Task CreateHardwareFullAsync(HardwareRequest hardware)
     {
         var response = await _httpClient.PostAsJsonAsync("Hardware/CriarHardwareCompleto", hardware);
         response.EnsureSuccessStatusCode();
