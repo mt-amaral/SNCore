@@ -1,9 +1,7 @@
 ﻿
 using Admin.Application.Interfaces;
-using Admin.Domain.Entities;
 using Admin.Domain.Interfaces;
 using Admin.Shared.Payload;
-using Admin.Shared.Response;
 using AutoMapper;
 
 namespace Admin.Application.Services;

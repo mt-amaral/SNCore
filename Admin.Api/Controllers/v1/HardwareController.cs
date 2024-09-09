@@ -3,7 +3,6 @@ using Admin.Shared.Payload;
 using Admin.Shared.Request;
 using Admin.Shared.Response;
 using FluentValidation;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Admin.Api.Controllers.v1;
@@ -104,7 +103,7 @@ public class HardwareController : BaseController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [Route("EditarHardware")]
-    public async Task<ActionResult> EditHardware([FromQuery]int id, [FromBody] HardwareRequest hardwareNew)
+    public async Task<ActionResult> EditHardware([FromQuery] int id, [FromBody] HardwareRequest hardwareNew)
     {
         try
         {

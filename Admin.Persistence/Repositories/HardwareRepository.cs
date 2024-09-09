@@ -13,7 +13,7 @@ namespace Admin.Persistence.Repositories
         {
             _context = context;
         }
-        public  async Task<Hardware> SelectByHardware(int id)
+        public async Task<Hardware> SelectByHardware(int id)
         {
             return await _dbSet
                 .Include(e => e.Snmp)

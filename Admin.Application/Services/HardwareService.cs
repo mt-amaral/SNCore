@@ -1,12 +1,9 @@
 ﻿using Admin.Application.Interfaces;
 using Admin.Domain.Entities;
 using Admin.Domain.Interfaces;
-using Admin.Shared.Payload;
 using Admin.Shared.Request;
 using Admin.Shared.Response;
 using AutoMapper;
-using FluentValidation;
-using Microsoft.AspNetCore.JsonPatch;
 
 namespace Admin.Application.Services;
 
@@ -40,7 +37,7 @@ public class HardwareService : IHardwareService
         return _mapper.Map<HardwareResponse>(entity);
     }
 
-    public  async Task Create(HardwareRequest request)
+    public async Task Create(HardwareRequest request)
     {
         var entity = _mapper.Map<Hardware>(request);
         await _repository.Create(entity);

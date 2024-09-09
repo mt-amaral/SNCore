@@ -21,7 +21,7 @@ namespace Admin.Persistence.Repositories.Base
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public  async Task<T> SelectByPk(int id)
+        public async Task<T> SelectByPk(int id)
         {
             return await _dbSet.FindAsync(id) ?? throw new InvalidOperationException($"Não encontrado {typeof(T).Name} id:{id}");
         }

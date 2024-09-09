@@ -1,5 +1,4 @@
-﻿using Admin.Shared.Request;
-using Admin.Shared.Response;
+﻿using Admin.Shared.Payload;
 using System.Net.Http.Json;
 
 namespace Admin.App.Services;
@@ -11,10 +10,10 @@ public class SnmpApi
     {
         _httpClient = factory.CreateClient("Api");
     }
-    public async Task<SnmpResponse?> SelectByHardware(int hardwareId)
+    public async Task<SnmpPayload?> SelectByHardware(int hardwareId)
     {
         var snmp = await _httpClient.GetAsync($"/Snmp/ExibirPorHardwareId?id={hardwareId}");
         return snmp.IsSuccessStatusCode
-            ? await snmp.Content.ReadFromJsonAsync<SnmpResponse>() : null;
+            ? await snmp.Content.ReadFromJsonAsync<SnmpPayload>() : null;
     }
 }

@@ -1,5 +1,6 @@
 ﻿@namespace Admin.App.Componentes.Hardware
 @inject ISnackbar Snackbar
+@inject HardwareApi hardwareApi
 @inject IMapper mapper
 
 <MudDialog MaxWidth="MaxWidth.Medium" FullWidth="true" Style="width: 900px;height: 530px;">
@@ -103,9 +104,10 @@
 
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-    [Parameter] public HardwareRequest hardwareNew { get; set; } = new();
+    [Parameter] public HardwareRequest hardwareNew { get; set; }
     private SnmpPayload snmpNew { get; set; } = new();
     private TelnetPayload telnetNew { get; set; } = new();
+
 
     private HardwareValidation<HardwarePayload> validatorHardware = new();
     private SnmpValidation<SnmpPayload> validatorSNMP = new();
@@ -155,7 +157,6 @@
         {
             selectIndex = 2;
         }
-        selectIndex = Math.Clamp(selectIndex, 0, 2);
     }
 
     private bool ValidSnmp()
@@ -208,14 +209,12 @@
         {
             mapper.Map(telnetNew, hardwareNew);
         }
-
     }
 
     private void Cancel()
     {
         MudDialog.Cancel();
     }
-
 
     private void Add()
     {
@@ -235,6 +234,7 @@
 
             if (closeDialog || (!boleanSnmp && !boleanTelnet))
             {
+                
                 MudDialog.Close(DialogResult.Ok(hardwareNew));
             }
         }

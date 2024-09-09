@@ -11,11 +11,12 @@ public class MappingProfile : Profile
     {
         CreateMap<HardwarePayload, HardwareRequest>().ReverseMap();
         CreateMap<HardwarePayload, HardwareResponse>().ReverseMap();
+        CreateMap<HardwareResponse, HardwareRequest>().ReverseMap();
 
 
-        CreateMap<SnmpPayload, HardwareResponse>()
+        CreateMap<SnmpPayload, HardwareRequest>()
             .ForMember(dest => dest.Snmp, opt => opt.MapFrom(src => src));
-        CreateMap<TelnetPayload, HardwareResponse>()
-    .       ForMember(dest => dest.Telnet, opt => opt.MapFrom(src => src));
+        CreateMap<TelnetPayload, HardwareRequest>()
+    .ForMember(dest => dest.Telnet, opt => opt.MapFrom(src => src));
     }
 }

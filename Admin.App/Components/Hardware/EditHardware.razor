@@ -1,7 +1,7 @@
 ﻿@namespace Admin.App.Componentes.Hardware
-@inject SnmpApi snmpApi
-@inject TelnetApi telnetApi
+@inject HardwareApi hardwareApi
 @inject ISnackbar Snackbar
+@inject IMapper mapper
 
 <MudDialog MaxWidth="MaxWidth.Medium" FullWidth="true" Style="width: 900px;height: 530px;">
     <TitleContent>
@@ -108,12 +108,13 @@
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
     [Parameter] public HardwareResponse hardwareEdit { get; set; }
-    private SnmpResponse snmpEdit { get; set; }
-    private TelnetResponse telnetEdit { get; set; }
+    private HardwareRequest hardwareEdited { get; set; } = new();
+    private SnmpPayload snmpEdit { get; set; }
+    private TelnetPayload telnetEdit { get; set; }
 
     private HardwareValidation<HardwareResponse> validatorHardware = new();
-    private SnmpValidation<SnmpResponse> validatorSNMP = new();
-    private TelnetValidation<TelnetResponse> validatorTelnet = new();
+    private SnmpValidation<SnmpPayload> validatorSNMP = new();
+    private TelnetValidation<TelnetPayload> validatorTelnet = new();
 
     private InputType PasswordInput = InputType.Password;
     private string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
@@ -129,31 +130,38 @@
     {
         try
         {
-            snmpEdit = await snmpApi.SelectByHardware(hardwareEdit.Id);
-            boleanSnmp = snmpEdit != null;
-            if (snmpEdit == null)
-            {
-                snmpEdit = new SnmpResponse()
-                    {
-                        Community = "public",
-                        Port = 161,
-                        SnmpVersion = SNMPVersion.v2,
-                    };
-            };
-
-            telnetEdit = await telnetApi.SelectByHardware(hardwareEdit.Id);
-            boleanTelnet = telnetEdit != null;
-            if (telnetEdit == null)
-            {
-                telnetEdit = new TelnetResponse()
-                    {
-                        Port = 23,
-                    };
-            }
+            hardwareEdit = await hardwareApi.GetHardwareId(hardwareEdit.Id);
+            Start();
         }
         finally
         {
             loading = false;
+        }
+    }
+
+
+    private void Start()
+    {
+        snmpEdit = hardwareEdit.Snmp;
+        boleanSnmp = snmpEdit != null;
+        if (snmpEdit == null)
+        {
+            snmpEdit = new SnmpPayload()
+            {
+                Community = "public",
+                Port = 161,
+                SnmpVersion = SNMPVersion.v2,
+            };
+        };
+
+        telnetEdit = hardwareEdit.Telnet;
+        boleanTelnet = telnetEdit != null;
+        if (telnetEdit == null)
+        {
+            telnetEdit = new TelnetPayload()
+            {
+                Port = 23,
+            };
         }
     }
 
@@ -182,7 +190,6 @@
         {
             selectIndex = 2;
         }
-        selectIndex = Math.Clamp(selectIndex, 0, 2);
     }
 
     private bool ValidSnmp()
@@ -204,6 +211,42 @@
         return !validationTelnetResult.Errors.Any();
     }
 
+    private bool ValidHardware()
+    {
+        var validationHardwareResult = validatorHardware.Validate(hardwareEdit);
+        if (!validationHardwareResult.IsValid)
+        {
+            foreach (var error in validationHardwareResult.Errors)
+            {
+                Snackbar.Add(error.ErrorMessage, Severity.Error);
+            }
+        }
+        else if (validationHardwareResult.IsValid)
+        {
+            mapper.Map(hardwareEdit, hardwareEdited);
+        }
+        return validationHardwareResult.IsValid;
+    }
+
+    private void ValidInputSnmp()
+    {
+        if (!ValidSnmp())
+            closeDialog = false;
+        else
+        {
+            mapper.Map(snmpEdit, hardwareEdited);
+        }
+    }
+    private void ValidInputTelnet()
+    {
+        if (!ValidTelnet())
+            closeDialog = false;
+        else
+        {
+            mapper.Map(telnetEdit, hardwareEdited);
+        }
+    }
+
     private void Cancel()
     {
         MudDialog.Cancel();
@@ -211,6 +254,28 @@
 
     private void Commit()
     {
-        MudDialog.Close(DialogResult.Ok(hardwareEdit));
+        try
+        {
+            if (!ValidHardware()) return;
+                
+            if (boleanSnmp)
+                ValidInputSnmp();
+            else if (!boleanSnmp)
+                hardwareEdit.Snmp = null;
+
+            if (boleanTelnet)
+                ValidInputTelnet();
+            else if (!boleanTelnet)
+                hardwareEdit.Telnet = null;
+
+            if (closeDialog || (!boleanSnmp && !boleanTelnet))
+            {
+                MudDialog.Close(DialogResult.Ok(hardwareEdited));
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"An error occurred: {ex.Message}", Severity.Error);
+        }
     }
 }

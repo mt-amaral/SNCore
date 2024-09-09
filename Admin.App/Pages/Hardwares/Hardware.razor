@@ -81,31 +81,40 @@
             try
             {
                 var newHardware = (HardwareRequest)result.Data;
-                await hardwareApi.CreateHardwareFullAsync(newHardware);
+                await hardwareApi.CreateHardwareAsync(newHardware);
                 Snackbar.Add($"Created {newHardware.Name}", Severity.Success);
                 hardwareList = await hardwareApi.GetHardwaresAsync();
             }
             catch (Exception ex)
             {
-                
+                Snackbar.Add($"Erro Hardware listing error", Severity.Error);
             }
         }
     }
+
     private async Task ToEdit(HardwareResponse hardware)
     {
         var parameters = new DialogParameters
-    {
-        { "hardwareEdit", hardware }
-    };
+        {
+            { "hardwareEdit", hardware }
+        };
 
         var dialog = DialogService.Show<EditHardware>("Edit Hardware", parameters);
         var result = await dialog.Result;
-
         if (!result.Cancelled)
         {
-            Snackbar.Add($"Hardware '{hardware.Name}' editado com sucesso!", Severity.Success);
-            // Handle the updated hardware object from the dialog result if necessary
-            var updatedHardware = (HardwareResponse)result.Data;
+            try
+            {
+                var editHardware = (HardwareRequest)result.Data;
+                await hardwareApi.EditHardwareAsync(hardware.Id, editHardware);
+                Snackbar.Add($"Hardware '{editHardware.Name}' editado com sucesso!", Severity.Success);
+                hardwareList = await hardwareApi.GetHardwaresAsync();
+
+            }
+            catch (Exception ex)
+            {
+                Snackbar.Add($"Erro Hardware listing error {ex}", Severity.Error);
+            }
         }
     }
 
@@ -123,7 +132,6 @@
         if (!result.Cancelled)
         {
             await DeleteItem(item);
-
         }
     }
     async Task DeleteItem(HardwareResponse item)
@@ -131,7 +139,7 @@
         try
         {
             await hardwareApi.DeleteHardwareAsync(item.Id);
-            Snackbar.Add($"Hardware {item.Id} Deleted!", Severity.Normal);
+            Snackbar.Add($"Hardware {item.Id} Deleted!", Severity.Info);
             hardwareList = await hardwareApi.GetHardwaresAsync();
         }
         catch (Exception ex)

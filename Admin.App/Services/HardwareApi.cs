@@ -1,5 +1,4 @@
-﻿using Admin.Shared.Payload;
-using Admin.Shared.Request;
+﻿using Admin.Shared.Request;
 using Admin.Shared.Response;
 using System.Net.Http.Json;
 
@@ -17,23 +16,18 @@ public class HardwareApi
     {
         return await _httpClient.GetFromJsonAsync<IEnumerable<HardwareResponse>>("Hardware/ExibirTodos");
     }
-    public async Task CreateHardwareAsync(HardwarePayload hardware)
+    public async Task CreateHardwareAsync(HardwareRequest hardware)
     {
         var response = await _httpClient.PostAsJsonAsync("Hardware/CriarHardware", hardware);
         response.EnsureSuccessStatusCode();
     }
-    public async Task CreateHardwareFullAsync(HardwareRequest hardware)
-    {
-        var response = await _httpClient.PostAsJsonAsync("Hardware/CriarHardwareCompleto", hardware);
-        response.EnsureSuccessStatusCode();
-    }
-    public async Task<HardwareResponse?> GetHardwareId(int hardwareId)
+    public async Task<HardwareResponse> GetHardwareId(int hardwareId)
     {
         return await _httpClient.GetFromJsonAsync<HardwareResponse>($"Hardware/ExibirHardwarePorId?id={hardwareId}");
     }
-    public async Task EditHardwareAsync(HardwareRequest hardware)
+    public async Task EditHardwareAsync(int id, HardwareRequest hardware)
     {
-        var response = await _httpClient.PutAsJsonAsync("Hardware/EditarHardware", hardware);
+        var response = await _httpClient.PutAsJsonAsync($"Hardware/EditarHardware?id={id}", hardware);
         response.EnsureSuccessStatusCode();
     }
     public async Task DeleteHardwareAsync(int hardwareId)

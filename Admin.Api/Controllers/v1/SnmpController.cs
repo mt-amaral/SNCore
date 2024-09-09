@@ -1,7 +1,5 @@
 ﻿using Admin.Application.Interfaces;
 using Admin.Shared.Payload;
-using Admin.Shared.Request;
-using Admin.Shared.Response;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 

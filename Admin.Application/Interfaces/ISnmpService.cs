@@ -1,6 +1,5 @@
 ﻿
 using Admin.Shared.Payload;
-using Admin.Shared.Response;
 
 
 namespace Admin.Application.Interfaces;
