@@ -9,14 +9,14 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        CreateMap<HardwarePayload, HardwareRequest>().ReverseMap();
-        CreateMap<HardwarePayload, HardwareResponse>().ReverseMap();
-        CreateMap<HardwareResponse, HardwareRequest>().ReverseMap();
+        CreateMap<HostPayload, HostRequest>().ReverseMap();
+        CreateMap<HostPayload, HostResponse>().ReverseMap();
+        CreateMap<HostResponse, HostRequest>().ReverseMap();
 
 
-        CreateMap<SnmpPayload, HardwareRequest>()
+        CreateMap<SnmpPayload, HostRequest>()
             .ForMember(dest => dest.Snmp, opt => opt.MapFrom(src => src));
-        CreateMap<TelnetPayload, HardwareRequest>()
+        CreateMap<TelnetPayload, HostRequest>()
     .ForMember(dest => dest.Telnet, opt => opt.MapFrom(src => src));
     }
 }

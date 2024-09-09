@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Admin.Persistence.Configuration;
 
-internal class HardwareConfig : BaseEntityConfig<Hardware>
+internal class HostConfig : BaseEntityConfig<Host>
 {
-    public override void Configure(EntityTypeBuilder<Hardware> builder)
+    public override void Configure(EntityTypeBuilder<Host> builder)
     {
         base.Configure(builder);
 
@@ -17,13 +17,13 @@ internal class HardwareConfig : BaseEntityConfig<Hardware>
         builder.Property(x => x.Ipv4).HasMaxLength(15).IsRequired();
 
         builder.HasOne(x => x.Snmp)
-            .WithOne(x => x.Hardware)
-            .HasForeignKey<Snmp>(x => x.HardwareId)
+            .WithOne(x => x.Host)
+            .HasForeignKey<Snmp>(x => x.HostId)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(x => x.Telnet)
-            .WithOne(x => x.Hardware)
-            .HasForeignKey<Telnet>(x => x.HardwareId)
+            .WithOne(x => x.Host)
+            .HasForeignKey<Telnet>(x => x.HostId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

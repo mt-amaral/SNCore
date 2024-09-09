@@ -6,5 +6,5 @@ namespace Admin.Application.Interfaces;
 
 public interface ITelnetService
 {
-    Task<TelnetPayload> SelectByHardwareId(int id);
+    Task<TelnetPayload> SelectByHostId(int id);
 }

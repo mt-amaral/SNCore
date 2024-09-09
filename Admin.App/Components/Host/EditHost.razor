@@ -1,5 +1,5 @@
-﻿@namespace Admin.App.Componentes.Hardware
-@inject HardwareApi hardwareApi
+﻿@namespace Admin.App.Componentes.Host
+@inject HostApi hostApi
 @inject ISnackbar Snackbar
 @inject IMapper mapper
 
@@ -7,7 +7,7 @@
     <TitleContent>
         <MudText Typo="Typo.h6">
             <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-3 mb-n1" />
-            Edit Hardware
+            Edit Host
         </MudText>
     </TitleContent>
     <DialogContent>
@@ -20,27 +20,27 @@
         else
         {
 
-        <MudForm Model="@hardwareEdit">
+        <MudForm Model="@hostEdit">
             <MudContainer>
                     <MudTabs Style="width: 100%;height: 300px;" PanelClass="pa-4" ActivePanelIndex=@selectIndex>
-                    <MudTabPanel Text="Hardware">
+                    <MudTabPanel Text="Host">
                         <MudItem xs="12">
-                            <MudTextField @bind-Value="hardwareEdit.Name" Label="Name" Required="true" Margin="Margin.Dense" />
+                            <MudTextField @bind-Value="hostEdit.Name" Label="Name" Required="true" Margin="Margin.Dense" />
                         </MudItem>
                         <MudItem xs="12">
-                            <MudTextField @bind-Value="hardwareEdit.Description" Label="Description" Required="true" Margin="Margin.Dense" />
+                            <MudTextField @bind-Value="hostEdit.Description" Label="Description" Required="true" Margin="Margin.Dense" />
                         </MudItem>
                         <MudGrid>
                             <MudItem xs="6">
-                                <MudSelect T="HardwareModel" Label="Model" @bind-Value="hardwareEdit.Model" Margin="Margin.Dense" Dense="true">
-                                    @foreach (HardwareModel model in Enum.GetValues(typeof(HardwareModel)))
+                                <MudSelect T="HostModel" Label="Model" @bind-Value="hostEdit.Model" Margin="Margin.Dense" Dense="true">
+                                    @foreach (HostModel model in Enum.GetValues(typeof(HostModel)))
                                     {
                                         <MudSelectItem Value="model">@model</MudSelectItem>
                                     }
                                 </MudSelect>
                             </MudItem>
                             <MudItem xs="6">
-                                <MudTextField @bind-Value="hardwareEdit.Ipv4" Label="IP Address" MaxLength="15" Required="true" Margin="Margin.Dense" />
+                                <MudTextField @bind-Value="hostEdit.Ipv4" Label="IP Address" MaxLength="15" Required="true" Margin="Margin.Dense" />
                             </MudItem>
                         </MudGrid>
                     </MudTabPanel>
@@ -101,18 +101,18 @@
     </DialogContent>
     <DialogActions>
             <MudButton OnClick="Cancel">Cancel</MudButton>
-            <MudButton Color="Color.Primary" OnClick="Commit">Edit Hardware</MudButton>
+            <MudButton Color="Color.Primary" OnClick="Commit">Edit Host</MudButton>
     </DialogActions>
 </MudDialog>
 
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-    [Parameter] public HardwareResponse hardwareEdit { get; set; }
-    private HardwareRequest hardwareEdited { get; set; } = new();
+    [Parameter] public HostResponse hostEdit { get; set; }
+    private HostRequest hostEdited { get; set; } = new();
     private SnmpPayload snmpEdit { get; set; }
     private TelnetPayload telnetEdit { get; set; }
 
-    private HardwareValidation<HardwareResponse> validatorHardware = new();
+    private HostValidation<HostResponse> validatorHost = new();
     private SnmpValidation<SnmpPayload> validatorSNMP = new();
     private TelnetValidation<TelnetPayload> validatorTelnet = new();
 
@@ -130,7 +130,7 @@
     {
         try
         {
-            hardwareEdit = await hardwareApi.GetHardwareId(hardwareEdit.Id);
+            hostEdit = await hostApi.GetHostId(hostEdit.Id);
             Start();
         }
         finally
@@ -142,7 +142,7 @@
 
     private void Start()
     {
-        snmpEdit = hardwareEdit.Snmp;
+        snmpEdit = hostEdit.Snmp;
         boleanSnmp = snmpEdit != null;
         if (snmpEdit == null)
         {
@@ -154,7 +154,7 @@
             };
         };
 
-        telnetEdit = hardwareEdit.Telnet;
+        telnetEdit = hostEdit.Telnet;
         boleanTelnet = telnetEdit != null;
         if (telnetEdit == null)
         {
@@ -211,21 +211,21 @@
         return !validationTelnetResult.Errors.Any();
     }
 
-    private bool ValidHardware()
+    private bool ValidHost()
     {
-        var validationHardwareResult = validatorHardware.Validate(hardwareEdit);
-        if (!validationHardwareResult.IsValid)
+        var validationHostResult = validatorHost.Validate(hostEdit);
+        if (!validationHostResult.IsValid)
         {
-            foreach (var error in validationHardwareResult.Errors)
+            foreach (var error in validationHostResult.Errors)
             {
                 Snackbar.Add(error.ErrorMessage, Severity.Error);
             }
         }
-        else if (validationHardwareResult.IsValid)
+        else if (validationHostResult.IsValid)
         {
-            mapper.Map(hardwareEdit, hardwareEdited);
+            mapper.Map(hostEdit, hostEdited);
         }
-        return validationHardwareResult.IsValid;
+        return validationHostResult.IsValid;
     }
 
     private void ValidInputSnmp()
@@ -234,7 +234,7 @@
             closeDialog = false;
         else
         {
-            mapper.Map(snmpEdit, hardwareEdited);
+            mapper.Map(snmpEdit, hostEdited);
         }
     }
     private void ValidInputTelnet()
@@ -243,7 +243,7 @@
             closeDialog = false;
         else
         {
-            mapper.Map(telnetEdit, hardwareEdited);
+            mapper.Map(telnetEdit, hostEdited);
         }
     }
 
@@ -256,21 +256,21 @@
     {
         try
         {
-            if (!ValidHardware()) return;
+            if (!ValidHost()) return;
                 
             if (boleanSnmp)
                 ValidInputSnmp();
             else if (!boleanSnmp)
-                hardwareEdit.Snmp = null;
+                hostEdit.Snmp = null;
 
             if (boleanTelnet)
                 ValidInputTelnet();
             else if (!boleanTelnet)
-                hardwareEdit.Telnet = null;
+                hostEdit.Telnet = null;
 
             if (closeDialog || (!boleanSnmp && !boleanTelnet))
             {
-                MudDialog.Close(DialogResult.Ok(hardwareEdited));
+                MudDialog.Close(DialogResult.Ok(hostEdited));
             }
         }
         catch (Exception ex)

@@ -14,8 +14,8 @@ internal class SnmpConfig : BaseEntityConfig<Snmp>
         builder.Property(x => x.Community).HasMaxLength(100).IsRequired();
         builder.Property(x => x.Port).IsRequired();
 
-        builder.HasOne(x => x.Hardware)
+        builder.HasOne(x => x.Host)
             .WithOne(x => x.Snmp)
-            .HasForeignKey<Snmp>(x => x.HardwareId);
+            .HasForeignKey<Snmp>(x => x.HostId);
     }
 }

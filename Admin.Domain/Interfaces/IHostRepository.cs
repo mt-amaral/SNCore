@@ -4,8 +4,8 @@ using Admin.Domain.Interfaces.Base;
 
 namespace Admin.Domain.Interfaces
 {
-    public interface IHardwareRepository : IBaseRepository<Hardware>
+    public interface IHostRepository : IBaseRepository<Host>
     {
-        Task<Hardware> SelectByHardware(int id);
+        Task<Host> SelectByHost(int id);
     }
 }

@@ -10,9 +10,9 @@ public class DomainMappingProfile : Profile
 {
     public DomainMappingProfile()
     {
-        CreateMap<Hardware, HardwareRequest>().ReverseMap();
-        CreateMap<Hardware, HardwareResponse>().ReverseMap();
-        CreateMap<Hardware, HardwarePayload>().ReverseMap();
+        CreateMap<Host, HostRequest>().ReverseMap();
+        CreateMap<Host, HostResponse>().ReverseMap();
+        CreateMap<Host, HostPayload>().ReverseMap();
         CreateMap<Snmp, SnmpPayload>().ReverseMap();
         CreateMap<Telnet, TelnetPayload>().ReverseMap();
     }

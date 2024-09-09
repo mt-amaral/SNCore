@@ -11,9 +11,9 @@ public class TelnetApi
     {
         _httpClient = factory.CreateClient("Api");
     }
-    public async Task<TelnetPayload?> SelectByHardware(int hardwareId)
+    public async Task<TelnetPayload?> SelectByHost(int hostId)
     {
-        var snmp = await _httpClient.GetAsync($"/Telnet/ExibirPorHardwareId?id={hardwareId}");
+        var snmp = await _httpClient.GetAsync($"/Telnet/ExibirPorHostId?id={hostId}");
         return snmp.IsSuccessStatusCode
             ? await snmp.Content.ReadFromJsonAsync<TelnetPayload>() : null;
     }

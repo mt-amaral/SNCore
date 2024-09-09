@@ -5,15 +5,15 @@ using FluentValidation;
 
 namespace Admin.Validator.Validations;
 
-public class HardwareValidation<T> : AbstractValidator<T>
-    where T : HardwarePayload
+public class HostValidation<T> : AbstractValidator<T>
+    where T : HostPayload
 {
-    public HardwareValidation()
+    public HostValidation()
     {
         // Specify Validation
-        //if (typeof(HardwareRequest).IsAssignableFrom(typeof(T)))
+        //if (typeof(HostRequest).IsAssignableFrom(typeof(T)))
         //{
-        //    RuleFor(entity => ((HardwareRequest)(object)entity!).Id)
+        //    RuleFor(entity => ((HostRequest)(object)entity!).Id)
         //        .GreaterThanOrEqualTo(0).WithMessage("Id não pode ser negativo");
         //} 
         RuleFor(entity => entity.Name)

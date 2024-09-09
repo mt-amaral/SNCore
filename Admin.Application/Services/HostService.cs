@@ -7,14 +7,14 @@ using AutoMapper;
 
 namespace Admin.Application.Services;
 
-public class HardwareService : IHardwareService
+public class HostService : IHostService
 {
-    private readonly IHardwareRepository _repository;
+    private readonly IHostRepository _repository;
     private readonly ISnmpRepository _snmpRepository;
     private readonly ITelnetRepository _telnetRepository;
     private readonly IMapper _mapper;
-    IHardwareRepository Ref;
-    public HardwareService(IHardwareRepository repository,
+    IHostRepository Ref;
+    public HostService(IHostRepository repository,
         IMapper mapper,
         ISnmpRepository snmpRepository,
         ITelnetRepository telnetRepository)
@@ -25,27 +25,27 @@ public class HardwareService : IHardwareService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<HardwareResponse>> SelectAll()
+    public async Task<IEnumerable<HostResponse>> SelectAll()
     {
         var entityList = await _repository.SelectAll();
-        return _mapper.Map<IEnumerable<HardwareResponse>>(entityList);
+        return _mapper.Map<IEnumerable<HostResponse>>(entityList);
     }
 
-    public async Task<HardwareResponse> SelectByPk(int id)
+    public async Task<HostResponse> SelectByPk(int id)
     {
-        var entity = await _repository.SelectByHardware(id);
-        return _mapper.Map<HardwareResponse>(entity);
+        var entity = await _repository.SelectByHost(id);
+        return _mapper.Map<HostResponse>(entity);
     }
 
-    public async Task Create(HardwareRequest request)
+    public async Task Create(HostRequest request)
     {
-        var entity = _mapper.Map<Hardware>(request);
+        var entity = _mapper.Map<Host>(request);
         await _repository.Create(entity);
     }
 
-    public async Task Edit(int id, HardwareRequest request)
+    public async Task Edit(int id, HostRequest request)
     {
-        var entity = await _repository.SelectByHardware(id);
+        var entity = await _repository.SelectByHost(id);
         _mapper.Map(request, entity);
         await _repository.Edit(entity);
     }

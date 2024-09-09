@@ -7,7 +7,7 @@ namespace Admin.Persistence.Context
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
-        public DbSet<Hardware> Hardware { get; set; }
+        public DbSet<Host> Host { get; set; }
         public DbSet<Snmp> Snmp { get; set; }
         public DbSet<Telnet> Telnet { get; set; }
 

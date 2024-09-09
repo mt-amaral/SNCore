@@ -9,17 +9,17 @@ namespace Admin.Application.Services;
 public class TelnetService : ITelnetService
 {
     private readonly ITelnetRepository _repository;
-    private readonly IHardwareRepository _hardwareRepository;
+    private readonly IHostRepository _hostRepository;
     private readonly IMapper _mapper;
-    public TelnetService(ITelnetRepository repository, IMapper mapper, IHardwareRepository hardwareRepository)
+    public TelnetService(ITelnetRepository repository, IMapper mapper, IHostRepository hostRepository)
     {
         _repository = repository;
         _mapper = mapper;
-        _hardwareRepository = hardwareRepository;
+        _hostRepository = hostRepository;
     }
-    public async Task<TelnetPayload> SelectByHardwareId(int id)
+    public async Task<TelnetPayload> SelectByHostId(int id)
     {
-        var telnet = await _repository.SelectByHardwareId(id);
+        var telnet = await _repository.SelectByHostId(id);
         return _mapper.Map<TelnetPayload>(telnet);
     }
 }

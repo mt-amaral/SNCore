@@ -9,36 +9,36 @@ namespace Admin.Api.Controllers.v1;
 
 [ApiController]
 [Route("[controller]")]
-public class HardwareController : BaseController
+public class HostController : BaseController
 {
-    private readonly IHardwareService _hardwareService;
-    private readonly IValidator<HardwarePayload> _validatorPayload;
-    private readonly IValidator<HardwareRequest> _validatorRequest;
+    private readonly IHostService _hostService;
+    private readonly IValidator<HostPayload> _validatorPayload;
+    private readonly IValidator<HostRequest> _validatorRequest;
     private readonly IValidator<SnmpPayload> _validatorSnmp;
     private readonly IValidator<TelnetPayload> _validatorTelnet;
-    public HardwareController(IHardwareService hardwareService,
-                              IValidator<HardwareRequest> hardwareRequestValidator,
-                              IValidator<HardwarePayload> HardwarePayloadValidator,
+    public HostController(IHostService hostService,
+                              IValidator<HostRequest> hostRequestValidator,
+                              IValidator<HostPayload> HostPayloadValidator,
                               IValidator<SnmpPayload> validatorSnmp,
                               IValidator<TelnetPayload> validatorTelnet)
     {
-        _hardwareService = hardwareService;
-        _validatorRequest = hardwareRequestValidator;
-        _validatorPayload = HardwarePayloadValidator;
+        _hostService = hostService;
+        _validatorRequest = hostRequestValidator;
+        _validatorPayload = HostPayloadValidator;
         _validatorSnmp = validatorSnmp;
         _validatorTelnet = validatorTelnet;
     }
 
     [HttpGet]
-    [ProducesResponseType(typeof(IEnumerable<HardwareResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<HostResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [Route("ExibirTodos")]
-    public async Task<ActionResult<IEnumerable<HardwareResponse>>> GetHardware()
+    public async Task<ActionResult<IEnumerable<HostResponse>>> GetHost()
     {
         try
         {
-            var hardwareList = await _hardwareService.SelectAll();
-            return Ok(hardwareList);
+            var hostList = await _hostService.SelectAll();
+            return Ok(hostList);
         }
         catch (Exception ex)
         {
@@ -46,17 +46,17 @@ public class HardwareController : BaseController
         }
     }
     [HttpGet]
-    [ProducesResponseType(typeof(HardwareResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(HostResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [Route("ExibirHardwarePorId")]
-    public async Task<ActionResult> SelectHardware([FromQuery] int id)
+    [Route("ExibirHostPorId")]
+    public async Task<ActionResult> SelectHost([FromQuery] int id)
     {
         try
         {
             ValidateInt(id);
-            var hardware = await _hardwareService.SelectByPk(id);
-            return Ok(hardware);
+            var host = await _hostService.SelectByPk(id);
+            return Ok(host);
         }
         catch (ValidationException ex)
         {
@@ -73,18 +73,18 @@ public class HardwareController : BaseController
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    [Route("CriarHardware")]
-    public async Task<ActionResult> CreateHardware([FromBody] HardwareRequest hardwareNew)
+    [Route("CriarHost")]
+    public async Task<ActionResult> CreateHost([FromBody] HostRequest hostNew)
     {
         try
         {
-            ValidateEntity(hardwareNew, _validatorPayload);
-            if (hardwareNew.Snmp != null)
-                ValidateEntity(hardwareNew.Snmp, _validatorSnmp);
-            if (hardwareNew.Telnet != null)
-                ValidateEntity(hardwareNew.Telnet, _validatorTelnet);
+            ValidateEntity(hostNew, _validatorPayload);
+            if (hostNew.Snmp != null)
+                ValidateEntity(hostNew.Snmp, _validatorSnmp);
+            if (hostNew.Telnet != null)
+                ValidateEntity(hostNew.Telnet, _validatorTelnet);
 
-            await _hardwareService.Create(hardwareNew);
+            await _hostService.Create(hostNew);
             return Created();
         }
         catch (ValidationException ex)
@@ -102,19 +102,19 @@ public class HardwareController : BaseController
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    [Route("EditarHardware")]
-    public async Task<ActionResult> EditHardware([FromQuery] int id, [FromBody] HardwareRequest hardwareNew)
+    [Route("EditarHost")]
+    public async Task<ActionResult> EditHost([FromQuery] int id, [FromBody] HostRequest hostNew)
     {
         try
         {
             ValidateInt(id);
-            ValidateEntity(hardwareNew, _validatorPayload);
-            if (hardwareNew.Snmp != null)
-                ValidateEntity(hardwareNew.Snmp, _validatorSnmp);
-            if (hardwareNew.Telnet != null)
-                ValidateEntity(hardwareNew.Telnet, _validatorTelnet);
+            ValidateEntity(hostNew, _validatorPayload);
+            if (hostNew.Snmp != null)
+                ValidateEntity(hostNew.Snmp, _validatorSnmp);
+            if (hostNew.Telnet != null)
+                ValidateEntity(hostNew.Telnet, _validatorTelnet);
 
-            await _hardwareService.Edit(id, hardwareNew);
+            await _hostService.Edit(id, hostNew);
             return Created();
         }
         catch (ValidationException ex)
@@ -133,13 +133,13 @@ public class HardwareController : BaseController
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [Route("DeleteHardware")]
-    public async Task<ActionResult> DeleteHardware([FromQuery] int hardwareId)
+    [Route("DeleteHost")]
+    public async Task<ActionResult> DeleteHost([FromQuery] int hostId)
     {
         try
         {
-            ValidateInt(hardwareId);
-            await _hardwareService.Delete(hardwareId);
+            ValidateInt(hostId);
+            await _hostService.Delete(hostId);
             return NoContent();
         }
         catch (ValidationException ex)

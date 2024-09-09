@@ -16,7 +16,7 @@ builder.Services.AddMudServices();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 // Register APIs
-builder.Services.AddTransient<HardwareApi>();
+builder.Services.AddTransient<HostApi>();
 builder.Services.AddTransient<SnmpApi>();
 builder.Services.AddTransient<TelnetApi>();
 

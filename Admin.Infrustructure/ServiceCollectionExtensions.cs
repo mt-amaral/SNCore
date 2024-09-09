@@ -13,7 +13,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
-        services.AddScoped<IHardwareService, HardwareService>();
+        services.AddScoped<IHostService, HostService>();
         services.AddScoped<ISnmpService, SnmpService>();
         services.AddScoped<ITelnetService, TelnetService>();
 
@@ -21,7 +21,7 @@ public static class ServiceCollectionExtensions
     }
     public static IServiceCollection AddRepositories(this IServiceCollection services)
     {
-        services.AddScoped<IHardwareRepository, HardwareRepository>();
+        services.AddScoped<IHostRepository, HostRepository>();
         services.AddScoped<ISnmpRepository, SnmpRepository>();
         services.AddScoped<ITelnetRepository, TelnetRepository>();
 
@@ -30,8 +30,8 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddValidators(this IServiceCollection services)
     {
-        services.AddScoped<IValidator<HardwareRequest>, HardwareValidation<HardwareRequest>>();
-        services.AddScoped<IValidator<HardwarePayload>, HardwareValidation<HardwarePayload>>();
+        services.AddScoped<IValidator<HostRequest>, HostValidation<HostRequest>>();
+        services.AddScoped<IValidator<HostPayload>, HostValidation<HostPayload>>();
 
         services.AddScoped<IValidator<SnmpPayload>, SnmpValidation<SnmpPayload>>();
 

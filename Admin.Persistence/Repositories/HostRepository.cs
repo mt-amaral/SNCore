@@ -6,20 +6,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Admin.Persistence.Repositories
 {
-    public class HardwareRepository : BaseRepository<Hardware>, IHardwareRepository
+    public class HostRepository : BaseRepository<Host>, IHostRepository
     {
         private readonly ApplicationDbContext _context;
-        public HardwareRepository(ApplicationDbContext context) : base(context)
+        public HostRepository(ApplicationDbContext context) : base(context)
         {
             _context = context;
         }
-        public async Task<Hardware> SelectByHardware(int id)
+        public async Task<Host> SelectByHost(int id)
         {
             return await _dbSet
                 .Include(e => e.Snmp)
                 .Include(e => e.Telnet)
                 .FirstOrDefaultAsync(e => e.Id == id)
-                ?? throw new InvalidOperationException($"Não encontrado {typeof(Hardware).Name} id:{id}");
+                ?? throw new InvalidOperationException($"Não encontrado {typeof(Host).Name} id:{id}");
         }
     }
 }

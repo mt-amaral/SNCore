@@ -1,15 +1,15 @@
-﻿@page "/hardware"
+﻿@page "/host"
 @using System.Net.Http.Json
-@using Admin.App.Componentes.Hardware
-@inject HardwareApi hardwareApi
+@using Admin.App.Componentes.Host
+@inject HostApi hostApi
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
 
 <MudContainer MaxWidth="MaxWidth.ExtraLarge">
-    <MudDataGrid T="HardwareResponse" Items="@hardwareList" LoadingProgressColor="Color.Dark" Loading="@loading"
+    <MudDataGrid T="HostResponse" Items="@hostList" LoadingProgressColor="Color.Dark" Loading="@loading"
                  Striped="true" Dense="true">
         <ToolBarContent>
-            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Add" OnClick="@CreateHardware"></MudIconButton>
+            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Add" OnClick="@CreateHost"></MudIconButton>
             <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Sync" OnClick="@OnInitializedAsync"></MudIconButton>
             <MudSpacer />
             <MudChipSet @bind-SelectedChips="selected" MultiSelection="true" Filter="true">
@@ -37,7 +37,7 @@
             </TemplateColumn>
         </Columns>
         <PagerContent>
-            <MudDataGridPager T="HardwareResponse" DisableRowsPerPage="true" />
+            <MudDataGridPager T="HostResponse" DisableRowsPerPage="true" />
         </PagerContent>
     </MudDataGrid>
 </MudContainer>
@@ -45,16 +45,16 @@
 @code {
     MudChip[] selected;
     private bool loading;
-    private IEnumerable<HardwareResponse> hardwareList = new List<HardwareResponse>();
+    private IEnumerable<HostResponse> hostList = new List<HostResponse>();
     [Inject] private NavigationManager NavigationManager { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         loading = true;
-        hardwareList = Array.Empty<HardwareResponse>();
+        hostList = Array.Empty<HostResponse>();
         try
         {
-            hardwareList = await hardwareApi.GetHardwaresAsync();
+            hostList = await hostApi.GetHostsAsync();
             loading = false;
         }
         catch (Exception ex)
@@ -67,66 +67,66 @@
     {
         selected = Array.Empty<MudChip>();
     }
-    async Task CreateHardware()
+    async Task CreateHost()
     {
 
         var parameters = new DialogParameters
         {
-            { "hardwareNew", new HardwareRequest() }
+            { "hostNew", new HostRequest() }
         };
-        var dialog = DialogService.Show<CreateHardware>("Create Hardware", parameters);
+        var dialog = DialogService.Show<CreateHost>("Create Host", parameters);
         var result = await dialog.Result;
         if (!result.Cancelled)
         {
             try
             {
-                var newHardware = (HardwareRequest)result.Data;
-                await hardwareApi.CreateHardwareAsync(newHardware);
-                Snackbar.Add($"Created {newHardware.Name}", Severity.Success);
-                hardwareList = await hardwareApi.GetHardwaresAsync();
+                var newHost = (HostRequest)result.Data;
+                await hostApi.CreateHostAsync(newHost);
+                Snackbar.Add($"Created {newHost.Name}", Severity.Success);
+                hostList = await hostApi.GetHostsAsync();
             }
             catch (Exception ex)
             {
-                Snackbar.Add($"Erro Hardware listing error", Severity.Error);
+                Snackbar.Add($"Erro Host listing error", Severity.Error);
             }
         }
     }
 
-    private async Task ToEdit(HardwareResponse hardware)
+    private async Task ToEdit(HostResponse host)
     {
         var parameters = new DialogParameters
         {
-            { "hardwareEdit", hardware }
+            { "hostEdit", host }
         };
 
-        var dialog = DialogService.Show<EditHardware>("Edit Hardware", parameters);
+        var dialog = DialogService.Show<EditHost>("Edit Host", parameters);
         var result = await dialog.Result;
         if (!result.Cancelled)
         {
             try
             {
-                var editHardware = (HardwareRequest)result.Data;
-                await hardwareApi.EditHardwareAsync(hardware.Id, editHardware);
-                Snackbar.Add($"Hardware '{editHardware.Name}' editado com sucesso!", Severity.Success);
-                hardwareList = await hardwareApi.GetHardwaresAsync();
+                var editHost = (HostRequest)result.Data;
+                await hostApi.EditHostAsync(host.Id, editHost);
+                Snackbar.Add($"Host '{editHost.Name}' editado com sucesso!", Severity.Success);
+                hostList = await hostApi.GetHostsAsync();
 
             }
             catch (Exception ex)
             {
-                Snackbar.Add($"Erro Hardware listing error {ex}", Severity.Error);
+                Snackbar.Add($"Erro Host listing error {ex}", Severity.Error);
             }
         }
     }
 
 
-    async Task ShowDeleteConfirmation(HardwareResponse item)
+    async Task ShowDeleteConfirmation(HostResponse item)
     {
         var parameters = new DialogParameters
         {
-            { "hardware", item }
+            { "host", item }
         };
 
-        var dialog = DialogService.Show<DeleteHardware>("Delete Hardware?", parameters);
+        var dialog = DialogService.Show<DeleteHost>("Delete Host?", parameters);
         var result = await dialog.Result;
 
         if (!result.Cancelled)
@@ -134,13 +134,13 @@
             await DeleteItem(item);
         }
     }
-    async Task DeleteItem(HardwareResponse item)
+    async Task DeleteItem(HostResponse item)
     {
         try
         {
-            await hardwareApi.DeleteHardwareAsync(item.Id);
-            Snackbar.Add($"Hardware {item.Id} Deleted!", Severity.Info);
-            hardwareList = await hardwareApi.GetHardwaresAsync();
+            await hostApi.DeleteHostAsync(item.Id);
+            Snackbar.Add($"Host {item.Id} Deleted!", Severity.Info);
+            hostList = await hostApi.GetHostsAsync();
         }
         catch (Exception ex)
         {

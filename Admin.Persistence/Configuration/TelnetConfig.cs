@@ -14,8 +14,8 @@ internal class TelnetConfig : BaseEntityConfig<Telnet>
         builder.Property(x => x.Password).HasMaxLength(100).IsRequired();
         builder.Property(x => x.Port).IsRequired();
 
-        builder.HasOne(x => x.Hardware)
+        builder.HasOne(x => x.Host)
             .WithOne(x => x.Telnet)
-            .HasForeignKey<Telnet>(x => x.HardwareId);
+            .HasForeignKey<Telnet>(x => x.HostId);
     }
 }

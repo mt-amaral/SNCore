@@ -22,13 +22,13 @@ public class SnmpController : BaseController
     [ProducesResponseType(typeof(SnmpPayload), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [Route("ExibirPorHardwareId")]
-    public async Task<ActionResult> SelectByHardwareId([FromQuery] int id)
+    [Route("ExibirPorHostId")]
+    public async Task<ActionResult> SelectByHostId([FromQuery] int id)
     {
         try
         {
             ValidateInt(id);
-            var snmp = await _snmpService.SelectByHardwareId(id);
+            var snmp = await _snmpService.SelectByHostId(id);
             return Ok(snmp);
         }
         catch (ValidationException ex)

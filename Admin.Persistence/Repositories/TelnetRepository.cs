@@ -13,8 +13,8 @@ public class TelnetRepository : BaseRepository<Telnet>, ITelnetRepository
     {
         _context = context;
     }
-    public async Task<Telnet> SelectByHardwareId(int id)
+    public async Task<Telnet> SelectByHostId(int id)
     {
-        return await _dbSet.Where(x => x.HardwareId == id).FirstOrDefaultAsync() ?? throw new InvalidOperationException($"Não encontrado HardwareId:{id}");
+        return await _dbSet.Where(x => x.HostId == id).FirstOrDefaultAsync() ?? throw new InvalidOperationException($"Não encontrado HostId:{id}");
     }
 }

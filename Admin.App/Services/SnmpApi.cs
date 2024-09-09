@@ -10,9 +10,9 @@ public class SnmpApi
     {
         _httpClient = factory.CreateClient("Api");
     }
-    public async Task<SnmpPayload?> SelectByHardware(int hardwareId)
+    public async Task<SnmpPayload?> SelectByHost(int hostId)
     {
-        var snmp = await _httpClient.GetAsync($"/Snmp/ExibirPorHardwareId?id={hardwareId}");
+        var snmp = await _httpClient.GetAsync($"/Snmp/ExibirPorHostId?id={hostId}");
         return snmp.IsSuccessStatusCode
             ? await snmp.Content.ReadFromJsonAsync<SnmpPayload>() : null;
     }

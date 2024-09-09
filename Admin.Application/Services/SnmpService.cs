@@ -9,19 +9,19 @@ namespace Admin.Application.Services;
 public class SnmpService : ISnmpService
 {
     private readonly ISnmpRepository _repository;
-    private readonly IHardwareRepository _hardwareRepository;
+    private readonly IHostRepository _hostRepository;
     private readonly IMapper _mapper;
     public SnmpService(ISnmpRepository snmpRepository, IMapper mapper,
-        IHardwareRepository hardwareRepository)
+        IHostRepository hostRepository)
     {
         _repository = snmpRepository;
-        _hardwareRepository = hardwareRepository;
+        _hostRepository = hostRepository;
         _mapper = mapper;
     }
 
-    public async Task<SnmpPayload> SelectByHardwareId(int id)
+    public async Task<SnmpPayload> SelectByHostId(int id)
     {
-        var snmp = await _repository.SelectByHardwareId(id);
+        var snmp = await _repository.SelectByHostId(id);
         return _mapper.Map<SnmpPayload>(snmp);
     }
 }
