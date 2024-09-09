@@ -31,6 +31,10 @@ builder.Services.AddCors(
 
 builder.Services.AddAutoMapper(typeof(DomainMappingProfile));
 
+//Env...
+//Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Staging");
+//builder.Environment.EnvironmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
 // Configure Json.NET to ignore null values
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
