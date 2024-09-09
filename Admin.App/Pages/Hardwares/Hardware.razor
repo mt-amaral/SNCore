@@ -19,16 +19,16 @@
             <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.FilterAltOff" OnClick="@clearFilter"></MudIconButton>
         </ToolBarContent>
         <Columns>
-            <PropertyColumn Property="x => x.Id" Title="Id" IsEditable="false"   />
+            <PropertyColumn Property="x => x.Id" Title="Id" IsEditable="false" Sortable="false" />
             <TemplateColumn Title="Status" ShowColumnOptions="false" Sortable="false">
                 <CellTemplate>
                     <MudIconButton Size="@Size.Small" Icon="@(context.Item.IsOnline ? Icons.Material.Filled.Link: Icons.Material.Filled.LinkOff)" Color="@(context.Item.IsOnline ? Color.Tertiary: Color.Default)" Title="Link On"></MudIconButton>
                 </CellTemplate>
             </TemplateColumn>
-            <PropertyColumn Property="x => x.Name" Title="Name" />
-            <PropertyColumn Property="x => x.Description" Title="Description" />
-            <PropertyColumn Property="x => x.Model" Title="Model" />
-            <PropertyColumn Property="x => x.Ipv4" Title="IPv4" />
+            <PropertyColumn Property="x => x.Name" Title="Name" Sortable="false" />
+            <PropertyColumn Property="x => x.Description" Title="Description" Sortable="false" />
+            <PropertyColumn Property="x => x.Model" Title="Model" Sortable="false" />
+            <PropertyColumn Property="x => x.Ipv4" Title="IPv4" Sortable="false" />
             <TemplateColumn CellClass="d-flex justify-end" ShowColumnOptions="false" Sortable="false">
                 <CellTemplate>
                     <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@(() => ToEdit(context.Item))" />
