@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Admin.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240909223009_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240910021233_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,6 +47,9 @@ namespace Admin.Persistence.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int?>("GroupId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Ipv4")
                         .IsRequired()
                         .HasMaxLength(15)
@@ -69,7 +72,40 @@ namespace Admin.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GroupId");
+
                     b.ToTable("Host");
+                });
+
+            modelBuilder.Entity("Admin.Domain.Entities.HostGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(3);
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("GroupName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnOrder(2);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("HostGroup");
                 });
 
             modelBuilder.Entity("Admin.Domain.Entities.Snmp", b =>
@@ -160,6 +196,16 @@ namespace Admin.Persistence.Migrations
                     b.ToTable("Telnet");
                 });
 
+            modelBuilder.Entity("Admin.Domain.Entities.Host", b =>
+                {
+                    b.HasOne("Admin.Domain.Entities.HostGroup", "HostGroup")
+                        .WithMany("Hosts")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("HostGroup");
+                });
+
             modelBuilder.Entity("Admin.Domain.Entities.Snmp", b =>
                 {
                     b.HasOne("Admin.Domain.Entities.Host", "Host")
@@ -187,6 +233,11 @@ namespace Admin.Persistence.Migrations
                     b.Navigation("Snmp");
 
                     b.Navigation("Telnet");
+                });
+
+            modelBuilder.Entity("Admin.Domain.Entities.HostGroup", b =>
+                {
+                    b.Navigation("Hosts");
                 });
 #pragma warning restore 612, 618
         }

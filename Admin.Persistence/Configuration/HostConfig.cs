@@ -25,5 +25,10 @@ internal class HostConfig : BaseEntityConfig<Host>
             .WithOne(x => x.Host)
             .HasForeignKey<Telnet>(x => x.HostId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasOne(x => x.HostGroup)
+               .WithMany(x => x.Hosts)
+               .HasForeignKey(x => x.GroupId)
+               .OnDelete(DeleteBehavior.SetNull); 
     }
 }

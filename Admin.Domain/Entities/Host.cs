@@ -18,5 +18,6 @@ public class Host : BaseEntity
     public string Ipv4 { get; private set; }
     public Snmp? Snmp { get; set; }
     public Telnet? Telnet { get; set; }
-
+    public int? GroupId { get; private set; }
+    public HostGroup? HostGroup { get; set; }
 }

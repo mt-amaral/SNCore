@@ -4,7 +4,6 @@ using Admin.Domain.Interfaces.Base;
 
 namespace Admin.Domain.Interfaces;
 
-public interface IHostRepository : IBaseRepository<Host>
+public interface IHostGroupRepository : IBaseRepository<HostGroup>
 {
-    Task<Host> SelectByHost(int id);
 }

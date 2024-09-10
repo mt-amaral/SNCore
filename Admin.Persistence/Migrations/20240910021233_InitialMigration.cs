@@ -6,11 +6,27 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Admin.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "HostGroup",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
+                    GroupName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HostGroup", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Host",
                 columns: table => new
@@ -24,11 +40,18 @@ namespace Admin.Persistence.Migrations
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     IsOnline = table.Column<bool>(type: "bit", nullable: false),
                     Model = table.Column<short>(type: "smallint", nullable: false),
-                    Ipv4 = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false)
+                    Ipv4 = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    GroupId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Host", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Host_HostGroup_GroupId",
+                        column: x => x.GroupId,
+                        principalTable: "HostGroup",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -82,6 +105,11 @@ namespace Admin.Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Host_GroupId",
+                table: "Host",
+                column: "GroupId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Snmp_HostId",
                 table: "Snmp",
                 column: "HostId",
@@ -105,6 +133,9 @@ namespace Admin.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "Host");
+
+            migrationBuilder.DropTable(
+                name: "HostGroup");
         }
     }
 }
