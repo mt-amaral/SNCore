@@ -13,7 +13,7 @@ public class TelnetApi
     }
     public async Task<TelnetPayload?> SelectByHost(int hostId)
     {
-        var snmp = await _httpClient.GetAsync($"/Telnet/ExibirPorHostId?id={hostId}");
+        var snmp = await _httpClient.GetAsync($"api/telnet/exibirporhostId?id={hostId}");
         return snmp.IsSuccessStatusCode
             ? await snmp.Content.ReadFromJsonAsync<TelnetPayload>() : null;
     }

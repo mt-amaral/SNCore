@@ -7,8 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Admin.Api.Controllers.v1;
 
-[ApiController]
-[Route("[controller]")]
 public class HostController : BaseController
 {
     private readonly IHostService _hostService;

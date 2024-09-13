@@ -14,27 +14,27 @@ public class HostApi
 
     public async Task<IEnumerable<HostResponse>?> GetHostsAsync()
     {
-        return await _httpClient.GetFromJsonAsync<IEnumerable<HostResponse>>("Host/ExibirTodos");
+        return await _httpClient.GetFromJsonAsync<IEnumerable<HostResponse>>("api/host/exibirtodos");
     }
     public async Task CreateHostAsync(HostRequest host)
     {
-        var response = await _httpClient.PostAsJsonAsync("Host/CriarHost", host);
+        var response = await _httpClient.PostAsJsonAsync("api/host/criarHost", host);
         response.EnsureSuccessStatusCode();
     }
     public async Task<HostResponse> GetHostId(int hostId)
     {
-        return await _httpClient.GetFromJsonAsync<HostResponse>($"Host/ExibirHostPorId?id={hostId}");
+        return await _httpClient.GetFromJsonAsync<HostResponse>($"Api/host/exibirhostporid?id={hostId}");
     }
     public async Task EditHostAsync(int id, HostRequest host)
     {
-        var response = await _httpClient.PutAsJsonAsync($"Host/EditarHost?id={id}", host);
+        var response = await _httpClient.PutAsJsonAsync($"api/host/editarhost?id={id}", host);
         response.EnsureSuccessStatusCode();
     }
     public async Task DeleteHostAsync(int hostId)
     {
         try
         {
-            var response = await _httpClient.DeleteAsync($"Host/DeleteHost/?hostId={hostId}");
+            var response = await _httpClient.DeleteAsync($"host/deleteHost/?hostId={hostId}");
             response.EnsureSuccessStatusCode();
 
         }

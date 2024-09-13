@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Admin.Api.Controllers.v1;
 
-[ApiController]
-[Route("[controller]")]
 public class TelnetController : BaseController
 {
     private readonly ITelnetService _telnetService;

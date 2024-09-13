@@ -12,7 +12,7 @@ public class SnmpApi
     }
     public async Task<SnmpPayload?> SelectByHost(int hostId)
     {
-        var snmp = await _httpClient.GetAsync($"/Snmp/ExibirPorHostId?id={hostId}");
+        var snmp = await _httpClient.GetAsync($"api/snmp/exibirporhostId?id={hostId}");
         return snmp.IsSuccessStatusCode
             ? await snmp.Content.ReadFromJsonAsync<SnmpPayload>() : null;
     }

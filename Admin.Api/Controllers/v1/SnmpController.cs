@@ -5,8 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Admin.Api.Controllers.v1;
 
-[ApiController]
-[Route("[controller]")]
+
 public class SnmpController : BaseController
 {
     private readonly ISnmpService _snmpService;
