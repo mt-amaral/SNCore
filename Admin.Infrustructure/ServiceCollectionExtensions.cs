@@ -1,6 +1,5 @@
 ﻿using Admin.Application.Interfaces;
 using Admin.Application.Services;
-using Admin.Domain.Entities;
 using Admin.Domain.Interfaces;
 using Admin.Persistence.Repositories;
 using Admin.Shared.Payload;

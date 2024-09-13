@@ -1,10 +1,9 @@
-﻿using Admin.Shared.Request;
-using Admin.Shared.Response;
+﻿using Admin.Shared.Payload;
 
 
 namespace Admin.Application.Interfaces;
 
 public interface IHostGroupService
 {
-    Task<IEnumerable<HostResponse>> SelectAll();
+    Task<ICollection<HostGroupPayload>> SelectAll();
 }

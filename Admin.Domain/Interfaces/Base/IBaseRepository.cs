@@ -8,4 +8,5 @@ public interface IBaseRepository<T> where T : class
     Task Create(T entity);
     Task Edit(T entity);
     Task Delete(T entity);
+
 }

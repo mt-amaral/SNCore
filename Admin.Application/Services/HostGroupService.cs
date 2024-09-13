@@ -7,13 +7,17 @@ namespace Admin.Application.Services;
 
 public class HostGroupService : IHostGroupService
 {
-    private readonly IHostGroupService _hostGroupService;
+    private readonly IHostGroupRepository _hostGroupRepository;
     private readonly IMapper _mapper;
     public HostGroupService(IMapper mapper,
-        IHostGroupService hostGroupService)
+        IHostGroupRepository hostGroupRepository)
     {
-        _hostGroupService = hostGroupService;
+        _hostGroupRepository = hostGroupRepository;
         _mapper = mapper;
     }
-
+    public async Task<ICollection<HostGroupPayload>> SelectAll()
+    {
+        var entityList = await _hostGroupRepository.SelectAllColection();
+        return _mapper.Map<ICollection<HostGroupPayload>>(entityList);
+    }
 }

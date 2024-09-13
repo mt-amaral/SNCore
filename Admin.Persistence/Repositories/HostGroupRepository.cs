@@ -2,6 +2,7 @@
 using Admin.Domain.Interfaces;
 using Admin.Persistence.Context;
 using Admin.Persistence.Repositories.Base;
+using Microsoft.EntityFrameworkCore;
 
 namespace Admin.Persistence.Repositories;
 
@@ -11,5 +12,11 @@ public class HostGroupRepository : BaseRepository<HostGroup>, IHostGroupReposito
     public HostGroupRepository(ApplicationDbContext context) : base(context)
     {
         _context = context;
+    }
+    public async Task<ICollection<HostGroup>> SelectAllColection()
+    {
+        return await _dbSet
+            .Include(h => h.Hosts)
+            .ToListAsync();
     }
 }

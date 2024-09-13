@@ -15,5 +15,9 @@ public class DomainMappingProfile : Profile
         CreateMap<Host, HostPayload>().ReverseMap();
         CreateMap<Snmp, SnmpPayload>().ReverseMap();
         CreateMap<Telnet, TelnetPayload>().ReverseMap();
+        CreateMap<HostGroup, HostGroupPayload>().ReverseMap();
+
+        CreateMap<Host, HostGroup>()
+            .ForMember(dest => dest.Hosts, opt => opt.MapFrom(src => src));
     }
 }
