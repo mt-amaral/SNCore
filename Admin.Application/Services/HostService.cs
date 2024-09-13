@@ -13,7 +13,6 @@ public class HostService : IHostService
     private readonly ISnmpRepository _snmpRepository;
     private readonly ITelnetRepository _telnetRepository;
     private readonly IMapper _mapper;
-    IHostRepository Ref;
     public HostService(IHostRepository repository,
         IMapper mapper,
         ISnmpRepository snmpRepository,
@@ -55,6 +54,5 @@ public class HostService : IHostService
         var entity = await _repository.SelectByPk(id);
         if (entity != null)
             await _repository.Delete(entity);
-
     }
 }

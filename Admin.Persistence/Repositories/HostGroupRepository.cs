@@ -2,7 +2,6 @@
 using Admin.Domain.Interfaces;
 using Admin.Persistence.Context;
 using Admin.Persistence.Repositories.Base;
-using Microsoft.EntityFrameworkCore;
 
 namespace Admin.Persistence.Repositories;
 
@@ -13,5 +12,4 @@ public class HostGroupRepository : BaseRepository<HostGroup>, IHostGroupReposito
     {
         _context = context;
     }
-
 }

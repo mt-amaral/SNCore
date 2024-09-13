@@ -1,5 +1,6 @@
 ﻿using Admin.Application.Interfaces;
 using Admin.Application.Services;
+using Admin.Domain.Entities;
 using Admin.Domain.Interfaces;
 using Admin.Persistence.Repositories;
 using Admin.Shared.Payload;
@@ -16,6 +17,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IHostService, HostService>();
         services.AddScoped<ISnmpService, SnmpService>();
         services.AddScoped<ITelnetService, TelnetService>();
+        services.AddScoped<IHostGroupService, HostGroupService>();
 
         return services;
     }
@@ -24,6 +26,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IHostRepository, HostRepository>();
         services.AddScoped<ISnmpRepository, SnmpRepository>();
         services.AddScoped<ITelnetRepository, TelnetRepository>();
+        services.AddScoped<IHostGroupRepository, HostGroupRepository>();
 
         return services;
     }
@@ -32,9 +35,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddScoped<IValidator<HostRequest>, HostValidation<HostRequest>>();
         services.AddScoped<IValidator<HostPayload>, HostValidation<HostPayload>>();
-
         services.AddScoped<IValidator<SnmpPayload>, SnmpValidation<SnmpPayload>>();
-
         services.AddScoped<IValidator<TelnetPayload>, TelnetValidation<TelnetPayload>>();
 
         return services;

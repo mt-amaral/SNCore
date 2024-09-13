@@ -29,6 +29,6 @@ internal class HostConfig : BaseEntityConfig<Host>
         builder.HasOne(x => x.HostGroup)
                .WithMany(x => x.Hosts)
                .HasForeignKey(x => x.GroupId)
-               .OnDelete(DeleteBehavior.SetNull); 
+               .OnDelete(DeleteBehavior.SetNull);
     }
 }

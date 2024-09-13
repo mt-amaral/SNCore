@@ -2,10 +2,9 @@
 using Admin.Domain.Interfaces.Base;
 
 
-namespace Admin.Domain.Interfaces
+namespace Admin.Domain.Interfaces;
+
+public interface ITelnetRepository : IBaseRepository<Telnet>
 {
-    public interface ITelnetRepository : IBaseRepository<Telnet>
-    {
-        Task<Telnet> SelectByHostId(int id);
-    }
+    Task<Telnet> SelectByHostId(int id);
 }

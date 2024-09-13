@@ -2,10 +2,9 @@
 using Admin.Domain.Interfaces.Base;
 
 
-namespace Admin.Domain.Interfaces
+namespace Admin.Domain.Interfaces;
+
+public interface ISnmpRepository : IBaseRepository<Snmp>
 {
-    public interface ISnmpRepository : IBaseRepository<Snmp>
-    {
-        Task<Snmp?> SelectByHostId(int id);
-    }
+    Task<Snmp?> SelectByHostId(int id);
 }
