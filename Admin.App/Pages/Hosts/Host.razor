@@ -7,7 +7,7 @@
 
 <MudContainer MaxWidth="MaxWidth.ExtraLarge">
     <MudDataGrid T="HostResponse" Items="@hostList" LoadingProgressColor="Color.Dark" Loading="@loading"
-                 Striped="true" Dense="true"  Groupable="true" GroupExpanded="true">
+                 Striped="true" Dense="true" GroupExpanded="true" Filterable="false">
         <ToolBarContent>
             <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Add" OnClick="@CreateHost"></MudIconButton>
             <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Sync" OnClick="@OnInitializedAsync"></MudIconButton>
@@ -18,15 +18,19 @@
             </MudChipSet>
             <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.FilterAltOff" OnClick="@clearFilter"></MudIconButton>
         </ToolBarContent>
-        <Columns>
-            <PropertyColumn Property="x => x.Id" Title="Id" IsEditable="false" Sortable="true" />
-            <PropertyColumn Property="x => x.Name" Title="Name" Sortable="false" />
-            <PropertyColumn Property="x => x.Description" Title="Description" Sortable="false" />
-            <PropertyColumn Property="x => x.Model" Title="Model" Sortable="false" />
-            <PropertyColumn Property="x => x.Ipv4" Title="IPv4" Sortable="false" />
-            <PropertyColumn Property="x => x.GroupId" Title="Group" Sortable="false" Grouping GroupBy="@_groupBy" Hidden="true" />
-            <PropertyColumn Property="x => x.GroupName" Title="Group Name" Hidden="true" Sortable="false">
-            </PropertyColumn>
+        <Columns >
+            <PropertyColumn Property="x => x.Id"  Sortable="false"  Title="Id" IsEditable="false" />
+            <PropertyColumn Property="x => x.Name"  Sortable="false" Title="Name" />
+            <PropertyColumn Property="x => x.Description" Sortable="false" Title="Description" />
+            <PropertyColumn Property="x => x.Model" Sortable="false" Title="Model" />
+            <PropertyColumn Property="x => x.Ipv4" Sortable="false" Title="IPv4" />
+            <PropertyColumn Property="x => x.GroupId" Sortable="false" Title="Group" Groupable="true" Grouping GroupBy="@_groupBy"  Hidden="true"/>
+            <TemplateColumn CellClass="d-flex justify-end" Sortable="false" ShowColumnOptions="false">
+                <CellTemplate>
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@(() => ToEdit(context.Item))" />
+                    <MudIconButton Color="Color.Error" Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="() => ShowDeleteConfirmation(context.Item)" />
+                </CellTemplate>
+            </TemplateColumn>
         </Columns>
         <PagerContent>
             <MudDataGridPager T="HostResponse" DisableRowsPerPage="true" />
@@ -41,19 +45,7 @@
     private bool _customizeGroupTemplate;
     static bool _customizeGroupBy;
 
-    private Func<HostResponse, object> _groupBy = x =>
-    {
-        if (_customizeGroupBy)
-            return x.GroupId;
-        return x.GroupName;
-    };
 
-    private string GroupClassFunc(GroupDefinition<HostResponse> item)
-    {
-        return item.Grouping.Key?.ToString() == "SpecialGroupId" // Customize based on your criteria
-            ? "mud-theme-warning"
-            : string.Empty;
-    }
     protected override async Task OnInitializedAsync()
     {
         loading = true;
@@ -61,12 +53,14 @@
         try
         {
             hostList = await hostApi.GetHostsAsync();
-            loading = false;
-
         }
         catch (Exception ex)
         {
-            // Handle error
+            Snackbar.Add($"Erro ao carregar hosts: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            loading = false;
         }
     }
 
@@ -74,9 +68,9 @@
     {
         selected = Array.Empty<MudChip>();
     }
+
     async Task CreateHost()
     {
-
         var parameters = new DialogParameters
         {
             { "hostNew", new HostRequest() }
@@ -94,7 +88,7 @@
             }
             catch (Exception ex)
             {
-                Snackbar.Add($"Erro Host listing error", Severity.Error);
+                Snackbar.Add($"Erro ao criar host: {ex.Message}", Severity.Error);
             }
         }
     }
@@ -119,11 +113,10 @@
             }
             catch (Exception ex)
             {
-                Snackbar.Add($"Erro Host listing error {ex}", Severity.Error);
+                Snackbar.Add($"Erro ao editar host: {ex.Message}", Severity.Error);
             }
         }
     }
-
 
     async Task ShowDeleteConfirmation(HostResponse item)
     {
@@ -140,6 +133,7 @@
             await DeleteItem(item);
         }
     }
+
     async Task DeleteItem(HostResponse item)
     {
         try
@@ -150,8 +144,23 @@
         }
         catch (Exception ex)
         {
-            Snackbar.Add($"Erro {item.Id}, {item.Model}", Severity.Info);
-            Snackbar.Add($"{ex}", Severity.Error);
+            Snackbar.Add($"Erro ao deletar host {item.Id}: {ex.Message}", Severity.Error);
         }
+    }
+    private Func<HostResponse, object> _groupBy = x =>
+    {
+    if (_customizeGroupBy)
+        return x.GroupId.HasValue ? (object)x.GroupId.Value : "UnknownGroup";
+
+    return !string.IsNullOrEmpty(x.GroupName) ? (object)x.GroupName : "NoGroup";
+    };
+
+    private string GroupClassFunc(GroupDefinition<HostResponse> item)
+    {
+        return item.Grouping.Key?.ToString() switch
+        {
+            "NoGroup" => "mud-theme-info",
+            _ => string.Empty
+        };
     }
 }
