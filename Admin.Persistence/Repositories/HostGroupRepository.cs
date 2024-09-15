@@ -13,10 +13,4 @@ public class HostGroupRepository : BaseRepository<HostGroup>, IHostGroupReposito
     {
         _context = context;
     }
-    public async Task<ICollection<HostGroup>> SelectAllColection()
-    {
-        return await _dbSet
-            .Include(h => h.Hosts)
-            .ToListAsync();
-    }
 }

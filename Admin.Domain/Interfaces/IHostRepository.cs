@@ -7,4 +7,5 @@ namespace Admin.Domain.Interfaces;
 public interface IHostRepository : IBaseRepository<Host>
 {
     Task<Host> SelectByHost(int id);
+    Task<IEnumerable<Host>> SelectByGroup();
 }

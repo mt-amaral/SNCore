@@ -7,7 +7,7 @@
 
 <MudContainer MaxWidth="MaxWidth.ExtraLarge">
     <MudDataGrid T="HostResponse" Items="@hostList" LoadingProgressColor="Color.Dark" Loading="@loading"
-                 Striped="true" Dense="true">
+                 Striped="true" Dense="true"  Groupable="true" GroupExpanded="true">
         <ToolBarContent>
             <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Add" OnClick="@CreateHost"></MudIconButton>
             <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Sync" OnClick="@OnInitializedAsync"></MudIconButton>
@@ -19,22 +19,14 @@
             <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.FilterAltOff" OnClick="@clearFilter"></MudIconButton>
         </ToolBarContent>
         <Columns>
-            <PropertyColumn Property="x => x.Id" Title="Id" IsEditable="false" Sortable="false" />
-            <TemplateColumn Title="Status" ShowColumnOptions="false" Sortable="false">
-                <CellTemplate>
-                    <MudIconButton Size="@Size.Small" Icon="@(context.Item.IsOnline ? Icons.Material.Filled.Link: Icons.Material.Filled.LinkOff)" Color="@(context.Item.IsOnline ? Color.Tertiary: Color.Default)" Title="Link On"></MudIconButton>
-                </CellTemplate>
-            </TemplateColumn>
+            <PropertyColumn Property="x => x.Id" Title="Id" IsEditable="false" Sortable="true" />
             <PropertyColumn Property="x => x.Name" Title="Name" Sortable="false" />
             <PropertyColumn Property="x => x.Description" Title="Description" Sortable="false" />
             <PropertyColumn Property="x => x.Model" Title="Model" Sortable="false" />
             <PropertyColumn Property="x => x.Ipv4" Title="IPv4" Sortable="false" />
-            <TemplateColumn CellClass="d-flex justify-end" ShowColumnOptions="false" Sortable="false">
-                <CellTemplate>
-                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@(() => ToEdit(context.Item))" />
-                    <MudIconButton Color="Color.Error" Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="() => ShowDeleteConfirmation(context.Item)" />
-                </CellTemplate>
-            </TemplateColumn>
+            <PropertyColumn Property="x => x.GroupId" Title="Group" Sortable="false" Grouping GroupBy="@_groupBy" Hidden="true" />
+            <PropertyColumn Property="x => x.GroupName" Title="Group Name" Hidden="true" Sortable="false">
+            </PropertyColumn>
         </Columns>
         <PagerContent>
             <MudDataGridPager T="HostResponse" DisableRowsPerPage="true" />
@@ -46,8 +38,22 @@
     MudChip[] selected;
     private bool loading;
     private IEnumerable<HostResponse> hostList = new List<HostResponse>();
-    [Inject] private NavigationManager NavigationManager { get; set; }
+    private bool _customizeGroupTemplate;
+    static bool _customizeGroupBy;
 
+    private Func<HostResponse, object> _groupBy = x =>
+    {
+        if (_customizeGroupBy)
+            return x.GroupId;
+        return x.GroupName;
+    };
+
+    private string GroupClassFunc(GroupDefinition<HostResponse> item)
+    {
+        return item.Grouping.Key?.ToString() == "SpecialGroupId" // Customize based on your criteria
+            ? "mud-theme-warning"
+            : string.Empty;
+    }
     protected override async Task OnInitializedAsync()
     {
         loading = true;
@@ -56,6 +62,7 @@
         {
             hostList = await hostApi.GetHostsAsync();
             loading = false;
+
         }
         catch (Exception ex)
         {
@@ -109,7 +116,6 @@
                 await hostApi.EditHostAsync(host.Id, editHost);
                 Snackbar.Add($"Host '{editHost.Name}' editado com sucesso!", Severity.Success);
                 hostList = await hostApi.GetHostsAsync();
-
             }
             catch (Exception ex)
             {

@@ -7,6 +7,7 @@ using MudBlazor.Services;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
+
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
@@ -19,6 +20,7 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddTransient<HostApi>();
 builder.Services.AddTransient<SnmpApi>();
 builder.Services.AddTransient<TelnetApi>();
+builder.Services.AddTransient<HostGroupApi>();
 
 // Configure HttpClient
 builder.Services.AddHttpClient("Api", client =>

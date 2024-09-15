@@ -5,5 +5,5 @@ namespace Admin.Application.Interfaces;
 
 public interface IHostGroupService
 {
-    Task<ICollection<HostGroupPayload>> SelectAll();
+    Task<IEnumerable<HostGroupPayload>> SelectAll();
 }

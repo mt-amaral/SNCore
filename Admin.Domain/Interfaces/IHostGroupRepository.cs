@@ -6,5 +6,4 @@ namespace Admin.Domain.Interfaces;
 
 public interface IHostGroupRepository : IBaseRepository<HostGroup>
 {
-    Task<ICollection<HostGroup>> SelectAllColection();
 }

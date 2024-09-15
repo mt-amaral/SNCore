@@ -15,9 +15,9 @@ public class HostGroupService : IHostGroupService
         _hostGroupRepository = hostGroupRepository;
         _mapper = mapper;
     }
-    public async Task<ICollection<HostGroupPayload>> SelectAll()
+    public async Task<IEnumerable<HostGroupPayload>> SelectAll()
     {
-        var entityList = await _hostGroupRepository.SelectAllColection();
-        return _mapper.Map<ICollection<HostGroupPayload>>(entityList);
+        var entityList = await _hostGroupRepository.SelectAll();
+        return _mapper.Map<IEnumerable<HostGroupPayload>>(entityList);
     }
 }

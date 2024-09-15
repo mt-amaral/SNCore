@@ -26,7 +26,7 @@ public class HostService : IHostService
 
     public async Task<IEnumerable<HostResponse>> SelectAll()
     {
-        var entityList = await _repository.SelectAll();
+        var entityList = await _repository.SelectByGroup();
         return _mapper.Map<IEnumerable<HostResponse>>(entityList);
     }
 

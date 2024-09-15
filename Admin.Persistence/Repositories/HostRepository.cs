@@ -3,6 +3,7 @@ using Admin.Domain.Interfaces;
 using Admin.Persistence.Context;
 using Admin.Persistence.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
+using System.Numerics;
 
 namespace Admin.Persistence.Repositories;
 
@@ -20,5 +21,11 @@ public class HostRepository : BaseRepository<Host>, IHostRepository
             .Include(e => e.Telnet)
             .FirstOrDefaultAsync(e => e.Id == id)
             ?? throw new InvalidOperationException($"Não encontrado {typeof(Host).Name} id:{id}");
+    }
+    public async Task<IEnumerable<Host>> SelectByGroup()
+    {
+        return await _dbSet
+            .Include(e => e.HostGroup)
+            .ToListAsync();
     }
 }
