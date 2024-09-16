@@ -5,22 +5,26 @@
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
 
-<MudContainer MaxWidth="MaxWidth.ExtraLarge">
+<MudContainer MaxWidth="MaxWidth.ExtraLarge"  Style="margin-top: 30px">
     <MudDataGrid T="HostResponse" Items="@hostList" LoadingProgressColor="Color.Dark" Loading="@loading"
                  Striped="true" Dense="true" GroupExpanded="true" Filterable="false">
         <ToolBarContent>
-            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Add" OnClick="@CreateHost"></MudIconButton>
-            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Sync" OnClick="@OnInitializedAsync"></MudIconButton>
             <MudSpacer />
-            <MudChipSet @bind-SelectedChips="selected" MultiSelection="true" Filter="true">
-                <MudChip Text="All Offline"></MudChip>
-                <MudChip Text="Last Date"></MudChip>
-            </MudChipSet>
-            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.FilterAltOff" OnClick="@clearFilter"></MudIconButton>
+            <MudButtonGroup Color="Color.Dark" Variant="Variant.Outlined" Size="Size.Small">
+                <MudButton Size="@Size.Small" Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Add" OnClick="@CreateHost">New Host</MudButton>
+                <MudButton Size="@Size.Small" Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.AutoAwesomeMotion">New Group</MudButton>
+                <MudButton Size="@Size.Small" StartIcon="@Icons.Material.Filled.Sync" OnClick="@OnInitializedAsync">Reload</MudButton>
+            </MudButtonGroup>
+
         </ToolBarContent>
         <Columns >
             <PropertyColumn Property="x => x.Id"  Sortable="false"  Title="Id" IsEditable="false" />
             <PropertyColumn Property="x => x.Name"  Sortable="false" Title="Name" />
+            <TemplateColumn Title="Status" ShowColumnOptions="false" Sortable="false">
+                <CellTemplate>
+                    <MudIconButton Size="@Size.Small" Icon="@(context.Item.IsOnline ? Icons.Material.Filled.Link: Icons.Material.Filled.LinkOff)" Color="@(context.Item.IsOnline ? Color.Tertiary: Color.Default)" Title="Link On"></MudIconButton>
+                </CellTemplate>
+            </TemplateColumn>
             <PropertyColumn Property="x => x.Description" Sortable="false" Title="Description" />
             <PropertyColumn Property="x => x.Model" Sortable="false" Title="Model" />
             <PropertyColumn Property="x => x.Ipv4" Sortable="false" Title="IPv4" />
@@ -39,7 +43,6 @@
 </MudContainer>
 
 @code {
-    MudChip[] selected;
     private bool loading;
     private IEnumerable<HostResponse> hostList = new List<HostResponse>();
     private bool _customizeGroupTemplate;
@@ -64,10 +67,6 @@
         }
     }
 
-    protected void clearFilter()
-    {
-        selected = Array.Empty<MudChip>();
-    }
 
     async Task CreateHost()
     {
