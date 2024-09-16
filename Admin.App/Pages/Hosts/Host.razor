@@ -5,8 +5,7 @@
 @inject HostApi hostApi
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
-<MudBreadcrumbs Items="_items" Style="padding-left: 24px;"></MudBreadcrumbs>
-<MudContainer MaxWidth="MaxWidth.ExtraLarge">
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Style="margin-top: 10px">
     <MudGrid max>
         <MudItem xs="3" >
             <MudPaper Class="py-8" Elevation="1"></MudPaper>
@@ -18,14 +17,11 @@
             <MudPaper Class="d-flex mud-width-full py-8" Elevation="1"></MudPaper>
         </MudItem>
         <MudItem xs="3">
-            <Summary Content="400" 
-                Description="Sales"
-                DisplayColor="--mud-palette-secondary"
-                Icon="@Icons.Material.Rounded.CurrencyExchange"/>
+            <MudPaper Class="d-flex mud-width-full py-8" Elevation="1"></MudPaper>
         </MudItem>
     </MudGrid>
 </MudContainer>
-<MudContainer MaxWidth="MaxWidth.ExtraLarge"  Style="margin-top: 30px">
+<MudContainer MaxWidth="MaxWidth.ExtraLarge"  Style="margin-top: 10px">
     <MudDataGrid T="HostResponse" Items="@hostList" LoadingProgressColor="Color.Dark" Loading="@loading"
                  Striped="true" Dense="true" GroupExpanded="true" Filterable="false">
         <ToolBarContent>
@@ -68,12 +64,6 @@
     private bool _customizeGroupTemplate;
     static bool _customizeGroupBy;
 
-    private List<BreadcrumbItem> _items = new List<BreadcrumbItem>
-    {
-        new BreadcrumbItem("Hosts", href: "#", icon: Icons.Material.Outlined.Dns),
-        new BreadcrumbItem("All", href: "#"),
-
-    };
 
     protected override async Task OnInitializedAsync()
     {
