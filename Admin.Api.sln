@@ -37,7 +37,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{AC72FBC3-EA9
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{061A5B3A-1717-4657-835E-1A809B05D28D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Admin.Connection", "Admin.Connection\Admin.Connection.csproj", "{4C1EF434-8DA3-4747-AC89-DC7449467D00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Admin.Connection", "Admin.Connection\Admin.Connection.csproj", "{4C1EF434-8DA3-4747-AC89-DC7449467D00}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

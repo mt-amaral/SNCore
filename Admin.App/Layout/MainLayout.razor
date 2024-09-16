@@ -7,7 +7,8 @@
 <MudLayout>
     <MudAppBar Color="Color.Tertiary">
         <MudIconButton Icon="@(_drawerOpen ? Icons.Material.Filled.ArrowLeft: Icons.Material.Filled.ArrowRight)" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        Admin App
+        <MudSpacer />
+        <MudAvatar Color="Color.Dark" Variant="Variant.Outlined" Size="@Size.Small">MT</MudAvatar>
     </MudAppBar>
     <MudDrawer @bind-Open="@_drawerOpen">
         <NavMenu />
