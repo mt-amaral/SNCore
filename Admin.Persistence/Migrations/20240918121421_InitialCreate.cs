@@ -5,7 +5,7 @@
 namespace Admin.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -27,6 +27,22 @@ namespace Admin.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "HostModel",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
+                    ModelName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HostModel", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Host",
                 columns: table => new
                 {
@@ -38,9 +54,9 @@ namespace Admin.Persistence.Migrations
                     Description = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     IsOnline = table.Column<bool>(type: "bit", nullable: false),
-                    Model = table.Column<short>(type: "smallint", nullable: false),
                     Ipv4 = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    GroupId = table.Column<int>(type: "int", nullable: true)
+                    GroupId = table.Column<int>(type: "int", nullable: true),
+                    ModelId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -51,6 +67,11 @@ namespace Admin.Persistence.Migrations
                         principalTable: "HostGroup",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_Host_HostModel_ModelId",
+                        column: x => x.ModelId,
+                        principalTable: "HostModel",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -109,6 +130,11 @@ namespace Admin.Persistence.Migrations
                 column: "GroupId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Host_ModelId",
+                table: "Host",
+                column: "ModelId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Snmp_HostId",
                 table: "Snmp",
                 column: "HostId",
@@ -135,6 +161,9 @@ namespace Admin.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "HostGroup");
+
+            migrationBuilder.DropTable(
+                name: "HostModel");
         }
     }
 }

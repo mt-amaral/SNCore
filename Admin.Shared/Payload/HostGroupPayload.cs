@@ -1,8 +1,4 @@
-﻿
-
-using Admin.Shared.Response;
-
-namespace Admin.Shared.Payload;
+﻿namespace Admin.Shared.Payload;
 
 public class HostGroupPayload
 {

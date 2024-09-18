@@ -55,8 +55,8 @@ namespace Admin.Persistence.Migrations
                     b.Property<bool>("IsOnline")
                         .HasColumnType("bit");
 
-                    b.Property<short>("Model")
-                        .HasColumnType("smallint");
+                    b.Property<int?>("ModelId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -70,6 +70,8 @@ namespace Admin.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("GroupId");
+
+                    b.HasIndex("ModelId");
 
                     b.ToTable("Host");
                 });
@@ -103,6 +105,37 @@ namespace Admin.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("HostGroup");
+                });
+
+            modelBuilder.Entity("Admin.Domain.Entities.HostModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(3);
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("ModelName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnOrder(2);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("HostModel");
                 });
 
             modelBuilder.Entity("Admin.Domain.Entities.Snmp", b =>
@@ -200,7 +233,13 @@ namespace Admin.Persistence.Migrations
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.SetNull);
 
+                    b.HasOne("Admin.Domain.Entities.HostModel", "HostModel")
+                        .WithMany("Hosts")
+                        .HasForeignKey("ModelId");
+
                     b.Navigation("HostGroup");
+
+                    b.Navigation("HostModel");
                 });
 
             modelBuilder.Entity("Admin.Domain.Entities.Snmp", b =>
@@ -233,6 +272,11 @@ namespace Admin.Persistence.Migrations
                 });
 
             modelBuilder.Entity("Admin.Domain.Entities.HostGroup", b =>
+                {
+                    b.Navigation("Hosts");
+                });
+
+            modelBuilder.Entity("Admin.Domain.Entities.HostModel", b =>
                 {
                     b.Navigation("Hosts");
                 });

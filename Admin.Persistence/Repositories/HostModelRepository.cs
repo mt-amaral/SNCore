@@ -5,10 +5,10 @@ using Admin.Persistence.Repositories.Base;
 
 namespace Admin.Persistence.Repositories;
 
-public class HostGroupRepository : BaseRepository<HostGroup>, IHostGroupRepository
+public class HostModelRepository : BaseRepository<HostModel>, IHostModelRepository
 {
     private readonly ApplicationDbContext _context;
-    public HostGroupRepository(ApplicationDbContext context) : base(context)
+    public HostModelRepository(ApplicationDbContext context) : base(context)
     {
         _context = context;
     }

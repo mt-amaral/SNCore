@@ -1,5 +1,4 @@
-﻿using Admin.Shared.Request;
-using Admin.Shared.Response;
+﻿using Admin.Shared.Response;
 using System.Net.Http.Json;
 
 namespace Admin.App.Services;

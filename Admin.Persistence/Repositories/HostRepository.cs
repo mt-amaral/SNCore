@@ -3,7 +3,6 @@ using Admin.Domain.Interfaces;
 using Admin.Persistence.Context;
 using Admin.Persistence.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
-using System.Numerics;
 
 namespace Admin.Persistence.Repositories;
 

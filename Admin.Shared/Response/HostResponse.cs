@@ -10,7 +10,7 @@ public class HostResponse : HostPayload
     public bool IsOnline { get; set; }
     public SnmpPayload? Snmp { get; set; }
     public TelnetPayload? Telnet { get; set; }
-    public int? GroupId { get;  set; }
+    public int? GroupId { get; set; }
     public string? GroupName { get; set; }
 
 }

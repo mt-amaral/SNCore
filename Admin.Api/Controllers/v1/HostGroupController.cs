@@ -1,7 +1,6 @@
 ﻿using Admin.Application.Interfaces;
 using Admin.Shared.Payload;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections;
 
 namespace Admin.Api.Controllers.v1;
 

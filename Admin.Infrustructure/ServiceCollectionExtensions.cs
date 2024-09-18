@@ -26,6 +26,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ISnmpRepository, SnmpRepository>();
         services.AddScoped<ITelnetRepository, TelnetRepository>();
         services.AddScoped<IHostGroupRepository, HostGroupRepository>();
+        services.AddScoped<IHostModelRepository, HostModelRepository>();
 
         return services;
     }

@@ -13,7 +13,6 @@ internal class HostConfig : BaseEntityConfig<Host>
 
         builder.Property(x => x.Name).HasMaxLength(50).IsRequired();
         builder.Property(x => x.Description).HasMaxLength(50).IsRequired();
-        builder.Property(x => x.Model).HasConversion<short>().IsRequired();
         builder.Property(x => x.Ipv4).HasMaxLength(15).IsRequired();
 
         builder.HasOne(x => x.Snmp)
@@ -30,5 +29,9 @@ internal class HostConfig : BaseEntityConfig<Host>
                .WithMany(x => x.Hosts)
                .HasForeignKey(x => x.GroupId)
                .OnDelete(DeleteBehavior.SetNull);
+
+        builder.HasOne(x => x.HostModel)
+               .WithMany(x => x.Hosts)
+               .HasForeignKey(x => x.ModelId);
     }
 }
