@@ -1,10 +1,10 @@
 ﻿using Admin.Domain.Entities;
+using Admin.Domain.Interfaces.Base;
 
 
-namespace Admin.Domain.Interfaces
+namespace Admin.Domain.Interfaces;
+
+public interface ITelnetRepository : IBaseRepository<Telnet>
 {
-    public interface ITelnetRepository : IBaseRepository<Telnet>
-    {
-        Task<Telnet> SelectByHardwareId(int id);
-    }
+    Task<Telnet> SelectByHostId(int id);
 }

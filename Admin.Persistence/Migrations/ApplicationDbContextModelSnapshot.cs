@@ -22,7 +22,7 @@ namespace Admin.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Admin.Domain.Entities.Hardware", b =>
+            modelBuilder.Entity("Admin.Domain.Entities.Host", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -43,6 +43,9 @@ namespace Admin.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<int?>("GroupId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Ipv4")
                         .IsRequired()
@@ -66,7 +69,40 @@ namespace Admin.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Hardware");
+                    b.HasIndex("GroupId");
+
+                    b.ToTable("Host");
+                });
+
+            modelBuilder.Entity("Admin.Domain.Entities.HostGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(3);
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("GroupName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnOrder(2);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("HostGroup");
                 });
 
             modelBuilder.Entity("Admin.Domain.Entities.Snmp", b =>
@@ -91,7 +127,7 @@ namespace Admin.Persistence.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnOrder(1);
 
-                    b.Property<int>("HardwareId")
+                    b.Property<int>("HostId")
                         .HasColumnType("int");
 
                     b.Property<int>("Port")
@@ -106,7 +142,7 @@ namespace Admin.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("HardwareId")
+                    b.HasIndex("HostId")
                         .IsUnique();
 
                     b.ToTable("Snmp");
@@ -129,7 +165,7 @@ namespace Admin.Persistence.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnOrder(1);
 
-                    b.Property<int>("HardwareId")
+                    b.Property<int>("HostId")
                         .HasColumnType("int");
 
                     b.Property<string>("Password")
@@ -151,41 +187,54 @@ namespace Admin.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("HardwareId")
+                    b.HasIndex("HostId")
                         .IsUnique();
 
                     b.ToTable("Telnet");
                 });
 
+            modelBuilder.Entity("Admin.Domain.Entities.Host", b =>
+                {
+                    b.HasOne("Admin.Domain.Entities.HostGroup", "HostGroup")
+                        .WithMany("Hosts")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("HostGroup");
+                });
+
             modelBuilder.Entity("Admin.Domain.Entities.Snmp", b =>
                 {
-                    b.HasOne("Admin.Domain.Entities.Hardware", "Hardware")
+                    b.HasOne("Admin.Domain.Entities.Host", "Host")
                         .WithOne("Snmp")
-                        .HasForeignKey("Admin.Domain.Entities.Snmp", "HardwareId")
+                        .HasForeignKey("Admin.Domain.Entities.Snmp", "HostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Hardware");
+                    b.Navigation("Host");
                 });
 
             modelBuilder.Entity("Admin.Domain.Entities.Telnet", b =>
                 {
-                    b.HasOne("Admin.Domain.Entities.Hardware", "Hardware")
+                    b.HasOne("Admin.Domain.Entities.Host", "Host")
                         .WithOne("Telnet")
-                        .HasForeignKey("Admin.Domain.Entities.Telnet", "HardwareId")
+                        .HasForeignKey("Admin.Domain.Entities.Telnet", "HostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Hardware");
+                    b.Navigation("Host");
                 });
 
-            modelBuilder.Entity("Admin.Domain.Entities.Hardware", b =>
+            modelBuilder.Entity("Admin.Domain.Entities.Host", b =>
                 {
-                    b.Navigation("Snmp")
-                        .IsRequired();
+                    b.Navigation("Snmp");
 
-                    b.Navigation("Telnet")
-                        .IsRequired();
+                    b.Navigation("Telnet");
+                });
+
+            modelBuilder.Entity("Admin.Domain.Entities.HostGroup", b =>
+                {
+                    b.Navigation("Hosts");
                 });
 #pragma warning restore 612, 618
         }

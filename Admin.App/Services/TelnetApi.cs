@@ -1,5 +1,5 @@
 ﻿
-using Admin.Shared.Response;
+using Admin.Shared.Payload;
 using System.Net.Http.Json;
 
 namespace Admin.App.Services;
@@ -11,16 +11,10 @@ public class TelnetApi
     {
         _httpClient = factory.CreateClient("Api");
     }
-
-    public async Task EditHardwareAsync(TelnetResponse snmp)
+    public async Task<TelnetPayload?> SelectByHost(int hostId)
     {
-        var response = await _httpClient.PutAsJsonAsync("Snmp/EditarSnmp", snmp);
-        response.EnsureSuccessStatusCode();
-    }
-    public async Task<TelnetResponse?> SelectByHardware(int hardwareId)
-    {
-        var snmp = await _httpClient.GetAsync($"/Telnet/ExibirPorHardwareId?id={hardwareId}");
+        var snmp = await _httpClient.GetAsync($"api/telnet/exibirporhostId?id={hostId}");
         return snmp.IsSuccessStatusCode
-            ? await snmp.Content.ReadFromJsonAsync<TelnetResponse>() : null;
+            ? await snmp.Content.ReadFromJsonAsync<TelnetPayload>() : null;
     }
 }

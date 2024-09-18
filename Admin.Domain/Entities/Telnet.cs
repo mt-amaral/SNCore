@@ -1,4 +1,6 @@
 ﻿
+using Admin.Domain.Entities.Base;
+
 namespace Admin.Domain.Entities;
 
 public class Telnet : BaseEntity
@@ -7,11 +9,11 @@ public class Telnet : BaseEntity
     public string Password { get; private set; }
     public int Port { get; private set; }
 
-    public int HardwareId { get; private set; }
-    public Hardware Hardware { get; set; }
+    public int HostId { get; private set; }
+    public Host Host { get; set; }
 
-    public void SetHardwareId(int hardwareId)
+    public void SetHostId(int hostId)
     {
-        HardwareId = hardwareId;
+        HostId = hostId;
     }
 };

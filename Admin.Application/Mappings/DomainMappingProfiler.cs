@@ -10,14 +10,16 @@ public class DomainMappingProfile : Profile
 {
     public DomainMappingProfile()
     {
-        CreateMap<Hardware, HardwareRequest>().ReverseMap();
-        CreateMap<Hardware, HardwareResponse>().ReverseMap();
-        CreateMap<Hardware, HardwarePayload>().ReverseMap();
-        CreateMap<Snmp, SnmpRequest>().ReverseMap();
-        CreateMap<Snmp, SnmpResponse>().ReverseMap();
+        CreateMap<Host, HostRequest>().ReverseMap();
+        CreateMap<Host, HostResponse>()
+            .ForMember(dest => dest.GroupName, opt => opt.MapFrom(src => src.HostGroup.GroupName))
+            .ReverseMap();
+        CreateMap<Host, HostPayload>().ReverseMap();
         CreateMap<Snmp, SnmpPayload>().ReverseMap();
-        CreateMap<Telnet, TelnetRequest>().ReverseMap();
-        CreateMap<Telnet, TelnetResponse>().ReverseMap();
         CreateMap<Telnet, TelnetPayload>().ReverseMap();
+        CreateMap<HostGroup, HostGroupPayload>().ReverseMap();
+
+        CreateMap<Host, HostGroup>()
+            .ForMember(dest => dest.Hosts, opt => opt.MapFrom(src => src));
     }
 }

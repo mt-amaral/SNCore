@@ -1,6 +1,7 @@
 ﻿using Admin.Domain.Entities;
 using Admin.Domain.Interfaces;
 using Admin.Persistence.Context;
+using Admin.Persistence.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
 
 namespace Admin.Persistence.Repositories;
@@ -12,8 +13,8 @@ public class SnmpRepository : BaseRepository<Snmp>, ISnmpRepository
     {
         _context = context;
     }
-    public async Task<Snmp> SelectByHardwareId(int id)
+    public async Task<Snmp> SelectByHostId(int id)
     {
-        return await _dbSet.Where(x => x.HardwareId == id).FirstOrDefaultAsync() ?? throw new InvalidOperationException($"Não encontrado HardwareId:{id}");
+        return await _dbSet.Where(x => x.HostId == id).FirstOrDefaultAsync() ?? throw new InvalidOperationException($"Não encontrado HostId:{id}");
     }
 }

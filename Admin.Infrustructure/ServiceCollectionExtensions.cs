@@ -13,30 +13,28 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
-        services.AddScoped<IHardwareService, HardwareService>();
+        services.AddScoped<IHostService, HostService>();
         services.AddScoped<ISnmpService, SnmpService>();
         services.AddScoped<ITelnetService, TelnetService>();
+        services.AddScoped<IHostGroupService, HostGroupService>();
 
         return services;
     }
     public static IServiceCollection AddRepositories(this IServiceCollection services)
     {
-        services.AddScoped<IHardwareRepository, HardwareRepository>();
+        services.AddScoped<IHostRepository, HostRepository>();
         services.AddScoped<ISnmpRepository, SnmpRepository>();
         services.AddScoped<ITelnetRepository, TelnetRepository>();
+        services.AddScoped<IHostGroupRepository, HostGroupRepository>();
 
         return services;
     }
 
     public static IServiceCollection AddValidators(this IServiceCollection services)
     {
-        services.AddScoped<IValidator<HardwareRequest>, HardwareValidation<HardwareRequest>>();
-        services.AddScoped<IValidator<HardwarePayload>, HardwareValidation<HardwarePayload>>();
-
-        services.AddScoped<IValidator<SnmpRequest>, SnmpValidation<SnmpRequest>>();
+        services.AddScoped<IValidator<HostRequest>, HostValidation<HostRequest>>();
+        services.AddScoped<IValidator<HostPayload>, HostValidation<HostPayload>>();
         services.AddScoped<IValidator<SnmpPayload>, SnmpValidation<SnmpPayload>>();
-
-        services.AddScoped<IValidator<TelnetRequest>, TelnetValidation<TelnetRequest>>();
         services.AddScoped<IValidator<TelnetPayload>, TelnetValidation<TelnetPayload>>();
 
         return services;
