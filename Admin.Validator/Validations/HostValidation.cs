@@ -24,9 +24,6 @@ public class HostValidation<T> : AbstractValidator<T>
             .NotEmpty().WithMessage("Descrição não pode ser vazia")
             .MaximumLength(50).WithMessage("Descrição muito longa");
 
-        RuleFor(entity => entity.Model)
-            .IsInEnum().WithMessage("Modelo inválido");
-
         RuleFor(entity => entity.Ipv4)
             .NotEmpty().WithMessage("Ipv4 não pode ser vazio")
             .MaximumLength(15).WithMessage("Ipv4 inválido")

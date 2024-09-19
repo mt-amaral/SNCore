@@ -17,6 +17,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ISnmpService, SnmpService>();
         services.AddScoped<ITelnetService, TelnetService>();
         services.AddScoped<IHostGroupService, HostGroupService>();
+        services.AddScoped<IHostModelService, HostModelService>();
 
         return services;
     }

@@ -7,4 +7,5 @@ public class HostRequest : HostPayload
 {
     public SnmpPayload? Snmp { get; set; }
     public TelnetPayload? Telnet { get; set; }
+
 }
