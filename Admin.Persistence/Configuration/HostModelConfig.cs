@@ -15,5 +15,9 @@ internal class HostModelConfig : BaseEntityConfig<HostModel>
         builder.HasMany(x => x.Hosts)
                .WithOne(x => x.HostModel)
                .HasForeignKey(x => x.ModelId);
+
+        builder.HasMany(x => x.Items)
+               .WithOne(x => x.HostModel)
+               .HasForeignKey(x => x.ModelId);
     }
 }

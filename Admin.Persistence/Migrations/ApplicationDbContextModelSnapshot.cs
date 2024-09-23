@@ -138,6 +138,42 @@ namespace Admin.Persistence.Migrations
                     b.ToTable("HostModel");
                 });
 
+            modelBuilder.Entity("Admin.Domain.Entities.Item", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(3);
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("ItemName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int?>("ModelId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnOrder(2);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ModelId");
+
+                    b.ToTable("Item");
+                });
+
             modelBuilder.Entity("Admin.Domain.Entities.Snmp", b =>
                 {
                     b.Property<int>("Id")
@@ -242,6 +278,15 @@ namespace Admin.Persistence.Migrations
                     b.Navigation("HostModel");
                 });
 
+            modelBuilder.Entity("Admin.Domain.Entities.Item", b =>
+                {
+                    b.HasOne("Admin.Domain.Entities.HostModel", "HostModel")
+                        .WithMany("Items")
+                        .HasForeignKey("ModelId");
+
+                    b.Navigation("HostModel");
+                });
+
             modelBuilder.Entity("Admin.Domain.Entities.Snmp", b =>
                 {
                     b.HasOne("Admin.Domain.Entities.Host", "Host")
@@ -279,6 +324,8 @@ namespace Admin.Persistence.Migrations
             modelBuilder.Entity("Admin.Domain.Entities.HostModel", b =>
                 {
                     b.Navigation("Hosts");
+
+                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }
