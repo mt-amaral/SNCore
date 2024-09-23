@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Admin.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240923173501_InitialCreate")]
+    [Migration("20240923222331_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -166,6 +166,9 @@ namespace Admin.Persistence.Migrations
                     b.Property<int?>("ModelId")
                         .HasColumnType("int");
 
+                    b.Property<long?>("OidId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2")
                         .HasColumnOrder(2);
@@ -174,7 +177,33 @@ namespace Admin.Persistence.Migrations
 
                     b.HasIndex("ModelId");
 
+                    b.HasIndex("OidId")
+                        .IsUnique()
+                        .HasFilter("[OidId] IS NOT NULL");
+
                     b.ToTable("Item");
+                });
+
+            modelBuilder.Entity("Admin.Domain.Entities.OidList", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(0);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OidList");
                 });
 
             modelBuilder.Entity("Admin.Domain.Entities.Snmp", b =>
@@ -287,7 +316,13 @@ namespace Admin.Persistence.Migrations
                         .WithMany("Items")
                         .HasForeignKey("ModelId");
 
+                    b.HasOne("Admin.Domain.Entities.OidList", "OidList")
+                        .WithOne("Item")
+                        .HasForeignKey("Admin.Domain.Entities.Item", "OidId");
+
                     b.Navigation("HostModel");
+
+                    b.Navigation("OidList");
                 });
 
             modelBuilder.Entity("Admin.Domain.Entities.Snmp", b =>
@@ -329,6 +364,12 @@ namespace Admin.Persistence.Migrations
                     b.Navigation("Hosts");
 
                     b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("Admin.Domain.Entities.OidList", b =>
+                {
+                    b.Navigation("Item")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

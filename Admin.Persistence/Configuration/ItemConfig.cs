@@ -16,5 +16,9 @@ internal class ItemConfig : BaseEntityConfig<Item>
         builder.HasOne(x => x.HostModel)
                .WithMany(x => x.Items)
                .HasForeignKey(x => x.ModelId);
+
+        builder.HasOne(x => x.OidList)
+            .WithOne(x => x.Item)
+            .HasForeignKey<Item>(x => x.OidId);
     }
 }

@@ -44,6 +44,20 @@ namespace Admin.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OidList",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OidList", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Host",
                 columns: table => new
                 {
@@ -85,7 +99,8 @@ namespace Admin.Persistence.Migrations
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     ItemName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    ModelId = table.Column<int>(type: "int", nullable: true)
+                    ModelId = table.Column<int>(type: "int", nullable: true),
+                    OidId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -94,6 +109,11 @@ namespace Admin.Persistence.Migrations
                         name: "FK_Item_HostModel_ModelId",
                         column: x => x.ModelId,
                         principalTable: "HostModel",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Item_OidList_OidId",
+                        column: x => x.OidId,
+                        principalTable: "OidList",
                         principalColumn: "Id");
                 });
 
@@ -163,6 +183,13 @@ namespace Admin.Persistence.Migrations
                 column: "ModelId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Item_OidId",
+                table: "Item",
+                column: "OidId",
+                unique: true,
+                filter: "[OidId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Snmp_HostId",
                 table: "Snmp",
                 column: "HostId",
@@ -186,6 +213,9 @@ namespace Admin.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "Telnet");
+
+            migrationBuilder.DropTable(
+                name: "OidList");
 
             migrationBuilder.DropTable(
                 name: "Host");
