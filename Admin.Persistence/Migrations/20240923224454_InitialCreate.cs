@@ -49,7 +49,7 @@ namespace Admin.Persistence.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Description = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Oid = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>

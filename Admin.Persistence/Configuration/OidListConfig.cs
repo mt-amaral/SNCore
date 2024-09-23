@@ -10,7 +10,7 @@ internal class OidListConfig : BaseLongEntityConfig<OidList>
     {
         base.Configure(builder);
 
-        builder.Property(x => x.Description).HasMaxLength(150).IsRequired();
+        builder.Property(x => x.Oid).HasMaxLength(250).IsRequired();
 
         builder.HasOne(x => x.Item)
                .WithOne(x => x.OidList)
