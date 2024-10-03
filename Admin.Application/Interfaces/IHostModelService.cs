@@ -6,4 +6,5 @@ namespace Admin.Application.Interfaces;
 public interface IHostModelService
 {
     Task<IEnumerable<HostModelPayload>> SelectAll();
+    Task<IEnumerable<OidPayload>> SelectOid();
 }

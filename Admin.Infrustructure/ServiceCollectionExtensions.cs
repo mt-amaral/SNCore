@@ -28,6 +28,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ITelnetRepository, TelnetRepository>();
         services.AddScoped<IHostGroupRepository, HostGroupRepository>();
         services.AddScoped<IHostModelRepository, HostModelRepository>();
+        services.AddScoped<IOidListRepository, OidListRepository>();
 
         return services;
     }

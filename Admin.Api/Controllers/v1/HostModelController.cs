@@ -29,4 +29,20 @@ public class HostModelController : BaseController
             return BadRequest(ex.Message);
         }
     }
+    [HttpGet]
+    [ProducesResponseType(typeof(IEnumerable<HostModelPayload>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [Route("ExibirOids")]
+    public async Task<ActionResult<ICollection<OidPayload>>> GetOidByModel()
+    {
+        try
+        {
+            var hostList = await _hostModelService.SelectOid();
+            return Ok(hostList);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
 }
