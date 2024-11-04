@@ -29,6 +29,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IHostGroupRepository, HostGroupRepository>();
         services.AddScoped<IHostModelRepository, HostModelRepository>();
         services.AddScoped<IOidListRepository, OidListRepository>();
+        services.AddScoped<IItemRepository, ItemRepository>();
 
         return services;
     }

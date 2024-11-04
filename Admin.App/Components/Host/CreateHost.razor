@@ -23,8 +23,8 @@
                         </MudItem>
                         <MudGrid>
                             <MudItem xs="6">
-                                <MudSelect T="HostModel" Label="Model" @bind-Value="hostNew.Model" Margin="Margin.Dense" Dense="true">
-                                    @foreach (HostModel model in Enum.GetValues(typeof(HostModel)))
+                                <MudSelect T="ItemByModelResponse" Label="Model" @bind-Value="item" Margin="Margin.Dense" Dense="true">
+                                    @foreach (ItemByModelResponse model in Enum.GetValues(typeof(ItemByModelResponse)))
                                     {
                                         <MudSelectItem Value="model">@model</MudSelectItem>
                                     }
@@ -106,6 +106,7 @@
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
     [Parameter] public HostRequest hostNew { get; set; }
+    [Parameter] public ItemByModelResponse item { get; set; }
     private SnmpPayload snmpNew { get; set; } = new();
     private TelnetPayload telnetNew { get; set; } = new();
 

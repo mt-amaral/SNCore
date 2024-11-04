@@ -32,12 +32,6 @@
                         </MudItem>
                         <MudGrid>
                             <MudItem xs="6">
-                                <MudSelect T="HostModel" Label="Model" @bind-Value="hostEdit.Model" Margin="Margin.Dense" Dense="true">
-                                    @foreach (HostModel model in Enum.GetValues(typeof(HostModel)))
-                                    {
-                                        <MudSelectItem Value="model">@model</MudSelectItem>
-                                    }
-                                </MudSelect>
                             </MudItem>
                             <MudItem xs="6">
                                 <MudTextField @bind-Value="hostEdit.Ipv4" Label="IP Address" MaxLength="15" Required="true" Margin="Margin.Dense" />

@@ -21,6 +21,8 @@ builder.Services.AddTransient<HostApi>();
 builder.Services.AddTransient<SnmpApi>();
 builder.Services.AddTransient<TelnetApi>();
 builder.Services.AddTransient<HostGroupApi>();
+builder.Services.AddTransient<HostModelApi>();
+
 
 // Configure HttpClient
 builder.Services.AddHttpClient("Api", client =>

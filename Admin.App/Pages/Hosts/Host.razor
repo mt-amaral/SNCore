@@ -3,6 +3,7 @@
 @using Admin.App.Componentes.Host
 @using Admin.App.Components
 @inject HostApi hostApi
+@inject HostModelApi hostModelApi
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
 <MudContainer MaxWidth="MaxWidth.ExtraLarge" Style="margin-top: 10px">
@@ -42,7 +43,6 @@
                 </CellTemplate>
             </TemplateColumn>
             <PropertyColumn Property="x => x.Description" Sortable="false" Title="Description" />
-            <PropertyColumn Property="x => x.Model" Sortable="false" Title="Model" />
             <PropertyColumn Property="x => x.Ipv4" Sortable="false" Title="IPv4" />
             <PropertyColumn Property="x => x.GroupId" Sortable="false" Title="Group" Groupable="true" Grouping GroupBy="@_groupBy"  Hidden="true"/>
             <TemplateColumn CellClass="d-flex justify-end" Sortable="false" ShowColumnOptions="false">
@@ -61,6 +61,7 @@
 @code {
     private bool loading;
     private IEnumerable<HostResponse> hostList = new List<HostResponse>();
+    private IEnumerable<ItemByModelResponse> ModelList = new List<ItemByModelResponse>();
     private bool _customizeGroupTemplate;
     static bool _customizeGroupBy;
 
@@ -72,6 +73,7 @@
         try
         {
             hostList = await hostApi.GetHostsAsync();
+            ModelList = await hostModelApi.GetModelGroupAsync();
         }
         catch (Exception ex)
         {

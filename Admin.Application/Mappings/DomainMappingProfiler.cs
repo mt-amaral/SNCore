@@ -15,6 +15,10 @@ public class DomainMappingProfile : Profile
             .ForMember(dest => dest.GroupName, opt => opt.MapFrom(src => src.HostGroup.GroupName))
             .ReverseMap();
 
+        CreateMap<Item, ItemByModelResponse>()
+            .ForMember(dest => dest.Oid, opt => opt.MapFrom(src => src.OidList.Oid))
+            .ReverseMap();
+
         CreateMap<Host, HostGroup>()
             .ForMember(dest => dest.Hosts, opt => opt.MapFrom(src => src));
 
@@ -23,6 +27,8 @@ public class DomainMappingProfile : Profile
         CreateMap<Snmp, SnmpPayload>().ReverseMap();
         CreateMap<Telnet, TelnetPayload>().ReverseMap();
         CreateMap<HostGroup, HostGroupPayload>().ReverseMap();
+        CreateMap<HostGroup, HostGroupPayload>().ReverseMap();
+        CreateMap<HostGroup, HostGroupResponse>().ReverseMap();
         CreateMap<HostModel, HostModelPayload>().ReverseMap();
     }
 }

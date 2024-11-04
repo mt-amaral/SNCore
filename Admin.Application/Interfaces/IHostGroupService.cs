@@ -1,9 +1,11 @@
 ﻿using Admin.Shared.Payload;
+using Admin.Shared.Response;
 
 
 namespace Admin.Application.Interfaces;
 
 public interface IHostGroupService
 {
-    Task<IEnumerable<HostGroupPayload>> SelectAll();
+    Task<IEnumerable<HostGroupResponse>> SelectAll();
+    Task CreateHostGroup(HostGroupPayload NewGroup);
 }

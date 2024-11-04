@@ -1,5 +1,6 @@
 ﻿using Admin.Application.Interfaces;
 using Admin.Shared.Payload;
+using Admin.Shared.Response;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Admin.Api.Controllers.v1;
@@ -16,7 +17,7 @@ public class HostGroupController : BaseController
     [ProducesResponseType(typeof(IEnumerable<HostGroupPayload>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [Route("ExibirTodos")]
-    public async Task<ActionResult<ICollection<HostGroupPayload>>> GetGroupHost()
+    public async Task<ActionResult<ICollection<HostGroupResponse>>> GetGroupHost()
     {
         try
         {

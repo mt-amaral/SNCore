@@ -1,6 +1,7 @@
 ﻿using Admin.Application.Interfaces;
 using Admin.Application.Services;
 using Admin.Shared.Payload;
+using Admin.Shared.Response;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Admin.Api.Controllers.v1;
@@ -30,14 +31,14 @@ public class HostModelController : BaseController
         }
     }
     [HttpGet]
-    [ProducesResponseType(typeof(IEnumerable<HostModelPayload>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<ItemByModelResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [Route("ExibirOids")]
-    public async Task<ActionResult<ICollection<OidPayload>>> GetOidByModel()
+    [Route("ExibirItemModel")]
+    public async Task<ActionResult<ICollection<ItemByModelResponse>>> GetItemByModel(int modelId)
     {
         try
         {
-            var hostList = await _hostModelService.SelectOid();
+            var hostList = await _hostModelService.GetItemByModel(modelId);
             return Ok(hostList);
         }
         catch (Exception ex)

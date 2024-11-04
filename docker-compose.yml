@@ -1,45 +1,45 @@
 version: '3.8'
 
 services:
-  api-admin:
-    container_name: api_admin
-    hostname: api_admin
-    image: api_admin:1.0.0
-    build:
-      context: .
-      dockerfile: Admin.Api/Dockerfile
-    networks:
-      cisco-api:
-        ipv4_address: 172.19.254.1
-    ports:
-      - "8080:8080"
-      - "8081:8081"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Staging
-      - ASPNETCORE_HTTP_PORTS=8080
-      - ASPNETCORE_HTTPS_PORTS=8081
-    restart: unless-stopped
-    depends_on:
-      - sql_server
+  # api-admin:
+  #   container_name: api_admin
+  #   hostname: api_admin
+  #   image: api_admin:1.0.0
+  #   build:
+  #     context: .
+  #     dockerfile: Admin.Api/Dockerfile
+  #   networks:
+  #     cisco-api:
+  #       ipv4_address: 172.19.254.1
+  #   ports:
+  #     - "8080:8080"
+  #     - "8081:8081"
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Staging
+  #     - ASPNETCORE_HTTP_PORTS=8080
+  #     - ASPNETCORE_HTTPS_PORTS=8081
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - sql_server
 
-  app_admin:
-    container_name: app_admin
-    hostname: app_admin
-    image: app_admin:1.0.0
-    build:
-      context: .
-      dockerfile: admin.App/Dockerfile
-    networks:
-      cisco-api:
-        ipv4_address: 172.19.254.3
-    ports:
-      - "8091:8091"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-      - ASPNETCORE_HTTP_PORTS=8091
-    restart: unless-stopped
-    depends_on:
-      - api-admin
+  # app_admin:
+  #   container_name: app_admin
+  #   hostname: app_admin
+  #   image: app_admin:1.0.0
+  #   build:
+  #     context: .
+  #     dockerfile: admin.App/Dockerfile
+  #   networks:
+  #     cisco-api:
+  #       ipv4_address: 172.19.254.3
+  #   ports:
+  #     - "8091:8091"
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Production
+  #     - ASPNETCORE_HTTP_PORTS=8091
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - api-admin
   
 
   sql_server:

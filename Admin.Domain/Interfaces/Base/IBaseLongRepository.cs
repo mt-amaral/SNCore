@@ -3,7 +3,7 @@
 public interface IBaseLongRepository<T> where T : class
 {
     Task<bool> SaveAllAsync();
-    Task<T> SelectByPk(int id);
+    Task<T> SelectByPk(long id);
     Task<IEnumerable<T>> SelectAll();
     Task Create(T entity);
     Task Edit(T entity);

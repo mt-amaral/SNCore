@@ -31,10 +31,6 @@ namespace Admin.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit")
-                        .HasColumnOrder(3);
-
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2")
                         .HasColumnOrder(1);
@@ -85,10 +81,6 @@ namespace Admin.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit")
-                        .HasColumnOrder(3);
-
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2")
                         .HasColumnOrder(1);
@@ -116,10 +108,6 @@ namespace Admin.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit")
-                        .HasColumnOrder(3);
-
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2")
                         .HasColumnOrder(1);
@@ -146,10 +134,6 @@ namespace Admin.Persistence.Migrations
                         .HasColumnOrder(0);
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit")
-                        .HasColumnOrder(3);
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2")
@@ -190,9 +174,6 @@ namespace Admin.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Oid")
                         .IsRequired()
                         .HasMaxLength(250)
@@ -211,10 +192,6 @@ namespace Admin.Persistence.Migrations
                         .HasColumnOrder(0);
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit")
-                        .HasColumnOrder(3);
 
                     b.Property<string>("Community")
                         .IsRequired()
@@ -254,10 +231,6 @@ namespace Admin.Persistence.Migrations
                         .HasColumnOrder(0);
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit")
-                        .HasColumnOrder(3);
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2")
