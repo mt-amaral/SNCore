@@ -2,9 +2,11 @@
 
 public abstract class BaseLongEntity
 {
-    public long Id { get;  set; }
+    public long Id { get; init;}
+    
     protected BaseLongEntity()
     {
-
+    
     }
+    
 }

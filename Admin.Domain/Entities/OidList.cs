@@ -7,5 +7,6 @@ public class OidList : BaseLongEntity
 {
     public string Oid { get; set; }
     public Item Item { get; set; }
+    public OidDiscovery? OidDiscovery { get; set; }
     
 }

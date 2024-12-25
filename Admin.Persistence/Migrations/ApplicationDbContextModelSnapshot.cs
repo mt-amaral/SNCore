@@ -165,6 +165,32 @@ namespace Admin.Persistence.Migrations
                     b.ToTable("Item");
                 });
 
+            modelBuilder.Entity("Admin.Domain.Entities.OidDiscovery", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(0);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long?>("DiscoveryOriginId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("OidDiscoveryIndex")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DiscoveryOriginId")
+                        .IsUnique()
+                        .HasFilter("[DiscoveryOriginId] IS NOT NULL");
+
+                    b.ToTable("OidDiscovery");
+                });
+
             modelBuilder.Entity("Admin.Domain.Entities.OidList", b =>
                 {
                     b.Property<long>("Id")
@@ -295,6 +321,15 @@ namespace Admin.Persistence.Migrations
                     b.Navigation("OidList");
                 });
 
+            modelBuilder.Entity("Admin.Domain.Entities.OidDiscovery", b =>
+                {
+                    b.HasOne("Admin.Domain.Entities.OidList", "DiscoveryOrigin")
+                        .WithOne("OidDiscovery")
+                        .HasForeignKey("Admin.Domain.Entities.OidDiscovery", "DiscoveryOriginId");
+
+                    b.Navigation("DiscoveryOrigin");
+                });
+
             modelBuilder.Entity("Admin.Domain.Entities.Snmp", b =>
                 {
                     b.HasOne("Admin.Domain.Entities.Host", "Host")
@@ -340,6 +375,8 @@ namespace Admin.Persistence.Migrations
                 {
                     b.Navigation("Item")
                         .IsRequired();
+
+                    b.Navigation("OidDiscovery");
                 });
 #pragma warning restore 612, 618
         }
