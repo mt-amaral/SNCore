@@ -45,6 +45,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sql", "Sql", "{3D13C7E2-24C
 		Admin.Sql.Test\Oids.sql = Admin.Sql.Test\Oids.sql
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connection.Test", "Connection.Test\Connection.Test.csproj", "{2DAD9851-B99C-4784-BD60-2AB939A4CEF8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,10 @@ Global
 		{4C1EF434-8DA3-4747-AC89-DC7449467D00}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C1EF434-8DA3-4747-AC89-DC7449467D00}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C1EF434-8DA3-4747-AC89-DC7449467D00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DAD9851-B99C-4784-BD60-2AB939A4CEF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DAD9851-B99C-4784-BD60-2AB939A4CEF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DAD9851-B99C-4784-BD60-2AB939A4CEF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DAD9851-B99C-4784-BD60-2AB939A4CEF8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -112,6 +118,7 @@ Global
 		{FE561929-A9B5-418E-B981-6D6699C48391} = {BA62798C-DF4A-4A68-B361-4339A6BB9FEF}
 		{4C1EF434-8DA3-4747-AC89-DC7449467D00} = {E711394E-7FE3-4011-8B0D-CDC678C24503}
 		{3D13C7E2-24CF-47EF-B6A9-D791546E313E} = {AC72FBC3-EA93-4AAF-A654-8C153FB706C4}
+		{2DAD9851-B99C-4784-BD60-2AB939A4CEF8} = {061A5B3A-1717-4657-835E-1A809B05D28D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {914E1866-9657-4FCD-8763-3CAA0F1662FC}
