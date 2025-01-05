@@ -7,9 +7,10 @@ namespace Admin.Persistence.Repositories;
 
 public class HostGroupRepository : BaseRepository<HostGroup>, IHostGroupRepository
 {
-    private readonly ApplicationDbContext _context;
+
     public HostGroupRepository(ApplicationDbContext context) : base(context)
     {
-        _context = context;
+
     }
+
 }

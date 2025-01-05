@@ -23,6 +23,17 @@
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:8081"
     },
+    "https Production": {
+      "commandName": "Project",
+      "launchBrowser": false,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production",
+        "ASPNETCORE_HTTPS_PORTS": "8081"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:8081"
+    },
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,

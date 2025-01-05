@@ -1,4 +1,5 @@
-﻿using Admin.Persistence.Context;
+﻿using Admin.Application.Mappings;
+using Admin.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -6,21 +7,34 @@ namespace Admin.Infrustructure;
 
 public static class DependecyInjection
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services,
-        IConfiguration configuration)
+
+    public static IServiceCollection AddServer(this IServiceCollection services)
+    {
+        services.AddAutoMapper(typeof(HostMapper).Assembly);
+        services.AddApplicationServices();
+        services.AddRepositories();
+
+        return services;
+    }
+
+    public static IServiceCollection AddContextDevelopment(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<ApplicationDbContext>(options =>
         {
-            options.UseSqlServer(configuration.GetConnectionString("ConnectionDev"),
+            options.UseSqlServer(configuration.GetConnectionString("ConnectionDevelopment"),
                 m => m.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName));
         });
+        return services;
+    }
 
-        services.AddApplicationServices();
 
-        services.AddRepositories();
-
-        services.AddValidators();
-
+    public static IServiceCollection AddContextProduction(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddDbContext<ApplicationDbContext>(options =>
+        {
+            options.UseSqlServer(configuration.GetConnectionString("ConnectionProduction"),
+                m => m.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName));
+        });
         return services;
     }
 }

@@ -1,12 +1,10 @@
 ﻿
-using Admin.Domain.Entities.Base;
-
 namespace Admin.Domain.Entities;
 
-public class OidList : BaseLongEntity
+public class OidList
 {
-    public string Oid { get; set; }
-    public Item Item { get; set; }
-    public OidDiscovery? OidDiscovery { get; set; }
-    
+    public long Id { get; init; }
+    public string Oid { get; private set; } = string.Empty;
+    public Item Item { get; private set; } = (null!);
+    public OidDiscovery? OidDiscovery { get; private set; }
 }

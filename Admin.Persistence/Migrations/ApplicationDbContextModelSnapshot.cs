@@ -17,7 +17,7 @@ namespace Admin.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.6")
+                .HasAnnotation("ProductVersion", "8.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -214,8 +214,7 @@ namespace Admin.Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnOrder(0);
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
@@ -225,8 +224,7 @@ namespace Admin.Persistence.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnOrder(1);
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("HostId")
                         .HasColumnType("int");
@@ -238,8 +236,7 @@ namespace Admin.Persistence.Migrations
                         .HasColumnType("smallint");
 
                     b.Property<DateTime?>("UpdateDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnOrder(2);
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -253,14 +250,12 @@ namespace Admin.Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnOrder(0);
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnOrder(1);
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("HostId")
                         .HasColumnType("int");
@@ -274,8 +269,7 @@ namespace Admin.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdateDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnOrder(2);
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("User")
                         .IsRequired()

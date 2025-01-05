@@ -8,20 +8,21 @@ namespace Admin.Persistence.Repositories;
 
 public class HostRepository : BaseRepository<Host>, IHostRepository
 {
-    private readonly ApplicationDbContext _context;
+
     public HostRepository(ApplicationDbContext context) : base(context)
     {
-        _context = context;
+
     }
+
     public async Task<Host> SelectByHost(int id)
     {
         return await _dbSet
             .Include(e => e.Snmp)
             .Include(e => e.Telnet)
             .FirstOrDefaultAsync(e => e.Id == id)
-            ?? throw new InvalidOperationException($"Não encontrado {typeof(Host).Name} id:{id}");
+            ?? throw new InvalidOperationException($"Não encontrado {nameof(Host)} id:{id}");
     }
-    public async Task<IEnumerable<Host>> SelectByGroup()
+    public async Task<List<Host>> SelectByGroup()
     {
         return await _dbSet
             .Include(e => e.HostGroup)

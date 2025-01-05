@@ -1,15 +1,15 @@
 ﻿using Admin.Domain.Entities;
-using Admin.Persistence.Configuration.Base;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Admin.Persistence.Configuration;
 
-internal class OidListConfig : BaseLongEntityConfig<OidList>
+internal class OidListConfig : IEntityTypeConfiguration<OidList>
 {
-    public override void Configure(EntityTypeBuilder<OidList> builder)
+    public void Configure(EntityTypeBuilder<OidList> builder)
     {
-        base.Configure(builder);
-
+        builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).HasColumnOrder(0);
         builder.Property(x => x.Oid).HasMaxLength(250).IsRequired();
 
         builder.HasOne(x => x.Item)

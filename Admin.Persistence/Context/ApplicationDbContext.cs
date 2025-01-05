@@ -1,5 +1,4 @@
-﻿using Admin.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Admin.Persistence.Context;
 

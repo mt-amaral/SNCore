@@ -1,22 +1,25 @@
 ﻿
 
+
+
 using Admin.Domain.Entities.Base;
 
 namespace Admin.Domain.Entities;
 
-public enum SNMPVersion : short
+public enum SnmpVersion : byte
 {
-    v1 = 0,
-    v2 = 1,
-    v3 = 2
+    V1 = 0,
+    V2 = 1,
+    V3 = 2
 }
 public class Snmp : BaseEntity
 {
-    public SNMPVersion SnmpVersion { get; private set; }
-    public string Community { get; private set; }
-    public int Port { get; private set; }
+    public SnmpVersion SnmpVersion { get; private set; } = SnmpVersion.V2;
+    public string Community { get; private set; } = "public";
+    public int Port { get; private set; } = 161;
     public int HostId { get; private set; }
-    public Host Host { get; set; }
+    public Host Host { get; private set; } = (null!);
+
 
     public void SetHostId(int hostId)
     {

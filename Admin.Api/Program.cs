@@ -1,5 +1,4 @@
 using Admin.Api;
-using Admin.Application.Mappings;
 using Admin.Infrustructure;
 using Admin.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
@@ -7,34 +6,43 @@ using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddServer();
 
-builder.Services.AddInfrastructure(builder.Configuration);
+if (builder.Environment.EnvironmentName == "Development")
+{
+    builder.Services.AddContextDevelopment(builder.Configuration);
 
-// Cors config
-builder.Services.AddCors(
-   x => x.AddPolicy(
-        Configuration.CorsPolicy,
+    builder.Services.AddCors(
+        x => x.AddPolicy(
+        Configuration.CorsPolicyDev,
         policy => policy
         .WithOrigins(
             Configuration.AdminAppUrl,
-            Configuration.AdminApiUrl,
-            Configuration.AdminAppConteiner,
-            Configuration.AdminApiConteiner,
-            Configuration.AdminApiConnectionsConteiner
+            Configuration.AdminApiUrl
         )
         .AllowAnyMethod()
         .AllowAnyHeader()
         .AllowCredentials()
+        )
+    );
+}
+else if (builder.Environment.EnvironmentName == "Production")
+{
+    builder.Services.AddContextProduction(builder.Configuration);
+    builder.Services.AddCors(
+    x => x.AddPolicy(
+    Configuration.CorsPolicyPro,
+    policy => policy
+    .WithOrigins(
+        Configuration.AdminApiConteiner,
+        Configuration.AdminAppConteiner
+    )
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .AllowCredentials()
     )
 );
-
-builder.Services.AddAutoMapper(typeof(DomainMappingProfile));
-
-//Env...
-//Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Staging");
-//builder.Environment.EnvironmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-
+}
 // Configure Json.NET to ignore null values
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
@@ -48,7 +56,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-app.UseCors(Configuration.CorsPolicy);
+app.UseCors(Configuration.CorsPolicyDev);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -59,17 +67,12 @@ if (app.Environment.IsDevelopment())
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Admin API V1");
     });
     app.UseHttpsRedirection();
-    app.UseCors("DefaultPolicy");
+    app.UseCors("WebAppDev");
 }
 if (app.Environment.IsProduction())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Admin API V1");
-    });
     app.UseHttpsRedirection();
-    app.UseCors("DefaultPolicy");
+    app.UseCors("WebAppProd");
 }
 if (app.Environment.IsStaging())
 {

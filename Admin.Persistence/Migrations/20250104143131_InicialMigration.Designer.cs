@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Admin.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241225141549_InicialMigration")]
+    [Migration("20250104143131_InicialMigration")]
     partial class InicialMigration
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace Admin.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.6")
+                .HasAnnotation("ProductVersion", "8.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -168,6 +168,32 @@ namespace Admin.Persistence.Migrations
                     b.ToTable("Item");
                 });
 
+            modelBuilder.Entity("Admin.Domain.Entities.OidDiscovery", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(0);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long?>("DiscoveryOriginId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("OidDiscoveryIndex")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DiscoveryOriginId")
+                        .IsUnique()
+                        .HasFilter("[DiscoveryOriginId] IS NOT NULL");
+
+                    b.ToTable("OidDiscovery");
+                });
+
             modelBuilder.Entity("Admin.Domain.Entities.OidList", b =>
                 {
                     b.Property<long>("Id")
@@ -191,8 +217,7 @@ namespace Admin.Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnOrder(0);
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
@@ -202,8 +227,7 @@ namespace Admin.Persistence.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnOrder(1);
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("HostId")
                         .HasColumnType("int");
@@ -215,8 +239,7 @@ namespace Admin.Persistence.Migrations
                         .HasColumnType("smallint");
 
                     b.Property<DateTime?>("UpdateDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnOrder(2);
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -230,14 +253,12 @@ namespace Admin.Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnOrder(0);
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnOrder(1);
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("HostId")
                         .HasColumnType("int");
@@ -251,8 +272,7 @@ namespace Admin.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdateDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnOrder(2);
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("User")
                         .IsRequired()
@@ -296,6 +316,15 @@ namespace Admin.Persistence.Migrations
                     b.Navigation("HostModel");
 
                     b.Navigation("OidList");
+                });
+
+            modelBuilder.Entity("Admin.Domain.Entities.OidDiscovery", b =>
+                {
+                    b.HasOne("Admin.Domain.Entities.OidList", "DiscoveryOrigin")
+                        .WithOne("OidDiscovery")
+                        .HasForeignKey("Admin.Domain.Entities.OidDiscovery", "DiscoveryOriginId");
+
+                    b.Navigation("DiscoveryOrigin");
                 });
 
             modelBuilder.Entity("Admin.Domain.Entities.Snmp", b =>
@@ -343,6 +372,8 @@ namespace Admin.Persistence.Migrations
                 {
                     b.Navigation("Item")
                         .IsRequired();
+
+                    b.Navigation("OidDiscovery");
                 });
 #pragma warning restore 612, 618
         }

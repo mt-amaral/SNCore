@@ -1,9 +1,11 @@
-﻿namespace Admin.Domain.Interfaces.Base;
+﻿using Admin.Domain.Entities.Base;
 
-public interface IBaseRepository<T> where T : class
+namespace Admin.Domain.Interfaces.Base;
+
+public interface IBaseRepository<T> where T : BaseEntity
 {
     Task<bool> SaveAllAsync();
-    Task<T> SelectByPk(int id);
+    Task<T> SelectById(int id);
     Task<IEnumerable<T>> SelectAll();
     Task Create(T entity);
     Task Edit(T entity);

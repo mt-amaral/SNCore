@@ -5,14 +5,16 @@ namespace Admin.Domain.Entities;
 
 public class Host : BaseEntity
 {
-    public string Description { get; private set; }
-    public string Name { get; private set; }
-    public bool IsOnline { get; private set; }
-    public string Ipv4 { get; private set; }
-    public Snmp? Snmp { get; set; }
-    public Telnet? Telnet { get; set; }
+    public string Description { get; private set; } = string.Empty;
+    public string Name { get; private set; } = string.Empty;
+    public bool IsOnline { get; private set; } = false;
+    public string Ipv4 { get; private set; } = "0.0.0.0";
+
     public int? GroupId { get; private set; }
-    public HostGroup? HostGroup { get; set; }
     public int? ModelId { get; private set; }
-    public HostModel? HostModel { get; set; }
+
+    public Telnet? Telnet { get; private set; }
+    public HostGroup? HostGroup { get; private set; }
+    public Snmp? Snmp { get; private set; }
+    public HostModel? HostModel { get; private set; }
 }

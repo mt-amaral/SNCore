@@ -9,11 +9,11 @@ namespace Admin.Persistence.Repositories;
 
 public class ItemRepository : BaseRepository<Item>, IItemRepository
 {
-    private readonly ApplicationDbContext _context;
     public ItemRepository(ApplicationDbContext context) : base(context)
     {
-        _context = context;
+
     }
+
     public async Task<IEnumerable<Item>> GetItemByModel(int modelId)
     {
         return await _dbSet

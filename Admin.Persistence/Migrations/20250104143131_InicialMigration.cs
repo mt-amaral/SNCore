@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -113,17 +112,36 @@ namespace Admin.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OidDiscovery",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OidDiscoveryIndex = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    DiscoveryOriginId = table.Column<long>(type: "bigint", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OidDiscovery", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OidDiscovery_OidList_DiscoveryOriginId",
+                        column: x => x.DiscoveryOriginId,
+                        principalTable: "OidList",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Snmp",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     SnmpVersion = table.Column<short>(type: "smallint", nullable: false),
                     Community = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Port = table.Column<int>(type: "int", nullable: false),
-                    HostId = table.Column<int>(type: "int", nullable: false)
+                    HostId = table.Column<int>(type: "int", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -142,12 +160,12 @@ namespace Admin.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     User = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Port = table.Column<int>(type: "int", nullable: false),
-                    HostId = table.Column<int>(type: "int", nullable: false)
+                    HostId = table.Column<int>(type: "int", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -183,6 +201,13 @@ namespace Admin.Persistence.Migrations
                 filter: "[OidId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OidDiscovery_DiscoveryOriginId",
+                table: "OidDiscovery",
+                column: "DiscoveryOriginId",
+                unique: true,
+                filter: "[DiscoveryOriginId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Snmp_HostId",
                 table: "Snmp",
                 column: "HostId",
@@ -200,6 +225,9 @@ namespace Admin.Persistence.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Item");
+
+            migrationBuilder.DropTable(
+                name: "OidDiscovery");
 
             migrationBuilder.DropTable(
                 name: "Snmp");

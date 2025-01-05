@@ -10,7 +10,6 @@
     <ProjectReference Include="..\Admin.Connection\Admin.Connection.csproj" />
     <ProjectReference Include="..\Admin.Domain\Admin.Domain.csproj" />
     <ProjectReference Include="..\Admin.Shared\Admin.Shared.csproj" />
-    <ProjectReference Include="..\Admin.Validator\Admin.Validator.csproj" />
   </ItemGroup>
 
   <ItemGroup>

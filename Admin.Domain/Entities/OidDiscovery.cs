@@ -1,12 +1,9 @@
-using Admin.Domain.Entities.Base;
-
 namespace Admin.Domain.Entities;
 
-public class OidDiscovery : BaseLongEntity
+public class OidDiscovery
 {
-    
-    public String OidDiscoveryIndex { get; set; } 
-    public long? DiscoveryOriginId { get; set; }
-    public OidList? DiscoveryOrigin { get; set; }
-    
+    public long Id { get; init; }
+    public string OidDiscoveryIndex { get; private set; } = string.Empty;
+    public long? DiscoveryOriginId { get; private set; }
+    public OidList? DiscoveryOrigin { get; private set; }
 }

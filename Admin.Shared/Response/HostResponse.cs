@@ -1,15 +1,9 @@
-﻿
-
-using Admin.Shared.Payload;
-
 namespace Admin.Shared.Response;
 
-public class HostResponse : HostPayload
+public class HostResponse
 {
     public int Id { get; set; }
-    public bool IsOnline { get; set; }
-    public string? GroupName { get; set; }
-    public SnmpPayload? Snmp { get; set; }
-    public TelnetPayload? Telnet { get; set; }
-
+    public string Name { get; set; } = string.Empty;
+    public string Ipv4 { get; private set; } = string.Empty;
+    public string Description { get; private set; } = string.Empty;
 }
