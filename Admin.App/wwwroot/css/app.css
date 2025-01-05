@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* Ajustes para acesso */
+    height: 100vh; 
 }
 
 .lds-ellipsis,

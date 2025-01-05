@@ -1,8 +1,17 @@
 ﻿@inherits LayoutComponentBase
+
 <div class="page">
-    <main>
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
+    <div class="row g-0">
+        <div class="col-2 bg-light border-end">
+            <NavMenu />
+        </div>
+
+        <div class="col-10">
+            <main>
+                <article class="content px-4">
+                    @Body
+                </article>
+            </main>
+        </div>
+    </div>
 </div>
