@@ -1,45 +1,28 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="13.0.1" />
-    <PackageReference Include="FluentValidation" Version="11.9.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.3" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
-    <PackageReference Include="MudBlazor" Version="6.20.0" />
+    <PackageReference Include="BootstrapBlazor" Version="8.11.0" />
+    <PackageReference Include="BootstrapBlazor.FontAwesome" Version="8.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.10" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\sample-data\" />
+    <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\.dockerignore" Link=".dockerignore">
-      <DependentUpon>$(DockerDefaultDockerfile)</DependentUpon>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Admin.Shared\Admin.Shared.csproj" />
-    <ProjectReference Include="..\Admin.Validator\Admin.Validator.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="Components\Host\EditHost.razor">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-    </Content>
-    <Content Update="wwwroot\appsettings.Production.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\appsettings.Development.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Folder Include="Components\" />
+    <Folder Include="Mappings\" />
+    <Folder Include="Services\" />
+    <Folder Include="wwwroot\js\" />
   </ItemGroup>
 
 </Project>
