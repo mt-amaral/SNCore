@@ -12,7 +12,7 @@
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:8080"
     },
-    "https": {
+    "https (Dev)": {
       "commandName": "Project",
       "launchBrowser": false,
       "launchUrl": "swagger",
@@ -23,7 +23,7 @@
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:8081"
     },
-    "https Production": {
+    "https (Prod)": {
       "commandName": "Project",
       "launchBrowser": false,
       "launchUrl": "swagger",
