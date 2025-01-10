@@ -1,0 +1,37 @@
+﻿@using Admin.Shared.Response;
+
+
+<DropdownWidget>
+    <DropdownWidgetItem Icon="fa-regular fa-bell" BadgeNumber=@_list.Count().ToString() BadgeColor="Color.Info">
+        <HeaderTemplate >
+            <span>Notification ...</span>
+        </HeaderTemplate>
+        <BodyTemplate>
+            @foreach (var item in _list)
+            {
+                <a class="dropdown-item d-flex align-items-center" href="#" @onclick:preventDefault>
+                    <div style="width: 40px; height: 40px;">
+                    </div>
+                    <div class="ms-2">
+                        <div class="d-flex position-relative">
+                            <h4>@item.Title</h4>
+                            <small><i class="fa fa-clock-o"></i>@item.Time.ToString("dd/MM: hh:mm")</small>
+                        </div>
+                        <div class="text-truncate">@item.Message</div>
+                    </div>
+                </a>
+            }
+        </BodyTemplate>
+    </DropdownWidgetItem>
+</DropdownWidget>
+
+
+@code{
+    private List<NotificationItemResponse> _list { get; set; } = new();
+
+    protected override void OnInitialized()
+    {
+        _list.Add(new() { Message = "Menssage, menssage, menssage", Title = "Title"});
+    }
+
+}

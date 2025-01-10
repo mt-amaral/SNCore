@@ -13,14 +13,11 @@ public static class ServiceCollectionExtensions
         var assembly = typeof(IHostService).Assembly;
         foreach (var type in assembly.GetTypes().Where(t => t.Name.EndsWith("Service")))
         {
-            if (type.IsClass && !type.IsAbstract)
-            {
-                var interfaceType = type.GetInterface($"I{type.Name}")!;
+            if (!type.IsClass || type.IsAbstract) continue;
+            var interfaceType = type.GetInterface($"I{type.Name}")!;
 
-                    services.AddScoped(interfaceType, type);
-            }
+            services.AddScoped(interfaceType, type);
         }
-
         return services;
     }
     public static IServiceCollection AddRepositories(this IServiceCollection services)
@@ -33,17 +30,13 @@ public static class ServiceCollectionExtensions
         
         foreach (var type in types)
         {
-            if (type.IsClass && !type.IsAbstract)
-            {
-                var valueInterface = interfaceType.GetTypes()
-                    .Where(t => t.Name == ("I" + type.Name) 
-                    && t.Name.EndsWith("Repository") && !t.Name.EndsWith("BaseRepository"))
-                    .FirstOrDefault()!;
-
-                    services.AddScoped(valueInterface, type);
-            }
+            if (!type.IsClass || type.IsAbstract) continue;
+            var valueInterface = interfaceType
+                .GetTypes()
+                .FirstOrDefault(t => t.Name == ("I" + type.Name) 
+                                     && t.Name.EndsWith("Repository") && !t.Name.EndsWith("BaseRepository"))!;
+            services.AddScoped(valueInterface, type);
         }
-
         return services;
     }
 }
