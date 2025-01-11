@@ -1,0 +1,28 @@
+@page "/Hosts"
+@using Admin.Shared.Response
+@inject HostService HostService
+
+<h3>Lista de Hosts</h3>
+
+<ul>
+    @if (hosts == null)
+    {
+        <li>Carregando...</li>
+    }
+    else
+    {
+        foreach (var host in hosts)
+        {
+            <li>@host.Name</li>
+        }
+    }
+</ul>
+
+@code {
+    private IEnumerable<HostResponse>? hosts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        hosts = await HostService.GetHostsAsync();
+    }
+}

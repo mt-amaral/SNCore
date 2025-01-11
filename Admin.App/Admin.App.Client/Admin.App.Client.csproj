@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Locales\en.json" />
-    <EmbeddedResource Include="Locales\zh.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +30,7 @@
   <ItemGroup>
     <Folder Include="Components\Chart\" />
     <Folder Include="Components\Notification\" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
 
 </Project>

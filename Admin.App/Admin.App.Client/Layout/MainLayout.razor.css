@@ -1,11 +1,4 @@
-﻿::deep .groupbox {
-    margin-top: 1rem;
-}
-
-::deep .btn-info {
-    margin-bottom: 1rem;
-}
-
+﻿
 
 #blazor-error-ui {
     background: lightyellow;

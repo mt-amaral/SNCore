@@ -3,48 +3,26 @@ using Microsoft.AspNetCore.Components.Routing;
 
 namespace Admin.App.Client.Layout
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public partial class MainLayout
     {
-        private bool UseTabSet { get; set; } = true;
 
-        private string Theme { get; set; } = "";
-
-        private bool IsOpen { get; set; }
-
-        private bool IsFixedHeader { get; set; } = true;
-
-        private bool IsFixedFooter { get; set; } = true;
-
-        private bool IsFullSide { get; set; } = true;
-
-        private bool ShowFooter { get; set; } = true;
-
-        private List<MenuItem>? Menus { get; set; }
-
-        /// <summary>
-        /// OnInitialized 方法
-        /// </summary>
+        private List<MenuItem>? _menus { get; set; }
+        
         protected override void OnInitialized()
         {
             base.OnInitialized();
 
-            Menus = GetIconSideMenuItems();
+            _menus = GetIconSideMenuItems();
         }
 
         private static List<MenuItem> GetIconSideMenuItems()
         {
-            var menus = new List<MenuItem>
+            return new List<MenuItem>
             {
-                new() { Text = "Home", Icon = "fa-solid fa-fw fa-flag", Url = "/" , Match = NavLinkMatch.All},
-                new() {Text = "desk", Icon = "fa-solid fa-fw fa-check-square", Url = "/dashboard" },
-                new() { Text = "login", Icon = "fa-solid fa-fw fa-check-square", Url = "/login" },
-                new() { Text = "Table", Icon = "fa-solid fa-fw fa-table", Url = "/table" },
+                new() { Text = "Dashboard", Icon = "fa-solid fa-fw fa-chart-line", Url = "/" , Match = NavLinkMatch.All},
+                new() { Text = "Host", Icon = "fa-solid fa-server", Url = "/Hosts" , Match = NavLinkMatch.All},
             };
-
-            return menus;
+            
         }
     }
 }
