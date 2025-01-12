@@ -3,17 +3,12 @@ using System.Net.Http.Json;
 
 namespace Admin.Shared.Service;
 
-public class HostService
+public class HostService(IHttpClientFactory factory)
 {
-    private readonly HttpClient _httpClient;
+    private readonly HttpClient _httpClient = factory.CreateClient("Api");
 
-    public HostService(IHttpClientFactory factory)
+    public async Task<List<HostResponse>?> GetHostsAsync()
     {
-        _httpClient = factory.CreateClient("Api");
-    }
-
-    public async Task<IEnumerable<HostResponse>?> GetHostsAsync()
-    {
-        return await _httpClient.GetFromJsonAsync<IEnumerable<HostResponse>>("api/host/exibirtodos");
+        return await _httpClient.GetFromJsonAsync<List<HostResponse>>("api/host/exibirtodos");
     }
 }

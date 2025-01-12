@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Components\Chart\" />
+    <Folder Include="Components\Login\" />
     <Folder Include="Components\Notification\" />
     <Folder Include="Extensions\" />
   </ItemGroup>

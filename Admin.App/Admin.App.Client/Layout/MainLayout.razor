@@ -3,10 +3,9 @@
 
 
 <div class="layout-demo">
-    <Layout IsFullSide="true" IsFixedHeader="true"
+    <Layout IsFullSide="true" IsFixedHeader="true" 
             Menus="@_menus">
-        <Header  >
-            <div>Header</div>
+        <Header >Header
         </Header>
         <Side>
             <div class="layout-banner">
@@ -15,8 +14,10 @@
                 </div>
             </div>
         </Side>
-        <Main>
-            @Body
+        <Main >
+            <div class="layout-main">
+                @Body
+            </div>
         </Main>
     </Layout>
 </div>

@@ -2,6 +2,7 @@
     --bb-header-color: #e0e0e0;
     --bg-color: #fff;
     --bs-border-color: rgba(197, 197, 197, 0.87);
+    --bs-table-bg: var(--A2);
     
     --A1: #cbdad5;
     --A2: #89a7b1;
@@ -24,8 +25,6 @@
     */
 }
 
-
-
 .layout-header {
     border-bottom: 1px solid var(--bs-border-color);
 }
@@ -40,4 +39,5 @@
     --bb-menu-item-hover-bg: var(--A4);
     --bb-menu-item-hover-color: var(--bg-color);
 }
+
 

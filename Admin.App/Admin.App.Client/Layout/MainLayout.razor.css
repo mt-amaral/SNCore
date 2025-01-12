@@ -1,4 +1,6 @@
-﻿
+﻿.layout-main{
+    margin: 30px;
+}
 
 #blazor-error-ui {
     background: lightyellow;

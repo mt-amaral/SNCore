@@ -1,25 +1,21 @@
 @page "/Hosts"
 @using Admin.Shared.Response
+@using Admin.App.Client.Components.Table
 @inject HostService HostService
 
 <h3>Lista de Hosts</h3>
 
-<ul>
     @if (hosts == null)
     {
         <li>Carregando...</li>
     }
     else
     {
-        foreach (var host in hosts)
-        {
-            <li>@host.Name</li>
-        }
+        <TableBase Data="hosts"/>
     }
-</ul>
-
+    
 @code {
-    private IEnumerable<HostResponse>? hosts;
+    private List<HostResponse> hosts = new();
 
     protected override async Task OnInitializedAsync()
     {
