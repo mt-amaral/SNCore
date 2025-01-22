@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -9,28 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Locales\en.json" />
-    <Content Remove="Locales\zh.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Locales\en.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="BootstrapBlazor" Version="8.*" />
-    <PackageReference Include="BootstrapBlazor.Chart" Version="8.4.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.10" />
+    <PackageReference Include="MudBlazor" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Admin.Shared\Admin.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Components\Login\" />
-    <Folder Include="Components\Notification\" />
-    <Folder Include="Extensions\" />
   </ItemGroup>
 
 </Project>
