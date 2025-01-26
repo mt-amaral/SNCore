@@ -1,16 +1,15 @@
 ﻿@using Admin.Shared.Data.Dashboard
-@using Admin.App.Client.Components
+@using Admin.App.Client.Components.Dashboard
 
 @page "/"
 
 <PageTitle>Home</PageTitle>
-
-<BarChart Report="report" @ref="chart"></BarChart>
+<BarChart Report="report"></BarChart>
 <MudButton Variant="Variant.Filled" @onclick="UpdateReport">Default</MudButton>
 
 @code {
-    private Random random = new Random();
-    private BarChart? chart; // Referência ao componente filho
+    private static Random random = new Random();
+    private BarChart? chart; 
     
     
 
@@ -22,12 +21,12 @@
             Height = 350,
             ChartData = new List<ClaimReportData>
         {
-            new() { DayOfWeek = "Monday", NoOfClaims = 11 },
-            new() { DayOfWeek = "Tuesday", NoOfClaims = 2 },
-            new() { DayOfWeek = "Wednesday", NoOfClaims = 3 },
-            new() { DayOfWeek = "Thursday", NoOfClaims = 6 },
-            new() { DayOfWeek = "Friday", NoOfClaims = 4 },
-        },
+            new() { DayOfWeek = "Monday", NoOfClaims = random.Next(1, 20) },
+            new() { DayOfWeek = "Tuesday", NoOfClaims = random.Next(1, 20) },
+            new() { DayOfWeek = "Wednesday", NoOfClaims = random.Next(1, 20) },
+            new() { DayOfWeek = "Thursday", NoOfClaims = random.Next(1, 20) },
+            new() { DayOfWeek = "Friday", NoOfClaims = random.Next(1, 20) },
+            },
         };
 
     private void UpdateReport()

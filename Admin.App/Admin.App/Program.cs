@@ -1,9 +1,9 @@
 using Admin.App.Client.Pages;
-using Admin.App.Index;
 using MudBlazor.Services;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Admin.Shared.Config;
+using Admin.App.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
