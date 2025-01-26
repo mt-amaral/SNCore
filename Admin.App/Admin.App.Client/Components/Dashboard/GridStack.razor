@@ -1,0 +1,55 @@
+@using Admin.App.Client.Data.Dashborad
+@inject IJSRuntime JSRuntime
+@implements IAsyncDisposable
+
+
+<div class="grid-stack">
+    <div class="grid-stack-item">
+        <BarChart Report="report" ></BarChart>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public  List<GridItems> Items { get; set; }
+    private static Random random = new Random();
+    private ReportSettings report = new()
+    {
+        Title = "Teste",
+        BarColour = "#fff",
+        Width = 600,
+        Height = 350,
+        ChartData = new List<ClaimReportData>
+        {
+            new() { DayOfWeek = "Monday", NoOfClaims = random.Next(1, 20) },
+            new() { DayOfWeek = "Tuesday", NoOfClaims = random.Next(1, 20) },
+            new() { DayOfWeek = "Wednesday", NoOfClaims = random.Next(1, 20) },
+            new() { DayOfWeek = "Thursday", NoOfClaims = random.Next(1, 20) },
+            new() { DayOfWeek = "Friday", NoOfClaims = random.Next(1, 20) },
+        },
+    };
+
+    private IJSObjectReference? module;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            module = await JSRuntime.InvokeAsync<IJSObjectReference>(
+                "import", "./Components/Dashboard/GridStack.razor.js");
+
+            if (Items != null)
+            {
+                await module.InvokeVoidAsync("testeGrid", Items);
+            }
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (module != null)
+        {
+            await module.DisposeAsync();
+        }
+    }
+}

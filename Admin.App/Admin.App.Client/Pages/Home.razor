@@ -1,47 +1,20 @@
-﻿@using Admin.Shared.Data.Dashboard
+﻿@using Admin.App.Client.Data.Dashborad
 @using Admin.App.Client.Components.Dashboard
 
 @page "/"
 
-<PageTitle>Home</PageTitle>
-<BarChart Report="report"></BarChart>
-<MudButton Variant="Variant.Filled" @onclick="UpdateReport">Default</MudButton>
+
+<GridStack Items="itensGrid"></GridStack>
+
 
 @code {
     private static Random random = new Random();
-    private BarChart? chart; 
-    
-    
+    private List<BarChart>? chart;
 
-    private ReportSettings report = new()
-        {
-            Title = "teste",
-            BarColour = "#fff",
-            Width = 600,
-            Height = 350,
-            ChartData = new List<ClaimReportData>
-        {
-            new() { DayOfWeek = "Monday", NoOfClaims = random.Next(1, 20) },
-            new() { DayOfWeek = "Tuesday", NoOfClaims = random.Next(1, 20) },
-            new() { DayOfWeek = "Wednesday", NoOfClaims = random.Next(1, 20) },
-            new() { DayOfWeek = "Thursday", NoOfClaims = random.Next(1, 20) },
-            new() { DayOfWeek = "Friday", NoOfClaims = random.Next(1, 20) },
-            },
-        };
-
-    private void UpdateReport()
+    List<GridItems> itensGrid = new()
     {
-        // Atualiza os dados do Report
-        report.ChartData = new List<ClaimReportData>
-        {
-            new() { DayOfWeek = "Monday", NoOfClaims = random.Next(1, 20) },
-            new() { DayOfWeek = "Tuesday", NoOfClaims = random.Next(1, 20) },
-            new() { DayOfWeek = "Wednesday", NoOfClaims = random.Next(1, 20) },
-            new() { DayOfWeek = "Thursday", NoOfClaims = random.Next(1, 20) },
-            new() { DayOfWeek = "Friday", NoOfClaims = random.Next(1, 20) },
-        };
-
-        // Atualiza o título (opcional)
-        report.Title = $"Relatório atualizado: {DateTime.Now:T}";
-    }
+        new() { Content = "Texto simples", W = 3 },
+        new() { Content = "Outro texto", W = 3 },
+        new() { Content = "Outro texto", W = 3 },
+    };
 }

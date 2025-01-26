@@ -1,6 +1,6 @@
 ﻿
 
-namespace Admin.Shared.Data.Dashboard;
+namespace Admin.App.Client.Data.Dashborad;
 public class ClaimReportData
 {
     public string DayOfWeek { get; set; }

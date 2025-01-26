@@ -1,6 +1,8 @@
 ﻿
 
-namespace Admin.Shared.Data.Dashboard;
+using Admin.App.Client.Data.Dashborad;
+
+namespace Admin.App.Client.Components.Dashboard;
 
 public class ReportSettings
 {
