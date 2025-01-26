@@ -1,25 +1,28 @@
 export function testenobre(reportData) {
     console.log("Atualizando gráfico", reportData);
 
-    // Configurações iniciais do gráfico
+// Configurações iniciais do gráfico
     const svgWidth = reportData.width;
     const svgHeight = reportData.height;
-    const margin = { top: 0, right: 20, bottom: 0, left: 40 };
+    const margin = { top: 20, right: 20, bottom: 20, left: 40 };
     const width = svgWidth - margin.left - margin.right;
     const height = svgHeight - margin.top - margin.bottom;
 
-    // Seleciona o contêiner do gráfico e limpa o conteúdo anterior, se houver
+// Seleciona o contêiner do gráfico e limpa o conteúdo anterior, se houver
     const chartContainer = d3.select(".grid-stack-item");
 
-    // Criação ou atualização do elemento SVG
+// Criação ou atualização do elemento SVG
     const svg = chartContainer
-        .append("svg") // Adiciona o elemento SVG
-        .attr("width", "100%") // Largura 100%
-        .attr("height", "100%") // Altura 100%
-        .attr("preserveAspectRatio", "xMaxYMax meet")
-        .attr("viewBox", "0 0 960 400")
-        .append("g") // Adiciona um grupo
-        .attr("transform", `translate(${margin.left}, ${margin.top})`); // Aplica margens
+        .append("svg")
+        .attr("width", "100%")
+        .attr("height", "100%")
+        .attr("preserveAspectRatio", "xMidYMid meet") // Centraliza o conteúdo
+        .attr("viewBox", `0 0 ${svgWidth} ${svgHeight}`)
+        .append("g")
+        .attr(
+            "transform",
+            `translate(${(svgWidth - width) / 2}, ${(svgHeight - height) / 2})`
+        );
 
     // Configuração das escalas
     const xScale = d3.scaleBand()
