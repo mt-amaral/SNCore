@@ -5,29 +5,16 @@
 
 <div class="grid-stack">
     <div class="grid-stack-item">
-        <BarChart Report="report" ></BarChart>
+        @ChildContent
     </div>
 </div>
 
 @code {
     [Parameter]
     public  List<GridItems> Items { get; set; }
-    private static Random random = new Random();
-    private ReportSettings report = new()
-    {
-        Title = "Teste",
-        BarColour = "#1976d2",
-        Width = 600,
-        Height = 350,
-        ChartData = new List<ClaimReportData>
-        {
-            new() { DayOfWeek = "Monday", NoOfClaims = random.Next(1, 20) },
-            new() { DayOfWeek = "Tuesday", NoOfClaims = random.Next(1, 20) },
-            new() { DayOfWeek = "Wednesday", NoOfClaims = random.Next(1, 20) },
-            new() { DayOfWeek = "Thursday", NoOfClaims = random.Next(1, 20) },
-            new() { DayOfWeek = "Friday", NoOfClaims = random.Next(1, 20) },
-        },
-    };
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
 
     private IJSObjectReference? module;
 
