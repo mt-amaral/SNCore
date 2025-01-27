@@ -3,10 +3,11 @@
 
 @page "/"
 
-
-<GridStack Items="itensGrid">
-    <BarChart Report="report" ></BarChart>
-</GridStack>
+<div class="grid-stack">
+    <GridStack>
+        <BarChart Report="report" ></BarChart>
+    </GridStack>
+</div>
 
 
 @code {
@@ -28,11 +29,5 @@
             new() { DayOfWeek = "Friday", NoOfClaims = random.Next(1, 20) },
         },
     };
-
-    List<GridItems> itensGrid = new()
-    {
-        new() { Content = "Texto simples", W = 3 },
-        new() { Content = "Outro texto", W = 3 },
-        new() { Content = "Outro texto", W = 3 },
-    };
+    
 }

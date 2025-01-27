@@ -2,16 +2,13 @@
 @inject IJSRuntime JSRuntime
 @implements IAsyncDisposable
 
-
-<div class="grid-stack">
-    <div class="grid-stack-item">
-        @ChildContent
-    </div>
+<div class="grid-stack-item">
+    @ChildContent
 </div>
 
 @code {
-    [Parameter]
-    public  List<GridItems> Items { get; set; }
+    [Parameter] 
+    public List<GridItems> Items { get; set; } = new();
     [Parameter]
     public RenderFragment ChildContent { get; set; }
 
@@ -25,10 +22,9 @@
             module = await JSRuntime.InvokeAsync<IJSObjectReference>(
                 "import", "./Components/Dashboard/GridStack.razor.js");
 
-            if (Items != null)
-            {
-                await module.InvokeVoidAsync("testeGrid", Items);
-            }
+
+            await module.InvokeVoidAsync("testeGrid", Items);
+
         }
     }
 
