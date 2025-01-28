@@ -1,17 +1,18 @@
-export function testenobre(reportData) {
-    console.log("Atualizando gráfico", reportData);
+export function testenobre(containerId, reportData) {
+    console.log("Atualizando gráfico", containerId, reportData);
 
-// Configurações iniciais do gráfico
+    // Configurações iniciais do gráfico
     const svgWidth = reportData.width;
     const svgHeight = reportData.height;
     const margin = { top: 20, right: 20, bottom: 20, left: 40 };
     const width = svgWidth - margin.left - margin.right;
     const height = svgHeight - margin.top - margin.bottom;
 
-// Seleciona o contêiner do gráfico e limpa o conteúdo anterior, se houver
-    const chartContainer = d3.select(".grid-stack-item");
+    // Seleciona o contêiner específico pelo ID e limpa o conteúdo anterior
+    const chartContainer = d3.select(`#${containerId}`);
+    chartContainer.selectAll("*").remove();
 
-// Criação ou atualização do elemento SVG
+    // Criação ou atualização do elemento SVG
     const svg = chartContainer
         .append("svg")
         .attr("width", "100%")
@@ -35,8 +36,7 @@ export function testenobre(reportData) {
         .range([height, 0]);
 
     // Vincula os dados às barras do gráfico
-    const bars = svg.selectAll("rect")
-        .data(reportData.chartData);
+    const bars = svg.selectAll("rect").data(reportData.chartData);
 
     // Atualiza as barras existentes ou adiciona novas
     bars.enter()
@@ -57,8 +57,7 @@ export function testenobre(reportData) {
         .call(d3.axisBottom(xScale));
 
     // Criação ou atualização do eixo Y
-    svg.append("g")
-        .call(d3.axisLeft(yScale));
+    svg.append("g").call(d3.axisLeft(yScale));
 
     // Rótulo do eixo X
     svg.append("text")

@@ -1,5 +1,9 @@
 ﻿@inject IJSRuntime JSRuntime
 @implements IAsyncDisposable
+<div class="grid-stack-item">
+    <div class="card-grid-stack" id="@($"chart-{Report?.Title.Replace(" ", "-")}")">
+    </div>
+</div>
 
 @code {
     [Parameter]
@@ -11,19 +15,14 @@
     {
         if (firstRender)
         {
-            // Carrega o JavaScript associado ao componente
-            module = await JSRuntime.InvokeAsync<IJSObjectReference>(
-                "import", "./Components/Dashboard/BarChart.razor.js");
+        module = await JSRuntime.InvokeAsync<IJSObjectReference>(
+        "import", "./Components/Dashboard/BarChart.razor.js");
 
             if (Report != null)
             {
-                await module.InvokeVoidAsync("testenobre", Report);
+                var containerId = $"chart-{Report.Title.Replace(" ", "-")}";
+                await module.InvokeVoidAsync("testenobre", containerId, Report);
             }
-        }
-        else if (module != null && Report != null)
-        {
-            // Atualiza o gráfico ao alterar o Report
-            await module.InvokeVoidAsync("testenobre", Report);
         }
     }
 
