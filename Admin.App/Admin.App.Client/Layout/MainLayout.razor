@@ -8,9 +8,16 @@
 
 <MudLayout>
     <MudAppBar Elevation="1">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Primary" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <MudSpacer />
-        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End"  OnClick="@((e)  => ThemeToggle())"/>
+        <MudBadge Content="3" Overlap="true" Class="mx-6 my-4">
+            <MudIcon Icon="@Icons.Material.Outlined.Notifications" Color="Color.Inherit" />
+        </MudBadge>
+        <MudIconButton Icon="@(_isdarkMode ? Icons.Material.Outlined.LightMode : Icons.Material.Outlined.DarkMode)"
+                       Color="Color.Inherit"
+                       Edge="Edge.End"
+                       OnClick="@ThemeToggle"/>
+
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
         <MudDrawerHeader>

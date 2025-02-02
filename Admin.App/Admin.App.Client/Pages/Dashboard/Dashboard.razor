@@ -1,0 +1,64 @@
+@page "/dashboard"
+@using Admin.App.Client.Components.Dashboard
+@using Admin.App.Client.Data.Dashboard
+@inject ISnackbar Snackbar
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge">
+        <MudText>Dashboard</MudText>
+    <MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="() =>CriarNovo()">Teste Notification</MudButton>
+        <MudGrid Spacing=6>
+            
+            <!-- Conteúdo principal -->
+            <MudItem xs="12" sm="9">
+                <MudGrid Spacing=3>
+                    <Analyzes/>
+                    <MudItem xs="12">
+                        <MudPaper  Height="700px" Elevation="3"></MudPaper>
+                    </MudItem>
+                </MudGrid>
+            </MudItem>
+
+            <!-- Barra lateral direita -->
+            <MudItem xs="12" sm="3">
+                <AlertNotification Notifications="Notifications" @ref="_Alert"/>
+            </MudItem>
+
+        </MudGrid>
+        
+</MudContainer>
+@code {
+    public AlertNotification _Alert;
+    public List<AlertItem> Notifications = new()
+    {
+        new AlertItem() {  Title = "Notification Title", Message = "text sub-title", TypeAlert = AlertItemIcon.Erro},
+        new AlertItem() {  Title = "Notification Title", Message = "text sub-title", TypeAlert = AlertItemIcon.Success},
+        new AlertItem() {  Title = "Notification Title", Message = "text sub-title", TypeAlert = AlertItemIcon.Information},
+        new AlertItem() {  Title = "Notification Title", Message = "text sub-title", TypeAlert = AlertItemIcon.Erro},
+        new AlertItem() {  Title = "Notification Title", Message = "text sub-title", TypeAlert = AlertItemIcon.Success},
+        new AlertItem() {  Title = "Notification Title", Message = "text sub-title", TypeAlert = AlertItemIcon.Success},
+        new AlertItem() {  Title = "Notification Title", Message = "text sub-title", TypeAlert = AlertItemIcon.Erro},
+        new AlertItem() {  Title = "Notification Title", Message = "text sub-title", TypeAlert = AlertItemIcon.Erro}
+        
+    };
+
+    private void CriarNovo()
+    {
+        Snackbar.Add
+        (
+            @<div>
+            <p class="notification-title"><b>Text</b></p>
+            <p class="notification-sub-title">Notification</p>
+            </div>,
+            Severity.Error,
+            config =>
+            {
+                config.Icon = Icons.Material.Outlined.WarningAmber;
+                config.IconColor = Color.Error;
+                config.IconSize = Size.Small;
+                config.SnackbarVariant = Variant.Outlined;
+            }
+        );
+        Notifications.Add(new() {  Title = "Text", Message = "Notification",  TypeAlert = AlertItemIcon.Erro});
+    }
+    
+}

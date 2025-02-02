@@ -1,0 +1,68 @@
+@using Admin.App.Client.Data.Dashboard
+@namespace Admin.App.Client.Components.Dashboard
+
+<MudPaper  Height="830px" Class="d-flex flex-column mud-width-full" Style="overflow: auto;" Elevation="3">
+    <MudListSubheader>
+    <MudText Typo="Typo.h6" Class="p-3 border-bottom">Recent incidents</MudText>
+    </MudListSubheader>
+    <MudList T="AlertItem" Dense="true" Style="width: 100%">
+        @foreach (var alert in Notifications)
+        {
+            <MudListItem  Icon="@GetAlertIcon(@alert.TypeAlert)"  IconColor="@GetAlertColor(@alert.TypeAlert)" IconSize="Size.Small" Dense="true"
+                         Href="@alert.Href">
+                <div id="item-notification" style="display: flex; align-items: center; width: 100%;">
+                    <div id="item-notification-msg">
+                        <p class="notification-title"><b>@alert.Title</b></p>
+                        <p class="notification-sub-title">@alert.Message</p>
+                    </div>
+                    <MudSpacer/>
+                    <p style="font-size: 10px; margin: 0px 5px 10px 0px">@alert.CreateAt.ToString("HH:mm")</p>
+                    <MudIconButton Icon="@Icons.Material.Outlined.Delete" Size="Size.Small" Color="Color.Error" OnClick="@(() => RemoveAlert(alert))"/>
+                </div>
+            </MudListItem>
+        }
+    </MudList>
+</MudPaper>
+
+@code {
+    [Parameter]
+    public List<AlertItem> Notifications { get; set; } = new();
+    
+    private void RemoveAlert(AlertItem alert)
+    {
+        Notifications.Remove(alert);
+    }
+
+    private string GetAlertIcon(AlertItemIcon icon)
+    {
+        switch (icon)
+        {
+            case AlertItemIcon.Erro:
+                return Icons.Material.Outlined.WarningAmber;
+            case AlertItemIcon.Information:
+                return Icons.Material.Outlined.ErrorOutline;
+            case AlertItemIcon.Success:
+                return Icons.Material.Outlined.CheckCircle;
+            default:
+                return Icons.Material.Outlined.CheckCircle;
+        }
+    }
+    
+    private Color GetAlertColor(AlertItemIcon icon)
+    {
+        switch (icon)
+        {
+            case AlertItemIcon.Erro:
+                return Color.Error;
+            case AlertItemIcon.Information:
+                return Color.Info;
+            case AlertItemIcon.Success:
+                return Color.Success;
+            default:
+                return Color.Info;
+        }
+    }
+
+   
+
+}

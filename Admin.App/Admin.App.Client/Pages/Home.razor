@@ -1,47 +1,6 @@
-﻿@using Admin.App.Client.Data.Dashborad
-@using Admin.App.Client.Components.Dashboard
+﻿@page "/"
 
-@page "/"
-<GridStack>
-    @foreach (var chart in reports)
-    {
-    <BarChart Report="chart"></BarChart>
-    }
-</GridStack>
 
 @code {
-    private static Random random = new();
-    private List<ReportSettings> reports = new()
-    {
-        new ReportSettings
-        {
-            Title = "Teste 1",
-            BarColour = "#1976d2",
-            Width = 600,
-            Height = 350,
-            ChartData = new List<ClaimReportData>
-            {
-                new() { DayOfWeek = "Monday", NoOfClaims = random.Next(1, 20) },
-                new() { DayOfWeek = "Tuesday", NoOfClaims = random.Next(1, 20) },
-                new() { DayOfWeek = "Wednesday", NoOfClaims = random.Next(1, 20) },
-                new() { DayOfWeek = "Thursday", NoOfClaims = random.Next(1, 20) },
-                new() { DayOfWeek = "Friday", NoOfClaims = random.Next(1, 20) },
-            },
-        },
-        new ReportSettings
-        {
-            Title = "Teste 2",
-            BarColour = "#d32f2f",
-            Width = 600,
-            Height = 350,
-            ChartData = new List<ClaimReportData>
-            {
-                new() { DayOfWeek = "Monday", NoOfClaims = random.Next(10, 30) },
-                new() { DayOfWeek = "Tuesday", NoOfClaims = random.Next(10, 30) },
-                new() { DayOfWeek = "Wednesday", NoOfClaims = random.Next(10, 30) },
-                new() { DayOfWeek = "Thursday", NoOfClaims = random.Next(10, 30) },
-                new() { DayOfWeek = "Friday", NoOfClaims = random.Next(10, 30) },
-            },
-        }
-    };
+
 }
