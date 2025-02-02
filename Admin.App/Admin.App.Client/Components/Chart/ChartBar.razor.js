@@ -1,24 +1,25 @@
 class ChartManager {
     constructor(container, dotNetRef, yMax) {
-        this.container = container;
-        this.dotNetRef = dotNetRef;
-        this.yMax = yMax;
-        this.initChart();
-        this.setupEvents();
+        this.container = container;     // Elemento container do gráfico
+        this.dotNetRef = dotNetRef;     // Referência para o componente .NET
+        this.yMax = yMax;               // Valor máximo do eixo Y
+        this.initChart();               // Inicializa elementos do gráfico
+        this.setupEvents();             // Configura interatividade
     }
 
     initChart() {
-        // Configuração inicial do gráfico
+        // Configurações básicas do SVG
         this.width = 500;
         this.height = 300;
         this.margin = { top: 20, right: 20, bottom: 30, left: 40 };
 
+        // Cria elemento SVG principal
         this.svg = d3.select(this.container)
             .append("svg")
             .attr("width", this.width)
             .attr("height", this.height);
 
-        // Eixo X
+        // Configura escala e eixo X
         this.xScale = d3.scaleUtc()
             .domain([new Date("2023-01-01"), new Date("2024-01-01")])
             .range([this.margin.left, this.width - this.margin.right]);
@@ -27,7 +28,7 @@ class ChartManager {
             .attr("transform", `translate(0,${this.height - this.margin.bottom})`)
             .call(d3.axisBottom(this.xScale));
 
-        // Eixo Y
+        // Configura escala e eixo Y
         this.yScale = d3.scaleLinear()
             .domain([0, this.yMax])
             .range([this.height - this.margin.bottom, this.margin.top]);
@@ -38,23 +39,26 @@ class ChartManager {
     }
 
     setupEvents() {
-        // Exemplo: Evento de clique no eixo Y
+        // Evento de clique no eixo Y para dobrar o valor
         this.yAxis.on("click", async () => {
             await this.dotNetRef.invokeMethodAsync("OnYMaxChanged", this.yMax * 2);
         });
     }
 
+    // Atualiza a escala do eixo Y
     updateYMax(newMax) {
         this.yMax = newMax;
-        this.yScale.domain([0, this.yMax]);
-        this.yAxis.call(d3.axisLeft(this.yScale));
+        this.yScale.domain([0, this.yMax]);     // Atualiza domínio
+        this.yAxis.call(d3.axisLeft(this.yScale)); // Redesenha eixo
     }
 
+    // Remove o SVG ao destruir
     dispose() {
         d3.select(this.container).selectAll("svg").remove();
     }
 }
 
+// Funções de interface para Blazor
 export function initializeChart(container, dotNetRef, yMax) {
     return new ChartManager(container, dotNetRef, yMax);
 }
