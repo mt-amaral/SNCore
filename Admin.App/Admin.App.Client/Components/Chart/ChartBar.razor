@@ -1,0 +1,79 @@
+@page "/chartBar"
+@inject IJSRuntime JSRuntime
+@implements IAsyncDisposable
+
+<div id="barchart-bar" @ref="chartContainer" style="width: 100%; height: 400px"></div>
+<input type="number" @bind="YMax" @bind:event="oninput" min="1" class="form-control mb-3" />
+
+@code {
+    private ElementReference chartContainer;
+    private IJSObjectReference? module;
+    private IJSObjectReference? chartInstance;
+    private DotNetObjectReference<ChartBar>? dotNetRef;
+    private int yMax = 100;
+
+    [JSInvokable("OnYMaxChanged")]
+    public async Task HandleYMaxChanged(int newValue)
+    {
+        // Lógica para tratar mudanças originadas no JS
+        YMax = newValue;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            module = await JSRuntime.InvokeAsync<IJSObjectReference>(
+                "import", "./Components/Chart/ChartBar.razor.js");
+            
+            dotNetRef = DotNetObjectReference.Create(this);
+            
+            chartInstance = await module.InvokeAsync<IJSObjectReference>(
+                "initializeChart", 
+                chartContainer,
+                dotNetRef,
+                YMax
+            );
+        }
+        else
+        {
+            await UpdateYMax();
+        }
+    }
+
+    private async Task UpdateYMax()
+    {
+        if (module != null && chartInstance != null)
+        {
+            await module.InvokeVoidAsync("updateYMax", chartInstance, YMax);
+        }
+    }
+
+    public int YMax
+    {
+        get => yMax;
+        set
+        {
+            if (yMax != value)
+            {
+                yMax = value;
+                StateHasChanged();
+            }
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (module != null)
+        {
+            if (chartInstance != null)
+            {
+                await module.InvokeVoidAsync("disposeChart", chartInstance);
+                await chartInstance.DisposeAsync();
+            }
+            await module.DisposeAsync();
+        }
+        dotNetRef?.Dispose();
+    }
+}
