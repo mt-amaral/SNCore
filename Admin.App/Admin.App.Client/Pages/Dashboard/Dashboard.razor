@@ -11,10 +11,14 @@
             <!-- Conteúdo principal -->
             <MudItem xs="12" sm="9">
                 <MudGrid Spacing=3>
-                    <Analyzes/>
-                    <MudItem xs="12">
-                        <MudPaper  Height="700px" Elevation="3"></MudPaper>
+                    @for (int i = 0; i < 4; i++)
+                    {
+                    <MudItem xs="6" sm="3">
+                        <Analyzes/>
                     </MudItem>
+                    }
+
+                    <DataPrincipal/>
                 </MudGrid>
             </MudItem>
 

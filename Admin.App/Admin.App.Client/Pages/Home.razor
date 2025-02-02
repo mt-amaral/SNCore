@@ -1,6 +1,57 @@
 ﻿@page "/"
+@using Admin.App.Client.Data
+@using Admin.App.Client.Layout
+@layout LoginLayout
+@inject  ISnackbar Snackbar
+@inject  NavigationManager NavigationManager
+<MudGrid Justify="Justify.Center" Spacing="2" Style=" align-items: center; height: 700px">
+    <MudItem xs="12" sm="8" md="6" lg="3">
+        <MudCard >
+            <MudCardContent>
+                <div class="text-center mb-6">
+                    <MudText Typo="Typo.h4" Color="Color.Primary">Sign In</MudText>
+                </div>
 
+                <EditForm Model="@Model" OnValidSubmit="HandleValidSubmit">
+                    <MudTextField @bind-Value="Model.Email"
+                                  Label="User"
+                                  FullWidth="true"
+                                  Margin="Margin.Dense"
+                                  Class="mb-4"/>
+
+                    <MudTextField @bind-Value="Model.Password"
+                                  Label="Password"
+                                  InputType="InputType.Password"
+                                  FullWidth="true"
+                                  Margin="Margin.Dense"
+                                  Class="mb-4"/>
+
+                    <MudButton ButtonType="ButtonType.Submit"
+                               Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               FullWidth="true"
+                               Class="mt-4">
+                        SIGN IN
+                    </MudButton>
+                </EditForm>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+</MudGrid>
 
 @code {
+    private LoginModel Model = new();
 
+    private async Task HandleValidSubmit()
+    {
+        if (Model.Email.ToLower() == "admin" && Model.Password == "admin")
+        {
+            await Task.Delay(200); 
+            NavigationManager.NavigateTo("/dashboard");
+        }
+        else
+        {
+            Snackbar.Add("Invalid credentials!", Severity.Error);
+        }
+    }
 }

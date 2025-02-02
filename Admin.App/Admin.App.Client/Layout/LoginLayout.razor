@@ -1,5 +1,4 @@
-﻿@inherits LayoutComponentBase
-
+@inherits LayoutComponentBase
 
 <MudThemeProvider Theme="_theme" IsDarkMode="@_isdarkMode"/>
 <MudPopoverProvider/>
@@ -7,28 +6,17 @@
 <MudSnackbarProvider/>
 
 <MudLayout>
-    <MudAppBar Elevation="1">
-        <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Primary" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        <MudSpacer />
-        <MudIconButton Icon="@(_isdarkMode ? Icons.Material.Outlined.LightMode : Icons.Material.Outlined.DarkMode)"
-                       Color="Color.Inherit"
-                       Edge="Edge.End"
-                       OnClick="@ThemeToggle"/>
-        
-        <MudIconButton Icon="@Icons.Material.Filled.Logout" Href="http://localhost:8091" Style="margin: 0px 0px 0px 10px" Edge="Edge.End" Color="Color.Inherit"/>
-
-    </MudAppBar>
-    <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
-        <MudDrawerHeader>
-            <MudText Typo="Typo.h5" Class="mt-1">SNCore</MudText>
-        </MudDrawerHeader>
-        <NavMenu/>
-    </MudDrawer>
     <MudMainContent>
+        <MudAppBar Elevation="0" Color="Color.Transparent">
+            <MudSpacer />
+            <MudIconButton Icon="@(_isdarkMode ? Icons.Material.Outlined.LightMode : Icons.Material.Outlined.DarkMode)"
+                           Edge="Edge.End"
+                           Color="Color.Primary"
+                           OnClick="@ThemeToggle"/>
+        </MudAppBar>
         @Body
     </MudMainContent>
 </MudLayout>
-
 
 @code {
     bool _drawerOpen = true;
@@ -87,10 +75,5 @@
             ActionDisabledBackground = "#424242", // Fundo de ações desabilitadas
         }
     };
-
-    void DrawerToggle() => _drawerOpen = !_drawerOpen;
     void ThemeToggle() => _isdarkMode = !_isdarkMode;
 }
-
-
-
