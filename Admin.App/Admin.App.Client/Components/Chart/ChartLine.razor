@@ -1,0 +1,74 @@
+@inject IJSRuntime JSRuntime
+@implements IAsyncDisposable
+
+<div id="barchart" style="margin: 100%; height: 100%"></div>
+
+@code {
+    private static Random random = new Random();
+    public ReportSettings? Report { get; set; } = new()
+    {
+        Title = "teste",
+        BarColour = "#1976d2",
+        Width = 430,
+        Height = 250,
+        ChartData = new List<ClaimReportData>
+        {
+            new() { DayOfWeek = "00:01", NoOfClaims = random.Next(1, 20) },
+            new() { DayOfWeek = "00:10", NoOfClaims = random.Next(1, 20) },
+            new() { DayOfWeek = "00:19", NoOfClaims = random.Next(1, 20) },
+            new() { DayOfWeek = "00:20", NoOfClaims = random.Next(1, 20) },
+            new() { DayOfWeek = "00:25", NoOfClaims = random.Next(1, 20) },
+            new() { DayOfWeek = "00:27", NoOfClaims = random.Next(1, 20) },
+            new() { DayOfWeek = "00:31", NoOfClaims = random.Next(1, 20) },
+            new() { DayOfWeek = "00:39", NoOfClaims = random.Next(1, 20) },
+            new() { DayOfWeek = "00:44", NoOfClaims = random.Next(1, 20) },
+            new() { DayOfWeek = "00:48", NoOfClaims = random.Next(1, 20) },
+        },
+    };
+
+    private IJSObjectReference? module;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Carrega o JavaScript associado ao componente
+            module = await JSRuntime.InvokeAsync<IJSObjectReference>(
+                "import", "./Components/Chart/ChartLine.razor.js");
+
+            if (Report != null)
+            {
+                await module.InvokeVoidAsync("testenobre");
+            }
+        }
+        else if (module != null && Report != null)
+        {
+            // Atualiza o gráfico ao alterar o Report
+            await module.InvokeVoidAsync("testenobre", Report);
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (module != null)
+        {
+            await module.DisposeAsync();
+        }
+    }
+    
+    public class ClaimReportData
+    {
+        public string DayOfWeek { get; set; }
+        public int NoOfClaims { get; set; }
+    } 
+    
+    public class ReportSettings
+    {
+        public string Title { get; set; }
+        public string BarColour { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public List<ClaimReportData> ChartData { get; set; }
+    }
+    
+}
