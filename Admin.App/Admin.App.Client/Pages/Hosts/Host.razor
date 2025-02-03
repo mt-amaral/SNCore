@@ -1,11 +1,29 @@
 @page "/host"
+@using System.Runtime.InteropServices.JavaScript
+@using Admin.App.Client.Components.Chart
 
-<MudContainer MaxWidth="MaxWidth.ExtraLarge">
-    <MudPaper Height="100%" Width="100%" Square="true" Class="mud-theme-primary">
-        <MudText>Host</MudText>
-    </MudPaper>
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="d-flex">
+    <ChartBar yMax="ValorY" Datas="Dates" @ref="teste"/>
+    <MudNumericField @bind-Value="ValorY" Min="1" Class="mb-3" For="@(() => ValorY)" @onchange="() => upteste()"/>
+    <MudDatePicker @bind-Date="Dates[0]" Label="Data Inicial" Editable="true" @onchange="() => UpdateDD()" />
 </MudContainer>
 
 @code {
+    public int ValorY = 100;
+    public ChartBar teste;
+    public List<DateTime?> Dates = new List<DateTime?>
+    {
+        new DateTime(2022, 1, 1),
+        new DateTime(2023, 1, 1)
+    };
+
+    public async Task UpdateDD()
+    {
+        teste.updateDate();
+    }
     
+    public async Task upteste()
+    {
+        teste.updateDate();
+    }
 }

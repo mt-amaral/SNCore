@@ -1,23 +1,34 @@
 @page "/chartBar"
 @inject IJSRuntime JSRuntime
+@using System.Runtime.InteropServices.JavaScript
 @implements IAsyncDisposable
 
 <!-- Container do gráfico e input para controle do eixo Y -->
 <div id="barchart-bar" @ref="chartContainer" style="width: 100%; height: 400px"></div>
-<input type="number" @bind="YMax" @bind:event="oninput" min="1" class="form-control mb-3" />
+
 
 @code {
     private ElementReference chartContainer; // Referência ao elemento HTML do gráfico
     private IJSObjectReference? module;      // Módulo JavaScript importado
     private IJSObjectReference? chartInstance; // Instância do gráfico D3
     private DotNetObjectReference<ChartBar>? dotNetRef; // Referência .NET para callbacks JS
-    private int yMax = 100; // Valor máximo do eixo Y
+    [Parameter]
+    public List<DateTime?> Datas { get; set; }
+    [Parameter] 
+    public int yMax { get; set; } // Valor máximo do eixo Y
 
     // Método invocado pelo JavaScript quando o eixo Y é alterado
     [JSInvokable("OnYMaxChanged")]
     public async Task HandleYMaxChanged(int newValue)
     {
         YMax = newValue; // Atualiza o valor máximo
+        await InvokeAsync(StateHasChanged); // Força atualização da UI
+    }
+    
+    [JSInvokable("OnYMaxChanged33")]
+    public async Task HandleYMaxChangeda(List<DateTime?> newValue)
+    {
+        Datas = newValue; // Atualiza o valor máximo
         await InvokeAsync(StateHasChanged); // Força atualização da UI
     }
 
@@ -33,21 +44,25 @@
             dotNetRef = DotNetObjectReference.Create(this);
             
             // Inicializa o gráfico
-            chartInstance = await module.InvokeAsync<IJSObjectReference>("initializeChart", chartContainer, dotNetRef, YMax);
+            chartInstance = await module.InvokeAsync<IJSObjectReference>("initializeChart", chartContainer, dotNetRef, YMax, System.Text.Json.JsonSerializer.Serialize(Datas));
         }
-        else // Renderizações subsequentes
+        else
         {
-            await UpdateYMax(); // Atualiza o eixo Y
+            UpdateYMax();
+            updateDate();
         }
+        
     }
 
     // Atualiza o valor máximo do eixo Y no gráfico
-    private async Task UpdateYMax()
+    public async Task UpdateYMax()
     {
-        if (module != null && chartInstance != null)
-        {
-            await module.InvokeVoidAsync("updateYMax", chartInstance, YMax);
-        }
+        await module.InvokeVoidAsync("updateYMax", chartInstance, YMax);
+    }
+
+    public async Task updateDate()
+    {
+        await module.InvokeVoidAsync("updateDate", chartInstance, System.Text.Json.JsonSerializer.Serialize(Datas));
     }
 
     // Propriedade para controle bidirecional do valor YMax
