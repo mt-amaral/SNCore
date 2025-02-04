@@ -3,14 +3,14 @@
 @using Admin.App.Client.Components.Chart
 
 <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="d-flex">
-    <ChartBar yMax="ValorY" Datas="Dates" @ref="teste"/>
-    <MudNumericField @bind-Value="ValorY" Min="1" Class="mb-3" For="@(() => ValorY)" @onchange="() => upteste()"/>
+    <ChartBar yMax="ValorY" Datas="Dates" @ref="Teste"/>
+    <MudNumericField @bind-Value="ValorY" Min="1" Class="mb-3" For="@(() => ValorY)" @onchange="() => Upteste()"/>
     <MudDatePicker @bind-Date="Dates[0]" Label="Data Inicial" Editable="true" @onchange="() => UpdateDD()" />
 </MudContainer>
 
 @code {
     public int ValorY = 100;
-    public ChartBar teste;
+    public ChartBar Teste = new();
     public List<DateTime?> Dates = new List<DateTime?>
     {
         new DateTime(2022, 1, 1),
@@ -19,11 +19,11 @@
 
     public async Task UpdateDD()
     {
-        teste.updateDate();
+        await Teste.updateDate();
     }
     
-    public async Task upteste()
+    public async Task Upteste()
     {
-        teste.updateDate();
+        await Teste.updateDate();
     }
 }

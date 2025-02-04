@@ -4,16 +4,15 @@
 @implements IAsyncDisposable
 
 <!-- Container do gráfico e input para controle do eixo Y -->
-<div id="barchart-bar" @ref="chartContainer" style="width: 100%; height: 400px"></div>
+<div id="barchart-bar" @ref="ChartContainer" style="width: 100%; height: 400px"></div>
 
 
 @code {
-    private ElementReference chartContainer; // Referência ao elemento HTML do gráfico
-    private IJSObjectReference? module;      // Módulo JavaScript importado
-    private IJSObjectReference? chartInstance; // Instância do gráfico D3
-    private DotNetObjectReference<ChartBar>? dotNetRef; // Referência .NET para callbacks JS
-    [Parameter]
-    public List<DateTime?> Datas { get; set; }
+    private ElementReference ChartContainer; // Referência ao elemento HTML do gráfico
+    private IJSObjectReference? Module;      // Módulo JavaScript importado
+    private IJSObjectReference? ChartInstance; // Instância do gráfico D3
+    private DotNetObjectReference<ChartBar>? DotNetRef; // Referência .NET para callbacks JS
+    [Parameter] public List<DateTime?> Datas { get; set; } = new();
     [Parameter] 
     public int yMax { get; set; } // Valor máximo do eixo Y
 
@@ -38,18 +37,18 @@
         if (firstRender) // Primeira renderização
         {
             // Importa o módulo JavaScript
-            module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./Components/Chart/ChartBar.razor.js");
+            Module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./Components/Chart/ChartBar.razor.js");
             
             // Cria referência .NET para interoperabilidade
-            dotNetRef = DotNetObjectReference.Create(this);
+            DotNetRef = DotNetObjectReference.Create(this);
             
             // Inicializa o gráfico
-            chartInstance = await module.InvokeAsync<IJSObjectReference>("initializeChart", chartContainer, dotNetRef, YMax, System.Text.Json.JsonSerializer.Serialize(Datas));
+            ChartInstance = await Module.InvokeAsync<IJSObjectReference>("initializeChart", ChartContainer, DotNetRef, YMax, System.Text.Json.JsonSerializer.Serialize(Datas));
         }
         else
         {
-            UpdateYMax();
-            updateDate();
+            await UpdateYMax();
+            await updateDate();
         }
         
     }
@@ -57,12 +56,12 @@
     // Atualiza o valor máximo do eixo Y no gráfico
     public async Task UpdateYMax()
     {
-        await module.InvokeVoidAsync("updateYMax", chartInstance, YMax);
+        await Module.InvokeVoidAsync("updateYMax", ChartInstance, YMax);
     }
 
     public async Task updateDate()
     {
-        await module.InvokeVoidAsync("updateDate", chartInstance, System.Text.Json.JsonSerializer.Serialize(Datas));
+        await Module.InvokeVoidAsync("updateDate", ChartInstance, System.Text.Json.JsonSerializer.Serialize(Datas));
     }
 
     // Propriedade para controle bidirecional do valor YMax
@@ -82,15 +81,15 @@
     // Destruição: Limpeza de recursos
     public async ValueTask DisposeAsync()
     {
-        if (module != null)
+        if (Module != null)
         {
-            if (chartInstance != null)
+            if (ChartInstance != null)
             {
-                await module.InvokeVoidAsync("disposeChart", chartInstance); // Destrói instância
-                await chartInstance.DisposeAsync(); // Libera recursos JS
+                await Module.InvokeVoidAsync("disposeChart", ChartInstance); // Destrói instância
+                await ChartInstance.DisposeAsync(); // Libera recursos JS
             }
-            await module.DisposeAsync(); // Libera módulo
+            await Module.DisposeAsync(); // Libera módulo
         }
-        dotNetRef?.Dispose(); // Libera referência .NET
+        DotNetRef?.Dispose(); // Libera referência .NET
     }
 }

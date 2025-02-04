@@ -24,14 +24,14 @@
 
             <!-- Barra lateral direita -->
             <MudItem xs="12" sm="3">
-                <AlertNotification Notifications="Notifications" @ref="_Alert"/>
+                <AlertNotification Notifications="Notifications" @ref="Alert"/>
             </MudItem>
 
         </MudGrid>
         
 </MudContainer>
 @code {
-    public AlertNotification _Alert;
+    public AlertNotification Alert = new();
     public List<AlertItem> Notifications = new()
     {
         new AlertItem() {  Title = "Notification Title", Message = "text sub-title", TypeAlert = AlertItemIcon.Erro},
