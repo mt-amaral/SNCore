@@ -12,7 +12,7 @@ export function testenobre(report) {
     inicio.setHours(6, 0, 0, 0);
 
     // Criar 18 pontos entre 6h e agora
-    const numPontos = 18;
+    const numPontos = 23;
     const intervalo = (agora - inicio) / numPontos;
 
     const dados1 = Array.from({ length: numPontos }, (_, i) => ({
@@ -36,22 +36,30 @@ export function testenobre(report) {
         .attr("width", width)
         .attr("height", height);
 
-    // Criar gradientes para a área preenchida
-    const defs = svg.append("defs");
+    // Adicionar grades de fundo
+    // Grade para eixo Y
+    svg.append("g")
+        .attr("class", "grid-y")
+        .attr("transform", `translate(${marginLeft},0)`)
+        .call(d3.axisLeft(y)
+            .ticks(10)
+            .tickSize(-(width - marginLeft - marginRight))
+            .tickFormat(""))
+        .selectAll(".tick line")
+        .attr("stroke", "rgba(0, 0, 0, 0.3)")
+        .attr("stroke-width", 0.5);
 
-    const gradientBlue = defs.append("linearGradient")
-        .attr("id", "areaGradienteAzul")
-        .attr("x1", "0%").attr("x2", "0%")
-        .attr("y1", "0%").attr("y2", "100%");
-    gradientBlue.append("stop").attr("offset", "0%").attr("stop-color", "#1976d2").attr("stop-opacity", 0.5);
-    gradientBlue.append("stop").attr("offset", "100%").attr("stop-color", "#1976d2").attr("stop-opacity", 0);
-
-    const gradientBlack = defs.append("linearGradient")
-        .attr("id", "areaGradientePreto")
-        .attr("x1", "0%").attr("x2", "0%")
-        .attr("y1", "0%").attr("y2", "100%");
-    gradientBlack.append("stop").attr("offset", "0%").attr("stop-color", "black").attr("stop-opacity", 0.5);
-    gradientBlack.append("stop").attr("offset", "100%").attr("stop-color", "black").attr("stop-opacity", 0);
+    // Grade para eixo X
+    svg.append("g")
+        .attr("class", "grid-x")
+        .attr("transform", `translate(0,${height - marginBottom})`)
+        .call(d3.axisBottom(x)
+            .ticks(numPontos)
+            .tickSize(-(height - marginTop - marginBottom))
+            .tickFormat(""))
+        .selectAll(".tick line")
+        .attr("stroke", "rgba(0, 0, 0, 0.3)")
+        .attr("stroke-width", 0.5);
 
     // Criar áreas preenchidas
     const area = d3.area()
@@ -59,19 +67,7 @@ export function testenobre(report) {
         .y0(height - marginBottom) // Base da área (eixo X)
         .y1(d => y(d.valor)) // Altura do valor no gráfico
         .curve(d3.curveMonotoneX);
-
-    // Adicionar área azul com gradiente
-    svg.append("path")
-        .datum(dados1)
-        .attr("fill", "url(#areaGradienteAzul)")
-        .attr("d", area);
-
-    // Adicionar área preta com gradiente
-    svg.append("path")
-        .datum(dados2)
-        .attr("fill", "url(#areaGradientePreto)")
-        .attr("d", area);
-
+    
     // Criar linha suavizada
     const linha = d3.line()
         .x(d => x(d.tempo))
@@ -130,5 +126,8 @@ export function testenobre(report) {
         .attr("transform", `translate(${marginLeft},0)`)
         .call(d3.axisLeft(y))
         .attr("color", "#333"); // Cor mais visível para os eixos
+    
+    
+    
 }
 

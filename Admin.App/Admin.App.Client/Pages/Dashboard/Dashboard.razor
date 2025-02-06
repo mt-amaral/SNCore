@@ -14,24 +14,25 @@
                     @for (int i = 0; i < 4; i++)
                     {
                     <MudItem xs="6" sm="3">
-                        <Analyzes/>
+                        <Summary>
+                        </Summary>
                     </MudItem>
                     }
 
-                    <DataPrincipal/>
+                    <Navigation/>
                 </MudGrid>
             </MudItem>
 
             <!-- Barra lateral direita -->
             <MudItem xs="12" sm="3">
-                <AlertNotification Notifications="Notifications" @ref="Alert"/>
+                <Notification Notifications="Notifications" @ref="Alert"/>
             </MudItem>
 
         </MudGrid>
         
 </MudContainer>
 @code {
-    public AlertNotification Alert = new();
+    public Notification Alert = new();
     public List<AlertItem> Notifications = new()
     {
         new AlertItem() {  Title = "Notification Title", Message = "text sub-title", TypeAlert = AlertItemIcon.Erro},
