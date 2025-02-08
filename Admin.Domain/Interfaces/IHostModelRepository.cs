@@ -6,4 +6,5 @@ namespace Admin.Domain.Interfaces;
 
 public interface IHostModelRepository : IBaseRepository<HostModel>
 {
+    
 }

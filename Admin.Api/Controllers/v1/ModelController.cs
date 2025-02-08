@@ -30,5 +30,24 @@ public class ModelController : BaseController
             return BadRequest(ex.Message);
         }
     }
+    
+    [HttpGet]
+    [ProducesResponseType(typeof(IEnumerable<ItemModelResponse>), StatusCodes.Status200OK)]
+    [Route("ExibirItems")]
+    public async Task<ActionResult> GetModelAllAsync(int modelId)
+    {
+        try
+        {
+            var result = await _hostModelService.GetItem(modelId);
+
+
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+    
 }
 

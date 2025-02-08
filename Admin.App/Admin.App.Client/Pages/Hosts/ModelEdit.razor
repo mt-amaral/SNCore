@@ -1,0 +1,28 @@
+@page "/model/{id:int}"
+@using Admin.Shared.Response
+@inject ModelService ModelService
+<h3>ModelEdit @Id </h3>
+@if (Items != null)
+{
+
+    <MudDataGrid Items="@Items"  Dense="true">
+        <Columns>
+            <PropertyColumn Property="x => x.Id" Title="Molar mass" />
+            <PropertyColumn Property="x => x.ItemName" Title="Nr" />
+            <PropertyColumn Property="x => x.OidName" />
+        </Columns>
+    </MudDataGrid>
+
+}
+
+
+@code {
+
+    [Parameter] public int Id { get; set;}
+    private IEnumerable<ItemModelResponse?>? Items { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Items = await ModelService.GetItemsAsync(@Id) ?? new List<ItemModelResponse>();
+    }
+}

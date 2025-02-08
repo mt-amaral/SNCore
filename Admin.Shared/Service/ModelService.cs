@@ -11,4 +11,9 @@ public class ModelService(IHttpClientFactory factory)
     {
         return await _httpClient.GetFromJsonAsync<List<ModelResponse>>("api/model/exibirtodos");
     }
+    
+    public async Task<List<ItemModelResponse>?> GetItemsAsync(int id)
+    {
+        return await _httpClient.GetFromJsonAsync<List<ItemModelResponse>>($"api/model/exibiritems?modelId={id}");
+    }
 }

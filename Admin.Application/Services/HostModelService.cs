@@ -21,7 +21,13 @@ public class HostModelService : IHostModelService
 
     public async Task<IEnumerable<ModelResponse>> GetModel()
     {
-        var entitys = await _HostModelRepository.SelectAll();
-        return _mapper.Map<IEnumerable<ModelResponse>>(entitys);
+        var entities = await _HostModelRepository.SelectAll();
+        return _mapper.Map<IEnumerable<ModelResponse>>(entities);
+    }
+
+    public async Task<IEnumerable<ItemModelResponse>> GetItem(int modelId)
+    {
+        var entities = await _itemRepository.GetItemByModel(modelId);
+        return _mapper.Map<IEnumerable<ItemModelResponse>>(entities);
     }
 }
