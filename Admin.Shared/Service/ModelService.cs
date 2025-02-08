@@ -1,0 +1,14 @@
+using Admin.Shared.Response;
+using System.Net.Http.Json;
+
+namespace Admin.Shared.Service;
+
+public class ModelService(IHttpClientFactory factory)
+{
+    private readonly HttpClient _httpClient = factory.CreateClient("Api");
+
+    public async Task<List<ModelResponse>?> GetModelsAsync()
+    {
+        return await _httpClient.GetFromJsonAsync<List<ModelResponse>>("api/model/exibirtodos");
+    }
+}
