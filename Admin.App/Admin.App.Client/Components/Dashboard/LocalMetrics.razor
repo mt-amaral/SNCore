@@ -1,22 +1,22 @@
 @using Admin.App.Client.Components.Chart
-@using Admin.App.Client.Data.Dashboard
+@using Admin.Shared.Response
 <MudGrid Spacing=6>
     <MudItem xs="12" sm="12" md="12">
         <MudPaper Height="330px" Outlined="true" Class="rounded-lg d-flex align-center justify-center">
-            <ChartLine/>
+            <MudText Typo="Typo.h5">(12/12)</MudText>
         </MudPaper>
     </MudItem>
     <MudItem xs="12" sm="7" md="7">
-        <MudPaper  Height="350px" Outlined="true" Class="pa-4 rounded-lg d-flex align-center justify-center py-8 px-10" >
-            <MudSimpleTable Style="overflow-x: auto; height: 335px; width: 100%" Elevation="0" Dense="true" >
+        <MudPaper Height="350px" Outlined="true" Class="pa-4 rounded-lg d-flex align-center justify-center py-8 px-10">
+            <MudSimpleTable Style="overflow-x: auto; height: 335px; width: 100%" Elevation="0" Dense="true">
                 <tbody>
-                @foreach (var prop in typeof(SysInfo).GetProperties())
+                @foreach (var prop in typeof(SysInfoResponse).GetProperties())
                 {
-                <tr>
-                    <td style="width: 450px">@prop.Name</td>
-                    <MudSpacer/>
-                    <td>@prop.GetValue(SystemInfom)</td>
-                </tr>
+                    <tr>
+                        <td style="width: 450px">@prop.Name</td>
+                        <MudSpacer/>
+                        <td>@prop.GetValue(SystemInfom)</td>
+                    </tr>
                 }
                 </tbody>
             </MudSimpleTable>
@@ -27,12 +27,12 @@
         <MudGrid Spacing="3">
             <MudItem xs="12" sm="12" md="12">
                 <MudPaper Height="170px" Outlined="true" Class="pa-4 rounded-lg d-flex align-center justify-center py-8 px-10" >
-                    <MudText Typo="Typo.h5">Grid 3 (3/12)</MudText>
+                    <MudText Typo="Typo.h5">(3/12)</MudText>
                 </MudPaper>
             </MudItem>
             <MudItem xs="12" sm="12" md="12">
                 <MudPaper Height="170px" Outlined="true" Class="pa-4 rounded-lg d-flex align-center justify-center py-8 px-10" >
-                    <MudText Typo="Typo.h5">Grid 4 (3/12)</MudText>
+                    <MudText Typo="Typo.h5">(3/12)</MudText>
                 </MudPaper>
             </MudItem>
         </MudGrid>
@@ -40,7 +40,7 @@
 </MudGrid>
 @code {
 
-    public SysInfo SystemInfom { get; set; } = new()
+    public SysInfoResponse SystemInfom { get; set; } = new()
     {
         Cpu = "10%",
         Ram = "2%",

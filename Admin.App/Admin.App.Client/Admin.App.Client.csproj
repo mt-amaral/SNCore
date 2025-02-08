@@ -17,4 +17,8 @@
     <ProjectReference Include="..\..\Admin.Shared\Admin.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\Dashboard\" />
+  </ItemGroup>
+
 </Project>

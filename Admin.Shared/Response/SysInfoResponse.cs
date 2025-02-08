@@ -1,6 +1,6 @@
-namespace Admin.App.Client.Data.Dashboard;
+namespace Admin.Shared.Response;
 
-public class SysInfo
+public class SysInfoResponse
 {
     public string Version { get; set; } = string.Empty;
     

@@ -33,6 +33,7 @@ builder.Services.AddHttpClient("Api", client =>
         client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
     });
 
+
 builder.Services.AddScoped(sp =>
 {
     var httpClient = sp.GetRequiredService<IHttpClientFactory>().CreateClient("Api");
@@ -43,4 +44,9 @@ builder.Services.AddScoped(sp =>
     return new HttpClientWithOptions(httpClient, jsonSerializerOptions);
 });
 
-await builder.Build().RunAsync();
+var app = builder.Build();
+await app.RunAsync();
+
+
+
+

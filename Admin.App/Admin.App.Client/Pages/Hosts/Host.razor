@@ -1,29 +1,18 @@
 @page "/host"
-@using System.Runtime.InteropServices.JavaScript
-@using Admin.App.Client.Components.Chart
+@using Admin.App.Client.Components.Grid
+@using Admin.Shared.Response
+@inject  HostService HostApi
 
-<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="d-flex">
-    <ChartBar yMax="ValorY" Datas="Dates" @ref="Teste"/>
-    <MudNumericField @bind-Value="ValorY" Min="1" Class="mb-3" For="@(() => ValorY)" @onchange="() => Upteste()"/>
-    <MudDatePicker @bind-Date="Dates[0]" Label="Data Inicial" Editable="true" @onchange="() => UpdateDD()" />
-</MudContainer>
+<HostGrid HostRender="Hosts"/>
+
 
 @code {
-    public int ValorY = 100;
-    public ChartBar Teste = new();
-    public List<DateTime?> Dates = new List<DateTime?>
-    {
-        new DateTime(2022, 1, 1),
-        new DateTime(2023, 1, 1)
-    };
 
-    public async Task UpdateDD()
+    public IEnumerable<HostResponse> Hosts { get; set; } = new List<HostResponse>();
+
+    protected override async Task OnInitializedAsync()
     {
-        await Teste.updateDate();
+        Hosts = await HostApi.GetHostsAsync() ?? new List<HostResponse>();
     }
-    
-    public async Task Upteste()
-    {
-        await Teste.updateDate();
-    }
+
 }

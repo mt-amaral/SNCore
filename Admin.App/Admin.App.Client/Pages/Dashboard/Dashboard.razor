@@ -1,10 +1,9 @@
 @page "/dashboard"
 @using Admin.App.Client.Components.Dashboard
-@using Admin.App.Client.Data.Dashboard
+@using Admin.Shared.Response
 @inject ISnackbar Snackbar
 
-<MudContainer MaxWidth="MaxWidth.ExtraLarge">
-        <MudText>Dashboard</MudText>
+
     <MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="() =>CriarNovo()">Teste Notification</MudButton>
         <MudGrid Spacing=6>
             
@@ -29,20 +28,19 @@
             </MudItem>
 
         </MudGrid>
-        
-</MudContainer>
+
 @code {
     public Notification Alert = new();
-    public List<AlertItem> Notifications = new()
+    public List<AlertItemResponse> Notifications = new()
     {
-        new AlertItem() {  Title = "Notification Title", Message = "text sub-title", TypeAlert = AlertItemIcon.Erro},
-        new AlertItem() {  Title = "Notification Title", Message = "text sub-title", TypeAlert = AlertItemIcon.Success},
-        new AlertItem() {  Title = "Notification Title", Message = "text sub-title", TypeAlert = AlertItemIcon.Information},
-        new AlertItem() {  Title = "Notification Title", Message = "text sub-title", TypeAlert = AlertItemIcon.Erro},
-        new AlertItem() {  Title = "Notification Title", Message = "text sub-title", TypeAlert = AlertItemIcon.Success},
-        new AlertItem() {  Title = "Notification Title", Message = "text sub-title", TypeAlert = AlertItemIcon.Success},
-        new AlertItem() {  Title = "Notification Title", Message = "text sub-title", TypeAlert = AlertItemIcon.Erro},
-        new AlertItem() {  Title = "Notification Title", Message = "text sub-title", TypeAlert = AlertItemIcon.Erro}
+        new AlertItemResponse() {  Title = "Notification Title", Message = "text sub-title", TypeAlert = AlertItemIcon.Erro},
+        new AlertItemResponse() {  Title = "Notification Title", Message = "text sub-title", TypeAlert = AlertItemIcon.Success},
+        new AlertItemResponse() {  Title = "Notification Title", Message = "text sub-title", TypeAlert = AlertItemIcon.Information},
+        new AlertItemResponse() {  Title = "Notification Title", Message = "text sub-title", TypeAlert = AlertItemIcon.Erro},
+        new AlertItemResponse() {  Title = "Notification Title", Message = "text sub-title", TypeAlert = AlertItemIcon.Success},
+        new AlertItemResponse() {  Title = "Notification Title", Message = "text sub-title", TypeAlert = AlertItemIcon.Success},
+        new AlertItemResponse() {  Title = "Notification Title", Message = "text sub-title", TypeAlert = AlertItemIcon.Erro},
+        new AlertItemResponse() {  Title = "Notification Title", Message = "text sub-title", TypeAlert = AlertItemIcon.Erro}
         
     };
 

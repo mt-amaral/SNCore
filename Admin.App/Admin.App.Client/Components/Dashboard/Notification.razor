@@ -1,4 +1,4 @@
-@using Admin.App.Client.Data.Dashboard
+@using Admin.Shared.Response
 @namespace Admin.App.Client.Components.Dashboard
 
 <MudPaper  Height="830px" Class="d-flex flex-column mud-width-full" Style="overflow: auto;" Elevation="3">
@@ -7,7 +7,7 @@
         <MudSpacer/>
         <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" aria-label="add to favorite" />
     </MudListSubheader>
-    <MudList T="AlertItem" Dense="true" Style="width: 100%">
+    <MudList T="AlertItemResponse" Dense="true" Style="width: 100%">
         @foreach (var alert in Notifications)
         {
             <MudListItem  Icon="@GetAlertIcon(@alert.TypeAlert)"  IconColor="@GetAlertColor(@alert.TypeAlert)" IconSize="Size.Small" Dense="true"
@@ -28,9 +28,9 @@
 
 @code {
     [Parameter]
-    public List<AlertItem> Notifications { get; set; } = new();
+    public List<AlertItemResponse> Notifications { get; set; } = new();
     
-    private void RemoveAlert(AlertItem alert)
+    private void RemoveAlert(AlertItemResponse alert)
     {
         Notifications.Remove(alert);
     }

@@ -1,0 +1,16 @@
+@using Admin.Shared.Response
+@namespace Admin.App.Client.Components.Grid
+<MudDataGrid Items="@HostRender" >
+    <Columns>
+        <PropertyColumn Property="x => x.Id" Title="Molar mass" />
+        <PropertyColumn Property="x => x.Name" Title="Nr" />
+        <PropertyColumn Property="x => x.Ipv4" />
+        <PropertyColumn Property="x => x.Name" />
+        <PropertyColumn Property="x => x.Description" />
+    </Columns>
+</MudDataGrid>
+@code {
+
+    [Parameter] public IEnumerable<HostResponse> HostRender { get; set; } = null!;
+
+}

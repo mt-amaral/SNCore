@@ -1,0 +1,21 @@
+@page "/model"
+
+
+<MudGrid>
+    @for (int i = 1; i <= 10; i++) // Loop de 1 a 10
+    {
+    <MudItem xs="6" sm="3">
+        <MudLink Href="https://seu-link-aqui.com/item-" Target="_blank" Style="text-decoration: none;">
+            <MudPaper Class="d-flex align-center justify-center mud-width-full py-8" Style="cursor: pointer;">
+                Item @i 
+            </MudPaper>
+        </MudLink>
+    </MudItem>
+    }
+</MudGrid>
+
+@code {
+    
+
+}
+

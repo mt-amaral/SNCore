@@ -1,6 +1,4 @@
-using MudBlazor;
-
-namespace Admin.App.Client.Data.Dashboard;
+namespace Admin.Shared.Response;
 
 public enum AlertItemIcon : byte
 {
@@ -9,7 +7,7 @@ public enum AlertItemIcon : byte
     Success = 2,
 }
 
-public class AlertItem
+public class AlertItemResponse
 {
     public long Id { get; set; }
     public DateTime CreateAt { get; set; } = DateTime.Now;
