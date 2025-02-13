@@ -4,28 +4,31 @@
 @inject ISnackbar Snackbar
 
 
-    <MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="() =>CriarNovo()">Teste Notification</MudButton>
-        <MudGrid Spacing=6>
-            
+        <MudGrid Spacing=6 Style="padding-top: 20px">
             <!-- Conteúdo principal -->
-            <MudItem xs="12" sm="9">
+            <MudItem xs="12" sm="12" lg="12">
                 <MudGrid Spacing=3>
                     @for (int i = 0; i < 4; i++)
                     {
-                    <MudItem xs="6" sm="3">
-                        <Summary>
-                        </Summary>
-                    </MudItem>
+                        <MudItem xs="6" sm="3">
+                            <Summary>
+                            </Summary>
+                        </MudItem>
                     }
-
-                    <Navigation/>
                 </MudGrid>
+            </MudItem>
+            <MudItem xs="12" sm="12" lg="12">
+                <MudPaper Width="100%" Height="100%" Style="padding: 20px">
+                    <LocalMetrics>
+                        <Notification Notifications="Notifications" @ref="Alert"/>
+                    </LocalMetrics>
+                </MudPaper>
             </MudItem>
 
             <!-- Barra lateral direita -->
-            <MudItem xs="12" sm="3">
-                <Notification Notifications="Notifications" @ref="Alert"/>
-            </MudItem>
+            @*<MudItem xs="12" sm="3">
+                
+            </MudItem>*@
 
         </MudGrid>
 

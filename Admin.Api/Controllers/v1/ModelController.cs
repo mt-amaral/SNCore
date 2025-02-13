@@ -21,8 +21,7 @@ public class ModelController : BaseController
         try
         {
             var result = await _hostModelService.GetModel();
-
-
+            
             return Ok(result);
         }
         catch (Exception ex)

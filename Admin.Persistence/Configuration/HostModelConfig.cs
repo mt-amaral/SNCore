@@ -10,6 +10,7 @@ internal class HostModelConfig : BaseEntityConfig<HostModel>
     {
         base.Configure(builder);
         builder.Property(x => x.ModelName).HasMaxLength(50).IsRequired();
+        builder.Property(x => x.SrcIcon).HasMaxLength(500);
 
         builder.HasMany(x => x.Hosts)
                .WithOne(x => x.HostModel)

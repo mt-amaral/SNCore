@@ -21,4 +21,8 @@
     <Folder Include="Data\Dashboard\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\icons\mikrotik-icon.png" />
+  </ItemGroup>
+
 </Project>
