@@ -18,5 +18,6 @@ internal class ItemConfig : BaseEntityConfig<Item>
         builder.HasOne(x => x.OidList)
             .WithOne(x => x.Item)
             .HasForeignKey<Item>(x => x.OidId);
+
     }
 }

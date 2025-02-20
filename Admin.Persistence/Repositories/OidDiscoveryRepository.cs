@@ -10,4 +10,6 @@ public class OidDiscoveryRepository(ApplicationDbContext context) : IOidDiscover
     private readonly ApplicationDbContext _context = context;
     private readonly DbSet<OidDiscovery> _dbSet = context.Set<OidDiscovery>();
 
+
+
 }

@@ -17,4 +17,5 @@ public class Host : BaseEntity
     public HostGroup? HostGroup { get; private set; }
     public Snmp? Snmp { get; private set; }
     public HostModel? HostModel { get; private set; }
+    public ICollection<CronExpression>? CronExpression { get; private set; }
 }

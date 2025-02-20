@@ -4,6 +4,7 @@ using Admin.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Admin.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250218014525_CronExpression")]
+    partial class CronExpression
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,43 +34,23 @@ namespace Admin.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("Day")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<string>("Expression")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<int?>("HostId")
+                    b.Property<int?>("GroupId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Hour")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<int?>("HostId")
+                        .HasColumnType("int");
 
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Minute")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Month")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Weesday")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
 
                     b.HasIndex("HostId");
 
@@ -345,6 +328,10 @@ namespace Admin.Persistence.Migrations
 
             modelBuilder.Entity("Admin.Domain.Entities.CronExpression", b =>
                 {
+                    b.HasOne("Admin.Domain.Entities.HostGroup", "HostGroup")
+                        .WithMany("CronExpression")
+                        .HasForeignKey("GroupId");
+
                     b.HasOne("Admin.Domain.Entities.Host", "Host")
                         .WithMany("CronExpression")
                         .HasForeignKey("HostId");
@@ -356,6 +343,8 @@ namespace Admin.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Host");
+
+                    b.Navigation("HostGroup");
 
                     b.Navigation("Item");
                 });
@@ -433,6 +422,8 @@ namespace Admin.Persistence.Migrations
 
             modelBuilder.Entity("Admin.Domain.Entities.HostGroup", b =>
                 {
+                    b.Navigation("CronExpression");
+
                     b.Navigation("Hosts");
                 });
 
