@@ -17,14 +17,14 @@ COPY ["Admin.Application/Admin.Application.csproj", "Admin.Application/"]
 COPY ["Admin.Persistence/Admin.Persistence.csproj", "Admin.Persistence/"]
 COPY ["Admin.Infrustructure/Admin.Infrustructure.csproj", "Admin.Infrustructure/"]
 COPY ["Admin.Shared/Admin.Shared.csproj", "Admin.Shared/"]
-COPY ["Admin.Validator/Admin.Validator.csproj", "Admin.Validator/"]
+COPY ["Admin.Connection/Admin.Connection.csproj", "Admin.Connection/"]
 
 RUN dotnet restore "./Admin.Api/Admin.Api.csproj"
 COPY . .
 WORKDIR "/src/Admin.Api"
 RUN dotnet build "./Admin.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-# Publicação
+# Publicaï¿½ï¿½o
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "./Admin.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false

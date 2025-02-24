@@ -43,6 +43,24 @@ else if (builder.Environment.EnvironmentName == "Production")
     )
 );
 }
+else if (builder.Environment.EnvironmentName == "Staging")
+{
+    builder.Services.AddContextProduction(builder.Configuration);
+    builder.Services.AddCors(
+        x => x.AddPolicy(
+            Configuration.CorsPolicyPro,
+            policy => policy
+                .WithOrigins(
+                    Configuration.AdminAppUrl,
+                    Configuration.AdminApiUrl
+                )
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials()
+        )
+    );
+}
+
 // Configure Json.NET to ignore null values
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
@@ -71,11 +89,17 @@ if (app.Environment.IsDevelopment())
 }
 if (app.Environment.IsProduction())
 {
-    app.UseHttpsRedirection();
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Admin API V1");
+    });
+    //app.UseHttpsRedirection();
     app.UseCors("WebAppProd");
 }
 if (app.Environment.IsStaging())
 {
+    app.UseCors("WebAppDev");
     app.UseSwagger();
     app.UseSwaggerUI();
     app.UseHttpsRedirection();

@@ -7,4 +7,5 @@ public interface IHostRepository
 {
     Task<Host> SelectByHost(int id);
     Task<List<Host>> SelectByGroup();
+    Task<List<Host>> SelectAll();
 }

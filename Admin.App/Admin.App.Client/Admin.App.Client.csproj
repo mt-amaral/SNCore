@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Data\Cron\" />
     <Folder Include="Data\Dashboard\" />
   </ItemGroup>
 

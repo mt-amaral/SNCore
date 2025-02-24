@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Admin.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250104143131_InicialMigration")]
+    [Migration("20250222232629_InicialMigration")]
     partial class InicialMigration
     {
         /// <inheritdoc />
@@ -24,6 +24,73 @@ namespace Admin.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Admin.Domain.Entities.CronExpression", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(0);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Day")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(4);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasColumnOrder(7);
+
+                    b.Property<int?>("HostId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Hour")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(3);
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Minute")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(2);
+
+                    b.Property<string>("Month")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(5);
+
+                    b.Property<string>("Second")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("Weesday")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(6);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HostId");
+
+                    b.HasIndex("ItemId")
+                        .IsUnique();
+
+                    b.ToTable("CronExpression");
+                });
 
             modelBuilder.Entity("Admin.Domain.Entities.Host", b =>
                 {
@@ -120,6 +187,10 @@ namespace Admin.Persistence.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("SrcIcon")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2")
                         .HasColumnOrder(2);
@@ -172,8 +243,7 @@ namespace Admin.Persistence.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(0);
+                        .HasColumnType("bigint");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
@@ -182,8 +252,7 @@ namespace Admin.Persistence.Migrations
 
                     b.Property<string>("OidDiscoveryIndex")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -287,6 +356,23 @@ namespace Admin.Persistence.Migrations
                     b.ToTable("Telnet");
                 });
 
+            modelBuilder.Entity("Admin.Domain.Entities.CronExpression", b =>
+                {
+                    b.HasOne("Admin.Domain.Entities.Host", "Host")
+                        .WithMany("CronExpression")
+                        .HasForeignKey("HostId");
+
+                    b.HasOne("Admin.Domain.Entities.Item", "Item")
+                        .WithOne("CronExpression")
+                        .HasForeignKey("Admin.Domain.Entities.CronExpression", "ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Host");
+
+                    b.Navigation("Item");
+                });
+
             modelBuilder.Entity("Admin.Domain.Entities.Host", b =>
                 {
                     b.HasOne("Admin.Domain.Entities.HostGroup", "HostGroup")
@@ -351,6 +437,8 @@ namespace Admin.Persistence.Migrations
 
             modelBuilder.Entity("Admin.Domain.Entities.Host", b =>
                 {
+                    b.Navigation("CronExpression");
+
                     b.Navigation("Snmp");
 
                     b.Navigation("Telnet");
@@ -366,6 +454,11 @@ namespace Admin.Persistence.Migrations
                     b.Navigation("Hosts");
 
                     b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("Admin.Domain.Entities.Item", b =>
+                {
+                    b.Navigation("CronExpression");
                 });
 
             modelBuilder.Entity("Admin.Domain.Entities.OidList", b =>

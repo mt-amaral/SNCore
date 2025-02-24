@@ -39,6 +39,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sql", "Sql", "{3D13C7E2-24C
 	ProjectSection(SolutionItems) = preProject
 		Admin.Sql.Test\Dockerfile = Admin.Sql.Test\Dockerfile
 		Admin.Sql.Test\Oids.sql = Admin.Sql.Test\Oids.sql
+		Admin.Sql.Test\ModelsCreated.sql = Admin.Sql.Test\ModelsCreated.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Connection.Test", "Connection.Test\Connection.Test.csproj", "{2DAD9851-B99C-4784-BD60-2AB939A4CEF8}"

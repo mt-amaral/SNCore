@@ -1,0 +1,21 @@
+# This is a generated file. Not intended for manual editing.
+version: "3.8"
+services:
+  api-admin:
+    build:
+      context: "C:\\Repository\\Admin"
+      dockerfile: "Admin.Api/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net8.0/Admin.Api.dll"
+    environment:
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "api_admin:dev"
+    ports: []
+    volumes:
+    - "C:\\Users\\amara\\.nuget\\packages:/home/app/.nuget/packages"
+    - "C:\\Repository\\Admin\\Admin.Api:/app:rw"
+    - "C:\\Repository\\Admin:/src:rw"
+    working_dir: "/app"

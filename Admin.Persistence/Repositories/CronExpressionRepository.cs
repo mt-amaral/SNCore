@@ -16,4 +16,17 @@ public class CronExpressionRepository(ApplicationDbContext context) : ICronExpre
     {
         return await _dbSet.ToListAsync();
     }
+    
+    public async Task Create(CronExpression entity)
+    {
+        try
+        {   
+            await _dbSet.AddAsync(entity);
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            throw;
+        }
+    }
 }

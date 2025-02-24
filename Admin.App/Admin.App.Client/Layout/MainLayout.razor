@@ -3,12 +3,21 @@
 
 <MudThemeProvider Theme="_theme" IsDarkMode="@_isdarkMode"/>
 <MudPopoverProvider/>
-<MudDialogProvider/>
 <MudSnackbarProvider/>
+<MudDialogProvider
+    FullWidth="true"
+    MaxWidth="MaxWidth.ExtraExtraLarge"
+    CloseButton="true"
+    BackdropClick="false"
+    NoHeader="true"
+    Position="DialogPosition.Center"
+    CloseOnEscapeKey="true"
+    BackgroundClass="my-custom-class"/>
+
 
 <MudLayout>
     <MudAppBar Elevation="1">
-        <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Primary" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Default" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <MudSpacer />
         <MudIconButton Icon="@(_isdarkMode ? Icons.Material.Outlined.LightMode : Icons.Material.Outlined.DarkMode)"
                        Color="Color.Inherit"
@@ -35,7 +44,7 @@
 
 @code {
     bool _drawerOpen = true;
-    bool _isdarkMode = false;
+    bool _isdarkMode = true;
     private MudTheme _theme = new()
     {
         Typography = new()
@@ -70,7 +79,7 @@
         },
         PaletteDark = new()
         {
-            Primary = "#90caf9", // Azul claro
+            Primary = "#1976d2", // Azul claro
             Secondary = "#f48fb1", // Rosa claro
             Tertiary = "#ce93d8", // Roxo claro
             Success = "#81c784", // Verde para sucesso

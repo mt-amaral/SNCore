@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -33,7 +34,8 @@ namespace Admin.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ModelName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    ModelName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    SrcIcon = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -117,7 +119,7 @@ namespace Admin.Persistence.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    OidDiscoveryIndex = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    OidDiscoveryIndex = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DiscoveryOriginId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
@@ -178,6 +180,49 @@ namespace Admin.Persistence.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "CronExpression",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Second = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Minute = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Hour = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Day = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Month = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Weesday = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    ItemId = table.Column<int>(type: "int", nullable: false),
+                    HostId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CronExpression", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CronExpression_Host_HostId",
+                        column: x => x.HostId,
+                        principalTable: "Host",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_CronExpression_Item_ItemId",
+                        column: x => x.ItemId,
+                        principalTable: "Item",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CronExpression_HostId",
+                table: "CronExpression",
+                column: "HostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CronExpression_ItemId",
+                table: "CronExpression",
+                column: "ItemId",
+                unique: true);
+
             migrationBuilder.CreateIndex(
                 name: "IX_Host_GroupId",
                 table: "Host",
@@ -224,7 +269,7 @@ namespace Admin.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Item");
+                name: "CronExpression");
 
             migrationBuilder.DropTable(
                 name: "OidDiscovery");
@@ -236,10 +281,13 @@ namespace Admin.Persistence.Migrations
                 name: "Telnet");
 
             migrationBuilder.DropTable(
-                name: "OidList");
+                name: "Item");
 
             migrationBuilder.DropTable(
                 name: "Host");
+
+            migrationBuilder.DropTable(
+                name: "OidList");
 
             migrationBuilder.DropTable(
                 name: "HostGroup");

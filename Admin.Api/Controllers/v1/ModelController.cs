@@ -1,5 +1,6 @@
 using Admin.Application.Interfaces;
 using Admin.Shared.Response;
+using Admin.Shared.Response.Input;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Admin.Api.Controllers.v1;
@@ -21,6 +22,22 @@ public class ModelController : BaseController
         try
         {
             var result = await _hostModelService.GetModel();
+            
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+    [HttpGet]
+    [ProducesResponseType(typeof(IEnumerable<ModelInputResponse>), StatusCodes.Status200OK)]
+    [Route("ExibirTodosInput")]
+    public async Task<ActionResult> GetModelInputAsync()
+    {
+        try
+        {
+            var result = await _hostModelService.GetModelInput();
             
             return Ok(result);
         }

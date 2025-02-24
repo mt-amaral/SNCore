@@ -1,5 +1,6 @@
 using Admin.Domain.Entities;
 using Admin.Shared.Response;
+using Admin.Shared.Response.Input;
 using AutoMapper;
 
 namespace Admin.Application.Mappings;
@@ -13,5 +14,8 @@ public class ModelMapper : Profile
         
         CreateMap<Item, ItemModelResponse>()
             .ForMember(d => d.OidName, opt => opt.MapFrom(src => src.OidList!.Oid));
+
+
+        CreateMap<HostModel, ModelInputResponse>();
     }
 }

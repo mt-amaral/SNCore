@@ -1,6 +1,7 @@
 ﻿using Admin.Application.Interfaces;
 using Admin.Domain.Interfaces;
 using Admin.Shared.Response;
+using Admin.Shared.Response.Input;
 using AutoMapper;
 
 namespace Admin.Application.Services;
@@ -28,8 +29,14 @@ public class HostService : IHostService
 
         var teste = _mapper.Map<List<HostResponse>>(entity);
         return teste;
-
-
+        
+    }
+    
+    public async Task<IEnumerable<HostInputResponse>> GetInput()
+    {
+        var entity = await _repository.SelectAll();
+        var teste = _mapper.Map<List<HostInputResponse>>(entity);
+        return teste;
     }
 
 

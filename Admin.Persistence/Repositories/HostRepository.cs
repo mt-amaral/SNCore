@@ -28,4 +28,11 @@ public class HostRepository : BaseRepository<Host>, IHostRepository
             .Include(e => e.HostGroup)
             .ToListAsync();
     }
+    
+    public async Task<List<Host>> SelectAll()
+    {
+        return await _dbSet
+            .Include(e => e.HostGroup).AsNoTracking()
+            .ToListAsync();
+    }
 }
