@@ -14,7 +14,10 @@ public class CronExpressionRepository(ApplicationDbContext context) : ICronExpre
 
     public async Task<IEnumerable<CronExpression>> SelectAll()
     {
-        return await _dbSet.ToListAsync();
+        return await _dbSet
+            .Include(e => e.Host)
+            .Include(e => e.Item)
+            .AsNoTracking().ToListAsync();
     }
     
     public async Task Create(CronExpression entity)

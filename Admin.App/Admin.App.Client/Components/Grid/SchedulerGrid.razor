@@ -4,11 +4,10 @@
 
 <MudDataGrid Items="@ExpressionResponse" Dense="true"  >
     <Columns>
-        <PropertyColumn Property="x => x.Minute" />
-        <PropertyColumn Property="x => x.Hour" />
-        <PropertyColumn Property="x => x.Day" />
-        <PropertyColumn Property="x => x.Month" />
-        <PropertyColumn Property="x => x.Weesday" />
+        <PropertyColumn Property="x => x.Expression" />
+        <PropertyColumn Property="x => x.Description" />
+        <PropertyColumn Property="x => x.ItemName" />
+        <PropertyColumn Property="x => x.HostName" />
     </Columns>
 </MudDataGrid>
 
