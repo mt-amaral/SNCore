@@ -1,7 +1,7 @@
 ﻿@inherits LayoutComponentBase
 
 
-<MudThemeProvider Theme="_theme" IsDarkMode="@_isdarkMode"/>
+<MudThemeProvider Theme="Configuration.Theme" IsDarkMode="Configuration.IsDarkMode"/>
 <MudPopoverProvider/>
 <MudSnackbarProvider/>
 <MudDialogProvider
@@ -19,7 +19,7 @@
     <MudAppBar Elevation="1">
         <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Default" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <MudSpacer />
-        <MudIconButton Icon="@(_isdarkMode ? Icons.Material.Outlined.LightMode : Icons.Material.Outlined.DarkMode)"
+        <MudIconButton Icon="@(Configuration.IsDarkMode ? Icons.Material.Outlined.LightMode : Icons.Material.Outlined.DarkMode)"
                        Color="Color.Inherit"
                        Edge="Edge.End"
                        OnClick="@ThemeToggle"/>
@@ -44,64 +44,8 @@
 
 @code {
     bool _drawerOpen = true;
-    bool _isdarkMode = true;
-    private MudTheme _theme = new()
-    {
-        Typography = new()
-        { 
-            Default = new DefaultTypography()
-            {
-                FontFamily = new[] { "Ubuntu", "sans-serif" },
-                FontWeight = "300"
-            }
-        },
-        PaletteLight = new ()
-        {
-            Primary = "#1976d2", // Azul padrão
-            Secondary = "#ff4081", // Rosa vibrante
-            Tertiary = "#8e24aa", // Roxo
-            Success = "#4caf50", // Verde para sucesso
-            Warning = "#ffa000", // Amarelo para avisos
-            Error = "#f44336", // Vermelho para erros
-            Dark = "#212121", // Preto escuro
-            Background = "#f5f5f5", // Fundo claro
-            Surface = "#ffffff", // Superfície branca
-            AppbarBackground = "#1976d2", // Fundo da barra de navegação
-            DrawerBackground = "#eeeeee", // Fundo do menu lateral
-            DrawerText = "#000000", // Texto do menu lateral
-            DrawerIcon = "#000000", // Ícones do menu lateral
-            TextPrimary = "#212121", // Texto primário
-            TextSecondary = "#757575", // Texto secundário
-            ActionDefault = "#e0e0e0", // Ações padrão
-            ActionDisabled = "#bdbdbd", // Ações desabilitadas
-            ActionDisabledBackground = "#e0e0e0", // Fundo de ações desabilitadas
-            
-        },
-        PaletteDark = new()
-        {
-            Primary = "#1976d2", // Azul claro
-            Secondary = "#f48fb1", // Rosa claro
-            Tertiary = "#ce93d8", // Roxo claro
-            Success = "#81c784", // Verde para sucesso
-            Warning = "#ffb74d", // Amarelo para avisos
-            Error = "#e57373", // Vermelho para erros
-            Dark = "#121212", // Preto escuro
-            Background = "#121212", // Fundo escuro
-            Surface = "#1e1e1e", // Superfície mais clara
-            AppbarBackground = "#1e1e1e", // Fundo da barra de navegação
-            DrawerBackground = "#1e1e1e", // Fundo do menu lateral
-            DrawerText = "#ffffff", // Texto do menu lateral
-            DrawerIcon = "#ffffff", // Ícones do menu lateral
-            TextPrimary = "#ffffff", // Texto primário
-            TextSecondary = "#b0bec5", // Texto secundário
-            ActionDefault = "#bdbdbd", // Ações padrão
-            ActionDisabled = "#757575", // Ações desabilitadas
-            ActionDisabledBackground = "#424242", // Fundo de ações desabilitadas
-        }
-    };
-
     void DrawerToggle() => _drawerOpen = !_drawerOpen;
-    void ThemeToggle() => _isdarkMode = !_isdarkMode;
+    void ThemeToggle() => Configuration.IsDarkMode = !Configuration.IsDarkMode;
 }
 
 
