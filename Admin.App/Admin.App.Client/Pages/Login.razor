@@ -6,45 +6,42 @@
 @inject  NavigationManager NavigationManager
 <MudGrid Justify="Justify.Center" Spacing="2" Style=" align-items: center; height: 700px">
     <MudItem xs="12" sm="8" md="6" lg="3">
-        <MudCard >
-            <MudCardContent>
-                <div class="text-center mb-6">
-                    <MudText Typo="Typo.h4" Color="Color.Primary">Sign In</MudText>
-                </div>
-
-                <EditForm Model="@Model" OnValidSubmit="HandleValidSubmit">
-                    <MudTextField @bind-Value="Model.Email"
+        <div class="d-flex">
+            <MudText Typo="Typo.h4" Color="Color.Primary" Style="margin:  20px auto 40px;">LogIn</MudText>
+        </div>
+        <MudCard Style="padding: 50px 40px 40px">
+                <EditForm Model="@_model" OnValidSubmit="HandleValidSubmit">
+                    <MudTextField @bind-Value="_model.Email"
                                   Label="User"
                                   FullWidth="true"
-                                  Margin="Margin.Dense"
-                                  Class="mb-4"/>
+                                  Class="mb-4"
+                                  Variant="Variant.Outlined"/>
 
-                    <MudTextField @bind-Value="Model.Password"
+                    <MudTextField @bind-Value="_model.Password"
                                   Label="Password"
                                   InputType="InputType.Password"
                                   FullWidth="true"
-                                  Margin="Margin.Dense"
-                                  Class="mb-4"/>
-
+                                  Class="mb-4"
+                                  Variant="Variant.Outlined"/>
+                    <MudCheckBox @bind-Value="CheckBox" Color="Color.Primary" Style="margin-bottom: 30px">Remember</MudCheckBox>
                     <MudButton ButtonType="ButtonType.Submit"
                                Variant="Variant.Filled"
                                Color="Color.Primary"
-                               FullWidth="true"
-                               Class="mt-4">
-                        SIGN IN
+                               FullWidth="true" Style="height: 50px">
+                        Login
                     </MudButton>
                 </EditForm>
-            </MudCardContent>
+            
         </MudCard>
     </MudItem>
 </MudGrid>
 
 @code {
-    private LoginModel Model = new();
-
+    private LoginModel _model = new();
+    private bool CheckBox { get; set; } = false;
     private async Task HandleValidSubmit()
     {
-        if (Model.Email.ToLower() == "admin" && Model.Password == "admin")
+        if (_model.Email.ToLower() == "admin" && _model.Password == "admin")
         {
             await Task.Delay(200); 
             NavigationManager.NavigateTo("/dashboard");
