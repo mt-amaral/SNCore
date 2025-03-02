@@ -1,4 +1,4 @@
-﻿using Admin.Shared.Request;
+﻿using Admin.Shared.Request.Expression;
 using Admin.Shared.Response;
 
 namespace Admin.Application.Interfaces;
@@ -6,6 +6,8 @@ namespace Admin.Application.Interfaces;
 public interface IExpressionService
 {
     Task<IEnumerable<ExpressionResponse>> GetExpression();
-    Task<string> CronExpressionTranslator(string? expression = null, DataExpressionRequest? expressionObj = null);
-     Task CreatExpressions(DataExpressionRequest expression);
+    Task<string> TranslationExpressions(CronExpressionRequest expressionObj);
+    Task<ExpressionResponse> CreateExpressions(CreateExpressionRequest expression);
+    Task UpdateExpressions(CreateExpressionRequest expression, long expressionId);
+    Task DeleteExpressions(long expressionId);
 }

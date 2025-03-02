@@ -1,7 +1,7 @@
 ﻿using Admin.Application.Interfaces;
 using Admin.Domain.Entities;
 using Admin.Domain.Interfaces;
-using Admin.Shared.Request;
+using Admin.Shared.Request.Expression;
 using Admin.Shared.Response;
 using AutoMapper;
 using CronExpressionDescriptor;
@@ -30,22 +30,56 @@ public class ExpressionService : IExpressionService
 
 
 
-    public async Task CreatExpressions(DataExpressionRequest expression)
+    public async Task<ExpressionResponse> CreateExpressions(CreateExpressionRequest expression)
     {
-        var entity = _mapper.Map<CronExpression>(expression);
-        entity.UpdateDescription(await CronExpressionTranslator(null, expression)) ;
-        await _repository.Create(entity);
-    }
-    
-    
-    public async Task<string> CronExpressionTranslator(string? expression = null, DataExpressionRequest? expressionObj = null)
-    {
-        if (expressionObj != null)
+        try
         {
-            expression = $"{expressionObj.Second} {expressionObj.Minute}  {expressionObj.Hour}  {expressionObj.Day} {expressionObj.Month} {expressionObj.Weesday}";
+            var entity = _mapper.Map<CronExpression>(expression);
+            entity.UpdateDescription(await TranslationExpressions(expression.Expression));
+            await _repository.Create(entity);
+            return _mapper.Map<ExpressionResponse>(entity);
         }
+        catch (Exception ex) 
+        {
+            throw new Exception($"{ex}");
+        }
+    }
+
+    public async Task UpdateExpressions(CreateExpressionRequest expression, long expressionId)
+    {
+        try
+        {
+            var entity = await _repository.SelectById(expressionId);
+            _mapper.Map(expression, entity);
+            entity.UpdateDescription(await TranslationExpressions(expression.Expression));
+            await _repository.Update(entity);
+        }
+        catch (Exception ex) 
+        {
+            throw new Exception($"{ex}");
+        }
+    }
+
+    public async Task<string> TranslationExpressions(CronExpressionRequest expressionObj)
+    {
+        var expression = $"{expressionObj.Second} {expressionObj.Minute}  {expressionObj.Hour}  {expressionObj.Day} {expressionObj.Month} {expressionObj.Weesday}";
         var translation = ExpressionDescriptor.GetDescription(expression, new Options { Locale = "pt-BR" }) 
                           ?? "Expressão inválida";
         return await Task.FromResult(translation);
+    }
+
+    public async Task DeleteExpressions(long expressionId)
+    {
+        try
+        {
+            var entity = await _repository.SelectById(expressionId);
+            if (entity == null)
+                throw new Exception("Não encontrado");
+            await _repository.Delete(entity);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"{ex}");
+        }
     }
 }

@@ -1,6 +1,6 @@
 using Admin.Shared.Response;
 using System.Net.Http.Json;
-using Admin.Shared.Request;
+using Admin.Shared.Request.Expression;
 
 namespace Admin.Shared.Service;
 
@@ -17,7 +17,7 @@ public class ExpressionService(IHttpClientFactory factory)
     {
         return await _httpClient.GetFromJsonAsync<string>($"api/expression/TranslationExpressions?expression={expression}");
     }
-    public async Task CreateExpressionAsync(DataExpressionRequest expressionRequest)
+    public async Task CreateExpressionAsync(CreateExpressionRequest expressionRequest)
     {
         var response = await _httpClient.PostAsJsonAsync("api/expression/CreatExpressions", expressionRequest);
         response.EnsureSuccessStatusCode();

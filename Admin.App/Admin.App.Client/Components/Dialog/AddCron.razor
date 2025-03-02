@@ -1,6 +1,6 @@
-@using Admin.Shared.Request;
-@using Admin.Shared.Response.Input
-@using Admin.Shared.Response
+@    using Admin.Shared.Request;
+@    using Admin.Shared.Response.Input
+@    using Admin.Shared.Response
 @inject  HostService HostService
 @inject  ModelService ModelService
 @inject ExpressionService  ExpressionResponse  
@@ -116,7 +116,7 @@
     private int? SelectModel { get; set; } 
     private int? SelectCommand { get; set; } 
     private bool Edit { get; set; }
-    private DataExpressionRequest Expression { get; set; } = new();
+    private CreateExpressionRequest Expression { get; set; } = new();
     private string TranslatorText { get; set; } = "";
 
     

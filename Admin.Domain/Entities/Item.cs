@@ -11,5 +11,5 @@ public class Item : BaseEntity
 
     public OidList? OidList { get; private set; }
     public HostModel? HostModel { get; private set; }
-    public CronExpression? CronExpression { get; private set; }
+    public ICollection<CronExpression> CronExpression { get; private set; } = new List<CronExpression>();
 }
