@@ -25,6 +25,6 @@ internal class CronExpressionConfig : IEntityTypeConfiguration<CronExpression>
         builder.HasOne(x => x.Host)
             .WithMany(x => x.CronExpression)
             .HasForeignKey(x => x.HostId);
-        
+
     }
 }

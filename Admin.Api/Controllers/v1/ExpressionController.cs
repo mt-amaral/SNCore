@@ -1,6 +1,6 @@
 ﻿using Admin.Application.Interfaces;
 using Admin.Shared.Request.Expression;
-using Admin.Shared.Response;
+using Admin.Shared.Response.Expression;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
@@ -19,7 +19,7 @@ public class ExpressionController : BaseController
     /// </summary>
     [HttpGet]
     [ProducesResponseType(typeof(List<ExpressionResponse>), StatusCodes.Status200OK)]
-    [Route("GetAllExpressions")]
+    [Route("GetAll")]
     public async Task<ActionResult> GetHostAllAsync()
     {
         try
@@ -39,7 +39,7 @@ public class ExpressionController : BaseController
     [HttpPut]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [Route("TranslationExpressions")]
+    [Route("Translation")]
     public async Task<ActionResult> TranslationExpressions(CronExpressionRequest expression)
     {
         try
@@ -64,12 +64,12 @@ public class ExpressionController : BaseController
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [Route("CreateExpressions")]
+    [Route("Create")]
     public async Task<ActionResult> CreateExpressions(CreateExpressionRequest expression)
     {
         try
         {
-            
+
             await _expressionService.CreateExpressions(expression);
             return Created();
         }
@@ -85,8 +85,8 @@ public class ExpressionController : BaseController
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [Route("UpdateExpressions")]
-    public async Task<ActionResult> UpdateExpressions( [FromBody] CreateExpressionRequest expression, [FromQuery] long expressionId)
+    [Route("Update")]
+    public async Task<ActionResult> UpdateExpressions([FromBody] CreateExpressionRequest expression, [FromQuery] long expressionId)
     {
         try
         {
@@ -104,12 +104,13 @@ public class ExpressionController : BaseController
     [HttpDelete]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [Route("UpdateExpressions")]
+    [Route("Delete")]
     public async Task<ActionResult> UpdateExpressions(
         [FromQuery]
         [Required]
-        [Range(1, int.MaxValue, ErrorMessage = "expressionId deve ser maior que 0")] 
-        long expressionId){
+        [Range(1, int.MaxValue, ErrorMessage = "expressionId deve ser maior que 0")]
+        long expressionId)
+    {
         try
         {
             await _expressionService.DeleteExpressions(expressionId);

@@ -24,19 +24,19 @@ public class CronExpressionRepository(ApplicationDbContext context) : ICronExpre
         return await _dbSet
         .Include(e => e.Host)
         .Include(e => e.Item)
-        .FirstOrDefaultAsync(c => c.Id == id) ?? 
+        .FirstOrDefaultAsync(c => c.Id == id) ??
         throw new Exception("Não encontrado");
     }
 
     public async Task Create(CronExpression entity)
     {
-            await _dbSet.AddAsync(entity);
-            await _context.SaveChangesAsync();
+        await _dbSet.AddAsync(entity);
+        await _context.SaveChangesAsync();
     }
 
     public async Task Update(CronExpression entity)
     {
-         _dbSet.Update(entity);
+        _dbSet.Update(entity);
         await _context.SaveChangesAsync();
     }
 

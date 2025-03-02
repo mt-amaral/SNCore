@@ -1,6 +1,4 @@
-﻿
-
-namespace Admin.Shared.Response;
+﻿namespace Admin.Shared.Response.Expression;
 
 public class ExpressionResponse
 {

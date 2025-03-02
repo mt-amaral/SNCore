@@ -1,6 +1,6 @@
-using Admin.Shared.Response;
-using System.Net.Http.Json;
 using Admin.Shared.Request.Expression;
+using Admin.Shared.Response.Expression;
+using System.Net.Http.Json;
 
 namespace Admin.Shared.Service;
 
@@ -12,7 +12,7 @@ public class ExpressionService(IHttpClientFactory factory)
     {
         return await _httpClient.GetFromJsonAsync<List<ExpressionResponse>>("api/expression/getAllExpressions");
     }
-    
+
     public async Task<string?> GetTranslationAsync(string expression)
     {
         return await _httpClient.GetFromJsonAsync<string>($"api/expression/TranslationExpressions?expression={expression}");

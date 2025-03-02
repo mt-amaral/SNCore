@@ -29,9 +29,9 @@ public class HostService : IHostService
 
         var teste = _mapper.Map<List<HostResponse>>(entity);
         return teste;
-        
+
     }
-    
+
     public async Task<IEnumerable<HostInputResponse>> GetInput()
     {
         var entity = await _repository.SelectAll();

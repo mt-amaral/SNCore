@@ -16,7 +16,7 @@ public class HostController : BaseController
 
     [HttpGet]
     [ProducesResponseType(typeof(List<HostResponse>), StatusCodes.Status200OK)]
-    [Route("ExibirTodos")]
+    [Route("GetAll")]
     public async Task<ActionResult> GetHostAllAsync()
     {
         try
@@ -33,14 +33,12 @@ public class HostController : BaseController
     }
     [HttpGet]
     [ProducesResponseType(typeof(List<HostInputResponse>), StatusCodes.Status200OK)]
-    [Route("ListarHost")]
+    [Route("GetInputList")]
     public async Task<ActionResult> GetHostListInput()
     {
         try
         {
-
             var result = await _hostservice.GetInput();
-            
             return Ok(result);
         }
         catch (Exception ex)

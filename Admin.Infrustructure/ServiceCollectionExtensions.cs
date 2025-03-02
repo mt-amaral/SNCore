@@ -1,9 +1,7 @@
 ﻿using Admin.Application.Interfaces;
-using Admin.Application.Services;
 using Admin.Domain.Interfaces;
 using Admin.Persistence.Repositories;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 
 namespace Admin.Infrustructure;
 public static class ServiceCollectionExtensions
@@ -27,13 +25,13 @@ public static class ServiceCollectionExtensions
 
         var types = repositoryType.GetTypes()
             .Where(t => t.Name.EndsWith("Repository") && !t.Name.EndsWith("BaseRepository"));
-        
+
         foreach (var type in types)
         {
             if (!type.IsClass || type.IsAbstract) continue;
             var valueInterface = interfaceType
                 .GetTypes()
-                .FirstOrDefault(t => t.Name == ("I" + type.Name) 
+                .FirstOrDefault(t => t.Name == ("I" + type.Name)
                                      && t.Name.EndsWith("Repository") && !t.Name.EndsWith("BaseRepository"))!;
             services.AddScoped(valueInterface, type);
         }

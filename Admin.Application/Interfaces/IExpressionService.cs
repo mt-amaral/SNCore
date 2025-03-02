@@ -1,5 +1,5 @@
 ﻿using Admin.Shared.Request.Expression;
-using Admin.Shared.Response;
+using Admin.Shared.Response.Expression;
 
 namespace Admin.Application.Interfaces;
 

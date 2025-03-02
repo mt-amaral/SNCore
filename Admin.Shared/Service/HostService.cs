@@ -1,6 +1,6 @@
 using Admin.Shared.Response;
-using System.Net.Http.Json;
 using Admin.Shared.Response.Input;
+using System.Net.Http.Json;
 
 namespace Admin.Shared.Service;
 
@@ -12,10 +12,10 @@ public class HostService(IHttpClientFactory factory)
     {
         return await _httpClient.GetFromJsonAsync<List<HostResponse>>("api/host/exibirtodos");
     }
-    
+
     public async Task<List<HostInputResponse>?> GetHostsListAsync()
     {
         return await _httpClient.GetFromJsonAsync<List<HostInputResponse>>("api/host/listarHost");
-        
+
     }
 }

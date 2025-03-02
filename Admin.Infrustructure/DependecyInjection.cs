@@ -37,7 +37,7 @@ public static class DependecyInjection
         });
         return services;
     }
-    
+
     public static IServiceCollection AddContextStaging(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<ApplicationDbContext>(options =>

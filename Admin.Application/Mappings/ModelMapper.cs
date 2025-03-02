@@ -11,7 +11,7 @@ public class ModelMapper : Profile
     {
         CreateMap<HostModel, ModelResponse>()
             .ForMember(d => d.Name, opt => opt.MapFrom(src => src.ModelName));
-        
+
         CreateMap<Item, ItemModelResponse>()
             .ForMember(d => d.OidName, opt => opt.MapFrom(src => src.OidList!.Oid));
 
