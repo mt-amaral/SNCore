@@ -2,6 +2,7 @@
 using Admin.Domain.Interfaces;
 using Admin.Shared.Response;
 using Admin.Shared.Response.Input;
+using Admin.Shared.Response.Model;
 using AutoMapper;
 
 namespace Admin.Application.Services;

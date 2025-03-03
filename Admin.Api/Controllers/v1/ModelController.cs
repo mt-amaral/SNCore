@@ -1,6 +1,7 @@
 using Admin.Application.Interfaces;
 using Admin.Shared.Response;
 using Admin.Shared.Response.Input;
+using Admin.Shared.Response.Model;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 

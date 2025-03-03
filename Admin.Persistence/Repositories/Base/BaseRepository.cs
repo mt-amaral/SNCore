@@ -30,6 +30,10 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     {
         return await _dbSet.ToListAsync();
     }
+    public async Task<IEnumerable<T>> SelectAllNoTrack()
+    {
+        return await _dbSet.AsNoTracking().ToListAsync();
+    }
 
     public async Task Create(T entity)
     {

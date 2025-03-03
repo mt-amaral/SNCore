@@ -1,6 +1,7 @@
 using Admin.Domain.Entities;
 using Admin.Shared.Response;
 using Admin.Shared.Response.Input;
+using Admin.Shared.Response.Model;
 using AutoMapper;
 
 namespace Admin.Application.Mappings;

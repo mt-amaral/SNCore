@@ -1,4 +1,4 @@
-using Admin.Shared.Response;
+using Admin.Shared.Response.Host;
 using Admin.Shared.Response.Input;
 using System.Net.Http.Json;
 

@@ -1,6 +1,6 @@
 ﻿using Admin.Domain.Entities;
 using Admin.Shared.Request.Host;
-using Admin.Shared.Response;
+using Admin.Shared.Response.Host;
 using Admin.Shared.Response.Input;
 using AutoMapper;
 
@@ -20,5 +20,13 @@ public class HostMapper : Profile
 
         CreateMap<SnmpRequest, Snmp>();
         CreateMap<TelnetRequest, Telnet>();
+        CreateMap<TelnetRequest, Telnet>();
+
+
+        /// HOSTGROUP
+
+        CreateMap<CreateGroupHostRequest, HostGroup>();
+        CreateMap<HostGroup, GroupHostInputResponse>();
+        CreateMap<HostGroup, GroupHostResponse>();
     }
 }

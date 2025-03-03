@@ -3,7 +3,6 @@ using Admin.Domain.Interfaces;
 using Admin.Persistence.Context;
 using Admin.Persistence.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace Admin.Persistence.Repositories;
 
@@ -17,7 +16,7 @@ public class HostRepository : BaseRepository<Host>, IHostRepository
 
     public async Task<Host> SelectByHost(int id)
     {
-        return  await _dbSet
+        return await _dbSet
               .Include(e => e.Snmp)
               .Include(e => e.Telnet)
               .FirstOrDefaultAsync(e => e.Id == id) ??

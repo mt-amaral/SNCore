@@ -1,4 +1,4 @@
-namespace Admin.Shared.Response;
+namespace Admin.Shared.Response.Host;
 
 public class HostResponse
 {
