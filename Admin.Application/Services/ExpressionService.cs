@@ -30,14 +30,13 @@ public class ExpressionService : IExpressionService
 
 
 
-    public async Task<ExpressionResponse> CreateExpressions(CreateExpressionRequest expression)
+    public async Task CreateExpressions(CreateExpressionRequest expression)
     {
         try
         {
             var entity = _mapper.Map<CronExpression>(expression);
             entity.UpdateDescription(await TranslationExpressions(expression.Expression));
             await _repository.Create(entity);
-            return _mapper.Map<ExpressionResponse>(entity);
         }
         catch (Exception ex)
         {

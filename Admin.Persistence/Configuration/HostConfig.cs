@@ -12,7 +12,7 @@ internal class HostConfig : BaseEntityConfig<Host>
         base.Configure(builder);
 
         builder.Property(x => x.Name).HasMaxLength(50).IsRequired();
-        builder.Property(x => x.Description).HasMaxLength(50).IsRequired();
+        builder.Property(x => x.Description).HasMaxLength(50);
         builder.Property(x => x.Ipv4).HasMaxLength(15).IsRequired();
 
         builder.HasOne(x => x.Snmp)
@@ -23,6 +23,11 @@ internal class HostConfig : BaseEntityConfig<Host>
         builder.HasOne(x => x.Telnet)
             .WithOne(x => x.Host)
             .HasForeignKey<Telnet>(x => x.HostId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(x => x.CronExpression)
+            .WithOne(x => x.Host)
+            .HasForeignKey(x => x.HostId)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(x => x.HostGroup)

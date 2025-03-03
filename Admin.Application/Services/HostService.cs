@@ -1,24 +1,20 @@
 ﻿using Admin.Application.Interfaces;
 using Admin.Domain.Interfaces;
+using Admin.Shared.Request.Host;
 using Admin.Shared.Response;
 using Admin.Shared.Response.Input;
 using AutoMapper;
+using Admin.Domain.Entities;
 
 namespace Admin.Application.Services;
 
 public class HostService : IHostService
 {
     private readonly IHostRepository _repository;
-    private readonly ISnmpRepository _snmpRepository;
-    private readonly ITelnetRepository _telnetRepository;
     private readonly IMapper _mapper;
     public HostService(IHostRepository repository,
-        IMapper mapper,
-        ISnmpRepository snmpRepository,
-        ITelnetRepository telnetRepository)
+        IMapper mapper)
     {
-        _telnetRepository = telnetRepository;
-        _snmpRepository = snmpRepository;
         _repository = repository;
         _mapper = mapper;
     }
@@ -27,17 +23,68 @@ public class HostService : IHostService
     {
         var entity = await _repository.SelectByGroup();
 
-        var teste = _mapper.Map<List<HostResponse>>(entity);
-        return teste;
+        var response = _mapper.Map<List<HostResponse>>(entity);
+        return response;
 
+    }
+    public async Task<HostResponse> GetById(int hostId)
+    {
+        try
+        {
+            var entity = await _repository.SelectByHost(hostId);
+            var response = _mapper.Map<HostResponse>(entity);
+            return response;
+        }
+        catch(Exception ex)
+        {
+            throw;
+        }
     }
 
     public async Task<IEnumerable<HostInputResponse>> GetInput()
     {
         var entity = await _repository.SelectAll();
-        var teste = _mapper.Map<List<HostInputResponse>>(entity);
-        return teste;
+        var response = _mapper.Map<List<HostInputResponse>>(entity);
+        return response;
     }
 
+    public async Task CreateHost(CreateHostRequest newHost) 
+    {
+        try
+        {
+            var entity = _mapper.Map<Host>(newHost);
+            await _repository.CreateNewHost(entity);
+        }
+        catch(Exception ex)
+        {
+            throw;
+        }
+    }
 
+    public async Task UpdateHost(CreateHostRequest host, int hostId)
+    {
+        try
+        {
+            var entity = await _repository.SelectByHost(hostId);
+            _mapper.Map(host, entity);
+            await _repository.UpdateHost(entity);
+        }
+        catch(Exception ex)
+        {
+            throw ;
+        }
+    }
+
+    public async Task DeletetById(int hostId)
+    {
+        try
+        {
+            var entity = await _repository.SelectByHost(hostId);
+            await _repository.DeleteHost(entity);
+        }
+        catch(Exception ex)
+        {
+            throw;
+        }
+    }
 }
