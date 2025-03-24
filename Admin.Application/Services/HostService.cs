@@ -11,14 +11,11 @@ namespace Admin.Application.Services;
 public class HostService : IHostService
 {
     private readonly IHostRepository _repository;
-    private readonly IHostGroupRepository _hostGroupRepository;
     private readonly IMapper _mapper;
     public HostService(IHostRepository repository,
-        IMapper mapper,
-        IHostGroupRepository hostGrouprepository)
+        IMapper mapper)
     {
         _repository = repository;
-        _hostGroupRepository = hostGrouprepository;
         _mapper = mapper;
     }
 
@@ -56,7 +53,7 @@ public class HostService : IHostService
         try
         {
             var entity = _mapper.Map<Host>(newHost);
-            await _repository.CreateNewHost(entity);
+            await _repository.CreateHost(entity);
         }
         catch (Exception ex)
         {
@@ -85,90 +82,6 @@ public class HostService : IHostService
         {
             var entity = await _repository.SelectByHost(hostId);
             await _repository.DeleteHost(entity);
-        }
-        catch (Exception ex)
-        {
-            throw;
-        }
-    }
-
-    public async Task CreateGroupHost(CreateGroupHostRequest newGroup)
-    {
-        try
-        {
-            var entity = _mapper.Map<HostGroup>(newGroup);
-            await _hostGroupRepository.Create(entity);
-        }
-        catch (Exception ex)
-        {
-            throw;
-        }
-    }
-    public async Task UpdateGroupHost(CreateGroupHostRequest group, int groupId)
-    {
-        try
-        {
-            var entity = await _hostGroupRepository.SelectById(groupId);
-             _mapper.Map(group, entity);
-            await _hostGroupRepository.Edit(entity);
-        }
-        catch (Exception ex)
-        {
-            throw;
-        }
-    }
-
-    public async Task<List<GroupHostInputResponse>> GetInputGroupHost()
-    {
-        try
-        {
-            var entity = await _hostGroupRepository.SelectAllNoTrack();
-            var response = _mapper.Map<List<GroupHostInputResponse>>(entity);
-            return response;
-        }
-        catch
-        {
-            throw;
-        }
-
-    }
-    public async Task<GroupHostResponse> GetGroupById(int groupId)
-    {
-        try
-        {
-            var entity = await _hostGroupRepository.GetGroupById(groupId);
-            var response = _mapper.Map<GroupHostResponse>(entity);
-            response.CountHost = entity.Hosts.Count();
-            return response;
-
-        }
-        catch(Exception ex)
-        {
-            throw;
-        }
-
-    }
-
-
-    public async Task SelectGroupById(int groupId)
-    {
-        try
-        {
-            var entity = await _hostGroupRepository.SelectById(groupId);
-            await _hostGroupRepository.Delete(entity);
-        }
-        catch (Exception ex)
-        {
-            throw;
-        }
-    }
-
-    public async Task DeleteGroupById(int groupId)
-    {
-        try
-        {
-            var entity = await _hostGroupRepository.SelectById(groupId);
-            await _hostGroupRepository.Delete(entity);
         }
         catch (Exception ex)
         {

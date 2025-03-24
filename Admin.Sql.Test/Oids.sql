@@ -1,9 +1,9 @@
 DECLARE @InsertedModel TABLE (Id INT);
 DECLARE @InsertedOid TABLE (Id BIGINT, Oid VARCHAR(255));
 
-INSERT INTO master.dbo.HostModel (CreationDate, ModelName, SrcIcon)
+INSERT INTO master.dbo.HostModel (ModelName, SrcIcon)
 OUTPUT INSERTED.Id INTO @InsertedModel(Id)  
-VALUES (GETDATE(), 'MikroTik', 'icons/mikrotik-icon.png'); 
+VALUES ('MikroTik', 'icons/mikrotik-icon.png'); 
 
 DECLARE @ModelId1 INT;
 SELECT @ModelId1 = Id FROM @InsertedModel;
@@ -35,8 +35,8 @@ INSERT INTO master.dbo.OidList (Oid)
 OUTPUT INSERTED.ID, INSERTED.Oid INTO @InsertedOid(Id, Oid)
 SELECT Oid FROM @Oids1;
 
-INSERT INTO master.dbo.Item (CreationDate, ModelId, ItemName, OidId)
-SELECT GETDATE(), @ModelId1, o.ItemName, i.Id 
+INSERT INTO master.dbo.Item (ModelId, ItemName, OidId)
+SELECT @ModelId1, o.ItemName, i.Id 
 FROM @Oids1 o
 JOIN @InsertedOid i ON o.Oid = i.Oid;
 

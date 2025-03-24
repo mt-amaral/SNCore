@@ -2,6 +2,7 @@
 using Admin.Domain.Entities;
 using Admin.Domain.Interfaces;
 using Admin.Shared.Request.Expression;
+using Admin.Shared.Response;
 using Admin.Shared.Response.Expression;
 using AutoMapper;
 using CronExpressionDescriptor;
@@ -16,69 +17,95 @@ public class ExpressionService : IExpressionService
     public ExpressionService(ICronExpressionRepository repository,
         IMapper mapper)
     {
-
         _repository = repository;
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<ExpressionResponse>> GetExpression()
+    public async Task<Response<IEnumerable<GetExpressionResponse?>>> GetExpressions()
     {
-        var entity = await _repository.SelectAll();
+        var entity = await _repository.GetAll();
 
-        return _mapper.Map<List<ExpressionResponse>>(entity);
+        var list = _mapper.Map<List<GetExpressionResponse>>(entity);
+        return new Response<IEnumerable<GetExpressionResponse?>>(list, 200, null);
+    }
+    
+    public async Task<Response<ExpressionResponse>> GetExpression(short id) 
+    {
+        var entity = await _repository.GetById(id);
+
+        if (entity is null)
+            return new Response<ExpressionResponse>(null, 404, $"Expressão com ID {id} não encontrada.");
+
+        return new Response<ExpressionResponse>(_mapper.Map<ExpressionResponse>(entity), 200);
     }
 
 
 
-    public async Task CreateExpressions(CreateExpressionRequest expression)
+    public async Task <Response<ExpressionResponse?>>  CreateExpression(ExpressionRequest expression)
     {
         try
         {
             var entity = _mapper.Map<CronExpression>(expression);
-            entity.UpdateDescription(await TranslationExpressions(expression.Expression));
-            await _repository.Create(entity);
+            entity.UpdateDescription(await TranslationExpression(expression));
+            await _repository.CreateCronExpression(entity);
+            return new Response<ExpressionResponse?>(_mapper.Map<ExpressionResponse>(entity), 201, "Criado com sucesso");
         }
         catch (Exception ex)
         {
-            throw new Exception($"{ex}");
+            throw new Exception($"Não foi possivel criar a expressão ");
         }
     }
+    
 
-    public async Task UpdateExpressions(CreateExpressionRequest expression, long expressionId)
+    public async Task <Response<string?>> UpdateExpression(ExpressionRequest expression, short id)
     {
         try
         {
-            var entity = await _repository.SelectById(expressionId);
+            var entity = await _repository.GetById(id);
+            
+            if (entity is null)
+                return new Response<string?>(null, 404, $"Expressão com ID {id} não encontrada.");
+            
             _mapper.Map(expression, entity);
-            entity.UpdateDescription(await TranslationExpressions(expression.Expression));
+            entity.UpdateDescription(await TranslationExpression(expression));
             await _repository.Update(entity);
+            return new Response<string?>(null, 200, "Atualizado com sucesso");
+
         }
         catch (Exception ex)
         {
-            throw new Exception($"{ex}");
+            throw new Exception($"Não foi possivel atualizar a expressão ID {id}");
         }
     }
 
-    public async Task<string> TranslationExpressions(CronExpressionRequest expressionObj)
-    {
-        var expression = $"{expressionObj.Second} {expressionObj.Minute}  {expressionObj.Hour}  {expressionObj.Day} {expressionObj.Month} {expressionObj.Weesday}";
-        var translation = ExpressionDescriptor.GetDescription(expression, new Options { Locale = "pt-BR" })
-                          ?? "Expressão inválida";
-        return await Task.FromResult(translation);
-    }
-
-    public async Task DeleteExpressions(long expressionId)
+    public async Task<string> TranslationExpression(ExpressionRequest expression)
     {
         try
         {
-            var entity = await _repository.SelectById(expressionId);
-            if (entity == null)
-                throw new Exception("Não encontrado");
-            await _repository.Delete(entity);
+            var expressionStr = $"{expression.Second} {expression.Minute}  {expression.Hour}  {expression.Day} {expression.Month} {expression.Weesday}";
+            var translation = ExpressionDescriptor.GetDescription(expressionStr, new Options { Locale = "pt-BR" });
+            return await Task.FromResult(translation);
         }
         catch (Exception ex)
         {
-            throw new Exception($"{ex}");
+            throw new Exception("Erro ao traduzir expressão");
+        }
+    }
+
+    public async Task<Response<string?>>  DeleteExpression(short id)
+    {
+        try
+        {
+            var entity = await _repository.GetById(id);
+            if (entity is null)
+                return new Response<string?>(null, 404, $"Expressão com ID {id} não encontrada.");
+            
+            await _repository.Delete(entity);
+            return new Response<string?>(null, 200, "Deletado com sucesso");
+        }
+        catch(Exception ex)
+        {
+            throw new Exception($"Não foi possivel excluir Expressão ID {id}");
         }
     }
 }

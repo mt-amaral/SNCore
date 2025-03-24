@@ -13,4 +13,8 @@
     <ProjectReference Include="..\Admin.Shared\Admin.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.14" />
+  </ItemGroup>
+
 </Project>

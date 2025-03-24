@@ -18,13 +18,5 @@ internal class CronExpressionConfig : IEntityTypeConfiguration<CronExpression>
         builder.Property(x => x.Weesday).HasMaxLength(50).IsRequired().HasColumnOrder(6);
         builder.Property(x => x.Description).HasMaxLength(500).IsRequired().HasColumnOrder(7);
 
-        builder.HasOne(x => x.Item)
-               .WithMany(x => x.CronExpression)
-               .HasForeignKey(x => x.ItemId);
-
-        builder.HasOne(x => x.Host)
-            .WithMany(x => x.CronExpression)
-            .HasForeignKey(x => x.HostId);
-
     }
 }

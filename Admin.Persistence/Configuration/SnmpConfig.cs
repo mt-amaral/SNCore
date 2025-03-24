@@ -1,15 +1,16 @@
 ﻿using Admin.Domain.Entities;
-using Admin.Persistence.Configuration.Base;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Admin.Persistence.Configuration;
 
-internal class SnmpConfig : BaseEntityConfig<Snmp>
+internal class SnmpConfig : IEntityTypeConfiguration<Snmp>
 {
-    public override void Configure(EntityTypeBuilder<Snmp> builder)
+    public  void Configure(EntityTypeBuilder<Snmp> builder)
     {
-
-        builder.Property(x => x.SnmpVersion).HasConversion<short>().IsRequired();
+        builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).HasColumnOrder(0);
+        builder.Property(x => x.SnmpVersion).HasConversion<byte>().IsRequired();
         builder.Property(x => x.Community).HasMaxLength(100).IsRequired();
         builder.Property(x => x.Port).IsRequired();
 

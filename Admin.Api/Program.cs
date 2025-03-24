@@ -4,63 +4,30 @@ using Admin.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Reflection;
+using Admin.Api.Middleware;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddServer();
 
-if (builder.Environment.EnvironmentName == "Development")
-{
-    builder.Services.AddContextDevelopment(builder.Configuration);
 
-    builder.Services.AddCors(
-        x => x.AddPolicy(
-        Configuration.CorsPolicyDev,
-        policy => policy
-        .WithOrigins(
-            Configuration.AdminAppUrl,
-            Configuration.AdminApiUrl
-        )
-        .AllowAnyMethod()
-        .AllowAnyHeader()
-        .AllowCredentials()
-        )
-    );
-}
-else if (builder.Environment.EnvironmentName == "Production")
-{
-    builder.Services.AddContextProduction(builder.Configuration);
-    builder.Services.AddCors(
+builder.Services.AddContextDevelopment(builder.Configuration);
+builder.Services.AddAuthentication(builder.Configuration);
+
+builder.Services.AddCors(
     x => x.AddPolicy(
-    Configuration.CorsPolicyPro,
+    Configuration.CorsPolicyDev,
     policy => policy
     .WithOrigins(
-        Configuration.AdminApiConteiner,
-        Configuration.AdminAppConteiner
+        Configuration.AdminAppUrl,
+        Configuration.AdminApiUrl
     )
     .AllowAnyMethod()
     .AllowAnyHeader()
     .AllowCredentials()
     )
 );
-}
-else if (builder.Environment.EnvironmentName == "Staging")
-{
-    builder.Services.AddContextProduction(builder.Configuration);
-    builder.Services.AddCors(
-        x => x.AddPolicy(
-            Configuration.CorsPolicyPro,
-            policy => policy
-                .WithOrigins(
-                    Configuration.AdminAppUrl,
-                    Configuration.AdminApiUrl
-                )
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .AllowCredentials()
-        )
-    );
-}
 
 // Configure Json.NET to ignore null values
 builder.Services.AddControllers()
@@ -72,17 +39,42 @@ builder.Services.AddControllers()
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
+{
+    {
+        c.SwaggerDoc("v1", new()
         {
-            c.SwaggerDoc("v1", new()
+            Title = "SNCore DocumentaÃ§Ã£o Api",
+            Description = ""
+        });
+        var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+        var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+        c.IncludeXmlComments(xmlPath);
+    }
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "JWT Authorization header using the Bearer scheme."
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
             {
-                Title = "API Documentação Swagger",
-                Description = "SNCore"
-            });
-            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-            c.IncludeXmlComments(xmlPath);
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] { }
         }
-    );
+    });
+});
 
 var app = builder.Build();
 
@@ -91,10 +83,12 @@ app.UseCors(Configuration.CorsPolicyDev);
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseStaticFiles();
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Admin API V1");
+        c.InjectStylesheet("/swagger-ui/SwaggerDark.css");
     });
     app.UseHttpsRedirection();
     app.UseCors("WebAppDev");
@@ -122,6 +116,8 @@ if (app.Environment.IsStaging())
         dbContext.Database.Migrate();
     }
 }
+app.UseMiddleware<ExceptionMiddleware>();
+
 app.UseAuthorization();
 
 app.MapControllers();

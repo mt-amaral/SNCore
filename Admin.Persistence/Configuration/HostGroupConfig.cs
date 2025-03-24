@@ -1,15 +1,16 @@
 ﻿using Admin.Domain.Entities;
-using Admin.Persistence.Configuration.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Admin.Persistence.Configuration;
 
-internal class HostGroupConfig : BaseEntityConfig<HostGroup>
+internal class HostGroupConfig : IEntityTypeConfiguration<HostGroup>
 {
-    public override void Configure(EntityTypeBuilder<HostGroup> builder)
+    
+    public void Configure(EntityTypeBuilder<HostGroup> builder)
     {
-        base.Configure(builder);
+        builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).HasColumnOrder(0);
         builder.Property(x => x.GroupName).HasMaxLength(50).IsRequired();
 
         builder.HasMany(x => x.Hosts)

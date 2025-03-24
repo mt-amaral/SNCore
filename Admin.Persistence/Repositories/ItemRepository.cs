@@ -7,13 +7,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Admin.Persistence.Repositories;
 
-public class ItemRepository : BaseRepository<Item>, IItemRepository
+public class ItemRepository: BaseRepository<Item>, IItemRepository
 {
     public ItemRepository(ApplicationDbContext context) : base(context)
     {
-
+        
     }
-
+    
     public async Task<IEnumerable<Item>> GetItemByModel(int modelId)
     {
         return await _dbSet

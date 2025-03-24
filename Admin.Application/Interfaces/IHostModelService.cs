@@ -7,7 +7,7 @@ namespace Admin.Application.Interfaces;
 public interface IHostModelService
 {
     Task<IEnumerable<ModelResponse>> GetModel();
-    Task<IEnumerable<ModelInputResponse>> GetModelInput();
+    Task<IEnumerable<ModelInputResponse>> GetInput();
     Task<IEnumerable<ItemModelResponse>> GetItem(int modelId);
 
 }

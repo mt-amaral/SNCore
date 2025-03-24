@@ -1,11 +1,10 @@
-﻿using Admin.Domain.Entities.Base;
-using Admin.Domain.Interfaces.Base;
+
 using Admin.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace Admin.Persistence.Repositories.Base;
 
-public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
+public class BaseRepository<T> where T : class
 {
     private readonly ApplicationDbContext _context;
     protected readonly DbSet<T> _dbSet;
@@ -20,30 +19,15 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     {
         return await _context.SaveChangesAsync() > 0;
     }
-
-    public async Task<T> SelectById(int id)
-    {
-        return await _dbSet.FindAsync(id) ?? throw new InvalidOperationException($"Não encontrado {typeof(T).Name} id:{id}");
-    }
-
-    public async Task<IEnumerable<T>> SelectAll()
-    {
-        return await _dbSet.ToListAsync();
-    }
-    public async Task<IEnumerable<T>> SelectAllNoTrack()
-    {
-        return await _dbSet.AsNoTracking().ToListAsync();
-    }
-
+    
     public async Task Create(T entity)
     {
         await _dbSet.AddAsync(entity);
         await SaveAllAsync();
     }
 
-    public async Task Edit(T entity)
+    public async Task Update(T entity)
     {
-        entity.UpTime();
         _dbSet.Update(entity);
         await SaveAllAsync();
     }

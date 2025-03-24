@@ -2,7 +2,8 @@
 using Admin.Shared.Request.Expression;
 using Admin.Shared.Response.Expression;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
+using Admin.Api.Filter;
+using Admin.Shared.Response;
 
 namespace Admin.Api.Controllers.v1;
 
@@ -14,111 +15,85 @@ public class ExpressionController : BaseController
     {
         _expressionService = expressionService;
     }
+    
     /// <summary>
-    /// Expressões cron criadas até o momento.
+    /// Expressões cron  criadas até o momento.
     /// </summary>
     [HttpGet]
-    [ProducesResponseType(typeof(List<ExpressionResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<List<GetExpressionResponse>>), StatusCodes.Status200OK)]
     [Route("GetAll")]
-    public async Task<ActionResult> GetHostAllAsync()
+    public async Task<ActionResult> GetAll()
     {
-        try
-        {
-            var result = await _expressionService.GetExpression();
+
+            var result = await _expressionService.GetExpressions();
 
             return Ok(result);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
+
+    }
+    /// <summary>
+    /// seleciona expression pelo Id até o.
+    /// </summary>
+    [HttpGet]
+    [ProducesResponseType(typeof(Response<ExpressionResponse>), StatusCodes.Status200OK)]
+    [Route("GetById/{id}")]
+    [ValidateIdFilter]
+    public async Task<ActionResult> GetById(short id)
+    {
+        var result = await _expressionService.GetExpression(id);
+
+        return StatusCode(result.IsSuccess ? 200 : 404, result);
     }
     /// <summary>
     /// Traduz as expressões cron.( pt -br )
     /// </summary>
     [HttpPut]
-    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Response<string?>), StatusCodes.Status200OK)]
     [Route("Translation")]
-    public async Task<ActionResult> TranslationExpressions(CronExpressionRequest expression)
+    public async Task<ActionResult> Translation(ExpressionRequest expression)
     {
-        try
-        {
-            var result = await _expressionService.TranslationExpressions(expression);
-
-            return Ok(result);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
+        string? expressionStr = await _expressionService.TranslationExpression(expression);
+        var result = new Response<string?>(
+            expressionStr,
+            200,
+            null
+        );
+        return Ok(result);
     }
 
     /// <summary>
-    /// Cria uma nova expressão cron com base nos dados fornecidos.
+    /// Cria uma nova expressão cron com base nos dados forneci dos.
     /// </summary>
-    /// <param name="expression">Objeto contendo as configurações da expressão cron.</param>
-    /// <returns>Status 201 se criado com sucesso, ou 400 em caso de erro.</returns>
-    /// <response code="201">Expressão criada com sucesso.</response>
-    /// <response code="400">Erro na requisição ou dados inválidos.</response>
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [Route("Create")]
-    public async Task<ActionResult> CreateExpressions(CreateExpressionRequest expression)
+    [ProducesResponseType(typeof(Response<ExpressionResponse>), StatusCodes.Status200OK)]
+    public async Task<ActionResult> CreateExpressions(ExpressionRequest expression)
     {
-        try
-        {
 
-            await _expressionService.CreateExpressions(expression);
-            return Created();
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
+        var result = await _expressionService.CreateExpression(expression);
+        return StatusCode(result.IsSuccess ? 201 : 500, result);
+
     }
 
     /// <summary>
     /// Atualiza expressão cron com base nos dados fornecidos.
     /// </summary>
-    [HttpPut]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [Route("Update")]
-    public async Task<ActionResult> UpdateExpressions([FromBody] CreateExpressionRequest expression, [FromQuery] long expressionId)
+    [HttpPut("{id}")]
+    [ProducesResponseType(typeof(Response<string?>),StatusCodes.Status200OK)]
+    [ValidateIdFilter]
+    public async Task<ActionResult> Update([FromBody] ExpressionRequest expression,  short id)
     {
-        try
-        {
-            await _expressionService.UpdateExpressions(expression, expressionId);
-            return NoContent();
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
+        
+            var result = await _expressionService.UpdateExpression(expression, id);
+            return StatusCode(result.IsSuccess ? 200 : 404, result);
     }
     /// <summary>
     /// Deleta expressão cron.
     /// </summary>
-    [HttpDelete]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [Route("Delete")]
-    public async Task<ActionResult> UpdateExpressions(
-        [FromQuery]
-        [Required]
-        [Range(1, int.MaxValue, ErrorMessage = "expressionId deve ser maior que 0")]
-        long expressionId)
+    [HttpDelete("{id}")]
+    [ProducesResponseType(typeof(Response<string?>), StatusCodes.Status200OK)]
+    [ValidateIdFilter]
+    public async Task<ActionResult> Delete(short id)
     {
-        try
-        {
-            await _expressionService.DeleteExpressions(expressionId);
-            return NoContent();
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
+           var result =  await _expressionService.DeleteExpression(id);
+           return StatusCode(result.IsSuccess ? 200 : 404, result);
     }
 }

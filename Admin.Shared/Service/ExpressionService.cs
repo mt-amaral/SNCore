@@ -17,7 +17,7 @@ public class ExpressionService(IHttpClientFactory factory)
     {
         return await _httpClient.GetFromJsonAsync<string>($"api/expression/TranslationExpressions?expression={expression}");
     }
-    public async Task CreateExpressionAsync(CreateExpressionRequest expressionRequest)
+    public async Task CreateExpressionAsync(ExpressionRequest expressionRequest)
     {
         var response = await _httpClient.PostAsJsonAsync("api/expression/CreatExpressions", expressionRequest);
         response.EnsureSuccessStatusCode();

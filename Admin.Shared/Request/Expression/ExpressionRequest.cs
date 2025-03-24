@@ -1,10 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace Admin.Shared.Request.Expression;
 
-public class CronExpressionRequest
+public class ExpressionRequest
 {
-
     [Required(ErrorMessage = "O campo 'Second' é obrigatório.")]
     [RegularExpression(@"^(\*|(\d{1,2})(,\d{1,2})*|(\d{1,2}-\d{1,2})|(\*/\d+))$", ErrorMessage = "Valor inválido para Second.")]
     public string Second { get; set; } = "0";

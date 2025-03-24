@@ -5,9 +5,9 @@ namespace Admin.Domain.Interfaces;
 
 public interface ICronExpressionRepository
 {
-    Task<IEnumerable<CronExpression>> SelectAll();
-    Task<CronExpression> SelectById(long id);
-    Task Create(CronExpression entity);
+    Task<IEnumerable<CronExpression>> GetAll();
+    Task<CronExpression?> GetById(short id);
+    Task CreateCronExpression(CronExpression entity);
     Task Update(CronExpression entity);
     Task Delete(CronExpression entity);
 }

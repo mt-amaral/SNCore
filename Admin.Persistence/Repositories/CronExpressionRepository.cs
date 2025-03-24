@@ -2,48 +2,41 @@
 using Admin.Domain.Entities;
 using Admin.Domain.Interfaces;
 using Admin.Persistence.Context;
+using Admin.Persistence.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
 
 namespace Admin.Persistence.Repositories;
 
-public class CronExpressionRepository(ApplicationDbContext context) : ICronExpressionRepository
+public class CronExpressionRepository: BaseRepository<CronExpression>, ICronExpressionRepository
 {
-    private readonly ApplicationDbContext _context = context;
-    private readonly DbSet<CronExpression> _dbSet = context.Set<CronExpression>();
-
-
-    public async Task<IEnumerable<CronExpression>> SelectAll()
+    public CronExpressionRepository(ApplicationDbContext context) : base(context)
+    {
+        
+    }
+    
+    public async Task<IEnumerable<CronExpression>> GetAll()
     {
         return await _dbSet
-            .Include(e => e.Host)
-            .Include(e => e.Item)
             .AsNoTracking().ToListAsync();
     }
-    public async Task<CronExpression> SelectById(long id)
+    public async Task<CronExpression?> GetById(short id)
     {
         return await _dbSet
-        .Include(e => e.Host)
-        .Include(e => e.Item)
-        .FirstOrDefaultAsync(c => c.Id == id) ??
-        throw new Exception("Não encontrado");
+            .FirstOrDefaultAsync(c => c.Id == id);
     }
 
-    public async Task Create(CronExpression entity)
+    public async Task CreateCronExpression(CronExpression entity)
     {
-        await _dbSet.AddAsync(entity);
-        await _context.SaveChangesAsync();
+        await Create(entity);
     }
 
-    public async Task Update(CronExpression entity)
+    public async Task UpdateCronExpression(CronExpression entity)
     {
-        _dbSet.Update(entity);
-        await _context.SaveChangesAsync();
+        await Update(entity);
     }
 
-    public async Task Delete(CronExpression entity)
+    public async Task DeleteCronExpression (CronExpression entity)
     {
-        _dbSet.Remove(entity);
-        await _context.SaveChangesAsync();
-
+        await Delete(entity);
     }
 }

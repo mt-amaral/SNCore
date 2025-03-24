@@ -12,12 +12,4 @@ public interface IHostService
     Task CreateHost(CreateHostRequest newHost);
     Task UpdateHost(CreateHostRequest host, int hostId);
     Task DeletetById(int hostId);
-
-    /// Group
-    Task CreateGroupHost(CreateGroupHostRequest newGroup);
-    Task UpdateGroupHost(CreateGroupHostRequest newGrou, int groupId);
-    Task<List<GroupHostInputResponse>> GetInputGroupHost();
-    Task<GroupHostResponse> GetGroupById(int groupId);
-    Task DeleteGroupById(int groupId);
-
 }

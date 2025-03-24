@@ -7,7 +7,7 @@ namespace Connection.Test;
 public class SnmpTeste
 {
 
-    private string ipv4 = "192.168.77.249";
+    private string ipv4 = "191.37.19.91";
     private int port = 161;
     private string communityKey = "public";
     SnmpConnection snmpConnection = new SnmpConnection();

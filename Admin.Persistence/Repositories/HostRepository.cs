@@ -8,12 +8,11 @@ namespace Admin.Persistence.Repositories;
 
 public class HostRepository : BaseRepository<Host>, IHostRepository
 {
-
     public HostRepository(ApplicationDbContext context) : base(context)
     {
-
+        
     }
-
+    
     public async Task<Host> SelectByHost(int id)
     {
         return await _dbSet
@@ -36,18 +35,19 @@ public class HostRepository : BaseRepository<Host>, IHostRepository
             .Include(e => e.HostGroup).AsNoTracking()
             .ToListAsync();
     }
-    public async Task CreateNewHost(Host newEntity)
+    public async Task CreateHost(Host newEntity)
     {
         await Create(newEntity);
     }
 
     public async Task UpdateHost(Host entity)
     {
-        await Edit(entity);
+        await Update(entity);
     }
 
     public async Task DeleteHost(Host entity)
     {
         await Delete(entity);
     }
+    
 }

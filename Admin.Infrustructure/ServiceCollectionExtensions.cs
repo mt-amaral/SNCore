@@ -1,4 +1,6 @@
 ﻿using Admin.Application.Interfaces;
+using Admin.Connection.Connections;
+using Admin.Connection.Interfaces;
 using Admin.Domain.Interfaces;
 using Admin.Persistence.Repositories;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,5 +38,12 @@ public static class ServiceCollectionExtensions
             services.AddScoped(valueInterface, type);
         }
         return services;
+    }
+
+    public static IServiceCollection AddConnection(this IServiceCollection service)
+    {
+
+        service.AddScoped<ISnmpConnection, SnmpConnection>();
+        return service;
     }
 }
