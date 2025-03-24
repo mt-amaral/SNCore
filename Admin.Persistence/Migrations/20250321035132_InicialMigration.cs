@@ -11,13 +11,30 @@ namespace Admin.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "CronExpression",
+                columns: table => new
+                {
+                    Id = table.Column<short>(type: "smallint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Second = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Minute = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Hour = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Day = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Month = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Weesday = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CronExpression", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "HostGroup",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     GroupName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
@@ -31,8 +48,6 @@ namespace Admin.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ModelName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     SrcIcon = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
                 },
@@ -60,8 +75,6 @@ namespace Admin.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     IsOnline = table.Column<bool>(type: "bit", nullable: false),
@@ -89,13 +102,12 @@ namespace Admin.Persistence.Migrations
                 name: "Item",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ItemName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    ModelId = table.Column<int>(type: "int", nullable: true),
-                    OidId = table.Column<long>(type: "bigint", nullable: true)
+                    OidId = table.Column<long>(type: "bigint", nullable: true),
+                    HostId = table.Column<int>(type: "int", nullable: true),
+                    ModelId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -106,27 +118,14 @@ namespace Admin.Persistence.Migrations
                         principalTable: "HostModel",
                         principalColumn: "Id");
                     table.ForeignKey(
+                        name: "FK_Item_Host_HostId",
+                        column: x => x.HostId,
+                        principalTable: "Host",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Item_OidList_OidId",
                         column: x => x.OidId,
-                        principalTable: "OidList",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "OidDiscovery",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    OidDiscoveryIndex = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DiscoveryOriginId = table.Column<long>(type: "bigint", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OidDiscovery", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_OidDiscovery_OidList_DiscoveryOriginId",
-                        column: x => x.DiscoveryOriginId,
                         principalTable: "OidList",
                         principalColumn: "Id");
                 });
@@ -137,12 +136,10 @@ namespace Admin.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SnmpVersion = table.Column<short>(type: "smallint", nullable: false),
+                    SnmpVersion = table.Column<byte>(type: "tinyint", nullable: false),
                     Community = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Port = table.Column<int>(type: "int", nullable: false),
-                    HostId = table.Column<int>(type: "int", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    HostId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -164,9 +161,7 @@ namespace Admin.Persistence.Migrations
                     User = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Port = table.Column<int>(type: "int", nullable: false),
-                    HostId = table.Column<int>(type: "int", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    HostId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -180,47 +175,44 @@ namespace Admin.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CronExpression",
+                name: "RunTime",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Second = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Minute = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Hour = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Day = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Month = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Weesday = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    ItemId = table.Column<int>(type: "int", nullable: false),
-                    HostId = table.Column<int>(type: "int", nullable: true)
+                    Type = table.Column<byte>(type: "tinyint", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
+                    CronExpressionId = table.Column<short>(type: "smallint", nullable: false),
+                    ItemId = table.Column<long>(type: "bigint", nullable: false),
+                    HostId = table.Column<int>(type: "int", nullable: true),
+                    ModelId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CronExpression", x => x.Id);
+                    table.PrimaryKey("PK_RunTime", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CronExpression_Host_HostId",
-                        column: x => x.HostId,
-                        principalTable: "Host",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_CronExpression_Item_ItemId",
-                        column: x => x.ItemId,
-                        principalTable: "Item",
+                        name: "FK_RunTime_CronExpression_CronExpressionId",
+                        column: x => x.CronExpressionId,
+                        principalTable: "CronExpression",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RunTime_HostModel_ModelId",
+                        column: x => x.ModelId,
+                        principalTable: "HostModel",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_RunTime_Host_HostId",
+                        column: x => x.HostId,
+                        principalTable: "Host",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RunTime_Item_ItemId",
+                        column: x => x.ItemId,
+                        principalTable: "Item",
+                        principalColumn: "Id");
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CronExpression_HostId",
-                table: "CronExpression",
-                column: "HostId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CronExpression_ItemId",
-                table: "CronExpression",
-                column: "ItemId",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Host_GroupId",
@@ -231,6 +223,11 @@ namespace Admin.Persistence.Migrations
                 name: "IX_Host_ModelId",
                 table: "Host",
                 column: "ModelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Item_HostId",
+                table: "Item",
+                column: "HostId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Item_ModelId",
@@ -245,11 +242,24 @@ namespace Admin.Persistence.Migrations
                 filter: "[OidId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OidDiscovery_DiscoveryOriginId",
-                table: "OidDiscovery",
-                column: "DiscoveryOriginId",
-                unique: true,
-                filter: "[DiscoveryOriginId] IS NOT NULL");
+                name: "IX_RunTime_CronExpressionId",
+                table: "RunTime",
+                column: "CronExpressionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RunTime_HostId",
+                table: "RunTime",
+                column: "HostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RunTime_ItemId",
+                table: "RunTime",
+                column: "ItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RunTime_ModelId",
+                table: "RunTime",
+                column: "ModelId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Snmp_HostId",
@@ -268,16 +278,16 @@ namespace Admin.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CronExpression");
-
-            migrationBuilder.DropTable(
-                name: "OidDiscovery");
+                name: "RunTime");
 
             migrationBuilder.DropTable(
                 name: "Snmp");
 
             migrationBuilder.DropTable(
                 name: "Telnet");
+
+            migrationBuilder.DropTable(
+                name: "CronExpression");
 
             migrationBuilder.DropTable(
                 name: "Item");
