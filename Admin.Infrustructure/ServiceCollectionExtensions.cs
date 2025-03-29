@@ -1,7 +1,9 @@
 ﻿using Admin.Application.Interfaces;
 using Admin.Connection.Connections;
 using Admin.Connection.Interfaces;
+using Admin.Domain.Account;
 using Admin.Domain.Interfaces;
+using Admin.Persistence.Identity;
 using Admin.Persistence.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,6 +24,8 @@ public static class ServiceCollectionExtensions
     }
     public static IServiceCollection AddRepositories(this IServiceCollection services)
     {
+        // Autenticate
+        services.AddScoped<IAuthenticate, Authenticate>();
         var repositoryType = typeof(HostRepository).Assembly;
         var interfaceType = typeof(IHostRepository).Assembly;
 

@@ -40,7 +40,6 @@ public class ExpressionController : BaseController
     public async Task<ActionResult> GetById(short id)
     {
         var result = await _expressionService.GetExpression(id);
-
         return StatusCode(result.IsSuccess ? 200 : 404, result);
     }
     /// <summary>
@@ -81,9 +80,10 @@ public class ExpressionController : BaseController
     [ValidateIdFilter]
     public async Task<ActionResult> Update([FromBody] ExpressionRequest expression,  short id)
     {
+
+        var result = await _expressionService.UpdateExpression(expression, id);
+        return StatusCode(result.IsSuccess ? 200 : 404, result);
         
-            var result = await _expressionService.UpdateExpression(expression, id);
-            return StatusCode(result.IsSuccess ? 200 : 404, result);
     }
     /// <summary>
     /// Deleta expressão cron.

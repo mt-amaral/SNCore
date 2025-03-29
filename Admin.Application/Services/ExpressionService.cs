@@ -47,7 +47,7 @@ public class ExpressionService : IExpressionService
         {
             var entity = _mapper.Map<CronExpression>(expression);
             entity.UpdateDescription(await TranslationExpression(expression));
-            await _repository.CreateCronExpression(entity);
+            await _repository.Create(entity);
             return new Response<ExpressionResponse?>(_mapper.Map<ExpressionResponse>(entity), 201, "Criado com sucesso");
         }
         catch (Exception ex)

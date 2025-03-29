@@ -7,11 +7,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Admin.Persistence.Repositories;
 
-public class CronExpressionRepository: BaseRepository<CronExpression>, ICronExpressionRepository
+public class CronExpressionRepository: ICronExpressionRepository
 {
-    public CronExpressionRepository(ApplicationDbContext context) : base(context)
+    
+    
+    private readonly ApplicationDbContext _context;
+    private readonly DbSet<CronExpression> _dbSet;
+
+    public CronExpressionRepository(ApplicationDbContext context)
     {
-        
+        _context = context;
+        _dbSet = _context.Set<CronExpression>();
+    }
+    
+    private async Task<bool> SaveAllAsync()
+    {
+        return await _context.SaveChangesAsync() > 0;
     }
     
     public async Task<IEnumerable<CronExpression>> GetAll()
@@ -25,18 +36,22 @@ public class CronExpressionRepository: BaseRepository<CronExpression>, ICronExpr
             .FirstOrDefaultAsync(c => c.Id == id);
     }
 
-    public async Task CreateCronExpression(CronExpression entity)
+    public async Task Create(CronExpression entity)
     {
-        await Create(entity);
+        await _dbSet.AddAsync(entity);
+        await SaveAllAsync();
     }
 
-    public async Task UpdateCronExpression(CronExpression entity)
+    public async Task Update(CronExpression entity)
     {
-        await Update(entity);
+        _dbSet.Update(entity);
+        await SaveAllAsync();
     }
 
-    public async Task DeleteCronExpression (CronExpression entity)
+    public async Task Delete (CronExpression entity)
     {
-        await Delete(entity);
+        _dbSet.Remove(entity);
+        await SaveAllAsync();
     }
+    
 }

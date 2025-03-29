@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Security.Cryptography;
+using System.Text;
 using Admin.Application.Mappings;
 using Admin.Persistence.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -33,29 +34,39 @@ public static class DependecyInjection
     }
 
     
-    public static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddAuthentication(opt =>
-        {
-            opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            
-        }).AddJwtBearer(o =>
-        {
-            o.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-                ValidIssuer = configuration["Jwt:Issuer"],
-                ValidAudience = configuration["Jwt:Audience"],
-                IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(configuration["Jwt:SecurityKey"] ?? string.Empty)) ,
-                ClockSkew = TimeSpan.Zero
+        var secretKey = configuration["Jwt:SecurityKey"] ?? throw new Exception("Chave JWT não configurada");
+        var salt = Encoding.UTF8.GetBytes(configuration["Jwt:Salt"] ?? "default-salt-123");
+    
+        byte[] derivedKey = Rfc2898DeriveBytes.Pbkdf2(
+            Encoding.UTF8.GetBytes(secretKey),
+            salt,
+            iterations: 100_000,
+            HashAlgorithmName.SHA256,
+            outputLength: 32
+        );
 
-            };
-        });
+        // 2. Configuração mínima do JWT
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(derivedKey),
+                
+                    ValidateIssuer = true,
+                    ValidIssuer = configuration["Jwt:Issuer"],
+                
+                    ValidateAudience = true,
+                    ValidAudience = configuration["Jwt:Audience"],
+                
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
+
         return services;
     }
     

@@ -13,7 +13,7 @@ builder.Services.AddServer();
 
 
 builder.Services.AddContextDevelopment(builder.Configuration);
-builder.Services.AddAuthentication(builder.Configuration);
+builder.Services.AddJwtAuthentication(builder.Configuration);
 
 builder.Services.AddCors(
     x => x.AddPolicy(

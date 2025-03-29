@@ -7,7 +7,7 @@ public interface ICronExpressionRepository
 {
     Task<IEnumerable<CronExpression>> GetAll();
     Task<CronExpression?> GetById(short id);
-    Task CreateCronExpression(CronExpression entity);
+    Task Create(CronExpression entity);
     Task Update(CronExpression entity);
     Task Delete(CronExpression entity);
 }

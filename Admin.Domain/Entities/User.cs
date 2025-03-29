@@ -7,15 +7,16 @@ public class User
     public Guid UniqueId { get; init; } = Guid.NewGuid();
 
     public string Name { get; private set; } = string.Empty;
-
     public byte[] PasswordHash { get; private set; } = Array.Empty<byte>();
 
     public byte[] PasswordSalt { get; private set; } = Array.Empty<byte>();
+    public int Iterations { get; private set; } 
 
 
-    public void ChangePassword(byte[] PasswordHash, byte[] PasswordSalt)
+    public void ChangePassword(byte[] passwordHash, byte[] passwordSalt, int iterations = 210_000)
     {
-        PasswordHash = PasswordHash;
-        PasswordSalt = PasswordSalt;
+        PasswordHash = passwordHash;
+        PasswordSalt = passwordSalt;
+        Iterations = iterations;
     }
 }
