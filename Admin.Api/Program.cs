@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Reflection;
 using Admin.Api.Middleware;
+using Admin.Domain.Account;
+using Admin.Domain.Entities;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,8 +14,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddServer();
 
 
-builder.Services.AddContextDevelopment(builder.Configuration);
-builder.Services.AddJwtAuthentication(builder.Configuration);
+builder.Services.AddDbContext(builder.Configuration);
+builder.Services.AddIdentityContext(builder.Configuration);
 
 builder.Services.AddCors(
     x => x.AddPolicy(
@@ -38,43 +40,48 @@ builder.Services.AddControllers()
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    {
-        c.SwaggerDoc("v1", new()
-        {
-            Title = "SNCore Documentação Api",
-            Description = ""
-        });
-        var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-        var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-        c.IncludeXmlComments(xmlPath);
-    }
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Name = "Authorization",
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer",
-        BearerFormat = "JWT",
-        In = ParameterLocation.Header,
-        Description = "JWT Authorization header using the Bearer scheme."
-    });
+//builder.Services.AddSwaggerGen(c =>
+//{
+//    {
+//        c.SwaggerDoc("v1", new()
+//        {
+//            Title = "SNCore Documentação Api",
+//            Description = ""
+//        });
+//        var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+//        var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+//        c.IncludeXmlComments(xmlPath);
+//    }
+//    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+//    {
+//        Name = "Authorization",
+//        Type = SecuritySchemeType.ApiKey,
+//        Scheme = "Bearer",
+//        BearerFormat = "JWT",
+//        In = ParameterLocation.Header,
+//        Description = "JWT Authorization header using the Bearer scheme."
+//    });
+//
+//    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+//    {
+//        {
+//            new OpenApiSecurityScheme
+//            {
+//                Reference = new OpenApiReference
+//                {
+//                    Type = ReferenceType.SecurityScheme,
+//                    Id = "Bearer"
+//                }
+//            },
+//            new string[] { }
+//        }
+//    });
+//});
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
 
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            new string[] { }
-        }
-    });
-});
+builder.Services.AddIdentityApiEndpoints<User>()
+    .AddEntityFrameworkStores<UserDbContext>();
 
 var app = builder.Build();
 
@@ -116,10 +123,10 @@ if (app.Environment.IsStaging())
         dbContext.Database.Migrate();
     }
 }
+
 app.UseMiddleware<ExceptionMiddleware>();
 
-app.UseAuthorization();
-
+app.MapIdentityApi<User>();
 app.MapControllers();
 
 app.Run();

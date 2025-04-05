@@ -23,7 +23,7 @@ public static class DependecyInjection
         return services;
     }
 
-    public static IServiceCollection AddContextDevelopment(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<ApplicationDbContext>(options =>
         {
@@ -32,41 +32,13 @@ public static class DependecyInjection
         });
         return services;
     }
-
-    
-    public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddIdentityContext(this IServiceCollection services, IConfiguration configuration)
     {
-        var secretKey = configuration["Jwt:SecurityKey"] ?? throw new Exception("Chave JWT não configurada");
-        var salt = Encoding.UTF8.GetBytes(configuration["Jwt:Salt"] ?? "default-salt-123");
-    
-        byte[] derivedKey = Rfc2898DeriveBytes.Pbkdf2(
-            Encoding.UTF8.GetBytes(secretKey),
-            salt,
-            iterations: 100_000,
-            HashAlgorithmName.SHA256,
-            outputLength: 32
-        );
-
-        // 2. Configuração mínima do JWT
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(derivedKey),
-                
-                    ValidateIssuer = true,
-                    ValidIssuer = configuration["Jwt:Issuer"],
-                
-                    ValidateAudience = true,
-                    ValidAudience = configuration["Jwt:Audience"],
-                
-                    ValidateLifetime = true,
-                    ClockSkew = TimeSpan.Zero
-                };
-            });
-
+        services.AddDbContext<UserDbContext>(options =>
+        {
+            options.UseSqlServer(configuration.GetConnectionString("ConnectionDevelopment"),
+                m => m.MigrationsAssembly(typeof(UserDbContext).Assembly.FullName));
+        });
         return services;
     }
     

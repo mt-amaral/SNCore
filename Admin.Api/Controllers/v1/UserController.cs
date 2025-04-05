@@ -17,22 +17,4 @@ public class UserController : BaseController
     {
         _userService = userService;
     }
-    
-    
-    [HttpPost]
-    [ProducesResponseType(typeof(Response<UserResponse?>), StatusCodes.Status201Created)]
-    public async Task<ActionResult> Create(NewUserRequest user)
-    {
-        var result = await _userService.Create(user);
-        return StatusCode(result.IsSuccess ? 201 : 409, result);
-    }
-    
-    [HttpPut]
-    [ProducesResponseType(typeof(Response<LoginToken?>), StatusCodes.Status200OK)]
-    public async Task<ActionResult> Login(LoginRequest login)
-    {
-        var result = await _userService.Login(login);
-        return StatusCode(result.IsSuccess ? 200 : 409, result);
-    }
-    
 }
