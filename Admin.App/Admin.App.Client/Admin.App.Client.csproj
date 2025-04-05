@@ -18,8 +18,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Components\Dialog\" />
+    <Folder Include="Components\Grid\" />
     <Folder Include="Data\Cron\" />
     <Folder Include="Data\Dashboard\" />
+    <Folder Include="Pages\Hosts\" />
+    <Folder Include="Pages\scheduler\" />
   </ItemGroup>
 
   <ItemGroup>

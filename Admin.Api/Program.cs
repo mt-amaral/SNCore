@@ -38,45 +38,34 @@ builder.Services.AddControllers()
         options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
     });
 
+builder.Services.AddControllers(options =>
+    {
+        var policy = new Microsoft.AspNetCore.Authorization.AuthorizationPolicyBuilder()
+            .RequireAuthenticatedUser()
+            .Build();
+        options.Filters.Add(new Microsoft.AspNetCore.Mvc.Authorization.AuthorizeFilter(policy));
+    })
+    .AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+    });
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen(c =>
-//{
-//    {
-//        c.SwaggerDoc("v1", new()
-//        {
-//            Title = "SNCore Documentação Api",
-//            Description = ""
-//        });
-//        var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-//        var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-//        c.IncludeXmlComments(xmlPath);
-//    }
-//    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-//    {
-//        Name = "Authorization",
-//        Type = SecuritySchemeType.ApiKey,
-//        Scheme = "Bearer",
-//        BearerFormat = "JWT",
-//        In = ParameterLocation.Header,
-//        Description = "JWT Authorization header using the Bearer scheme."
-//    });
-//
-//    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-//    {
-//        {
-//            new OpenApiSecurityScheme
-//            {
-//                Reference = new OpenApiReference
-//                {
-//                    Type = ReferenceType.SecurityScheme,
-//                    Id = "Bearer"
-//                }
-//            },
-//            new string[] { }
-//        }
-//    });
-//});
+builder.Services.AddSwaggerGen(c =>
+{
+    {
+        c.SwaggerDoc("v1", new()
+        {
+            Title = "SNCore Documentação Api",
+            Description = ""
+        });
+        var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+        var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+        c.IncludeXmlComments(xmlPath);
+    }
+});
+
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 
@@ -126,7 +115,10 @@ if (app.Environment.IsStaging())
 
 app.UseMiddleware<ExceptionMiddleware>();
 
-app.MapIdentityApi<User>();
+app.UseAuthentication();
+app.UseAuthorization();
+
+//app.MapIdentityApi<User>();
 app.MapControllers();
 
 app.Run();
