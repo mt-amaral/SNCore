@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace Admin.Shared.Config;
+namespace Admin.App.Client.Config;
 
 public class HttpClientWithOptions
 {

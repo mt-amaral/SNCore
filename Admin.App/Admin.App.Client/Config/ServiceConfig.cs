@@ -1,6 +1,5 @@
 
-using Microsoft.Extensions.DependencyInjection;
-namespace Admin.Shared.Config;
+namespace Admin.App.Client.Config;
 
 public static class ServiceConfig
 {

@@ -1,6 +1,8 @@
-@page "/dashboard"
+@attribute [Authorize]
+@page "/"
 @using Admin.App.Client.Components.Dashboard
 @using Admin.Shared.Response
+@using Microsoft.AspNetCore.Authorization
 @inject ISnackbar Snackbar
 
 

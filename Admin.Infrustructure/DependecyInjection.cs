@@ -2,7 +2,6 @@
 using System.Text;
 using Admin.Application.Mappings;
 using Admin.Persistence.Context;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

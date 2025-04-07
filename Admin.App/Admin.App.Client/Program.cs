@@ -2,7 +2,9 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
 using System.Text.Json.Serialization;
 using System.Text.Json;
-using Admin.Shared.Config;
+using Admin.App.Client.Config;
+using Admin.App.Client.Security;
+using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -22,6 +24,7 @@ builder.Services.AddMudServices(config =>
 
 
 builder.Services.AddServer();
+builder.Services.AddScoped<CookieHandler>();
 builder.Services.AddHttpClient("Api", client =>
     {
         client.BaseAddress = new Uri(builder.Configuration["ApiServer:Url"]!);
@@ -31,7 +34,11 @@ builder.Services.AddHttpClient("Api", client =>
     {
         client.DefaultRequestHeaders.Accept.Clear();
         client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-    });
+    })
+    .AddHttpMessageHandler<CookieHandler>();
+
+builder.Services.AddScoped(x =>
+    (ICookieAuthenticationStateProvider)x.GetRequiredService<AuthenticationStateProvider>());
 
 
 builder.Services.AddScoped(sp =>
@@ -43,7 +50,9 @@ builder.Services.AddScoped(sp =>
     };
     return new HttpClientWithOptions(httpClient, jsonSerializerOptions);
 });
-
+builder.Services.AddAuthorizationCore();
+builder.Services.AddCascadingAuthenticationState();
+builder.Services.AddSingleton<AuthenticationStateProvider, CookieAuthenticationStateProvider>();
 var app = builder.Build();
 await app.RunAsync();
 

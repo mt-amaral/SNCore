@@ -1,4 +1,6 @@
 ﻿@inherits LayoutComponentBase
+@inject  UserService UserService
+@inject  NavigationManager NavigationManager
 
 
 <MudThemeProvider Theme="Configuration.Theme" IsDarkMode="Configuration.IsDarkMode"/>
@@ -24,7 +26,7 @@
                        Edge="Edge.End"
                        OnClick="@ThemeToggle"/>
         
-        <MudIconButton Icon="@Icons.Material.Filled.Logout" Href="http://localhost:8091" Style="margin: 0px 0px 0px 10px" Edge="Edge.End" Color="Color.Inherit"/>
+        <MudIconButton Icon="@Icons.Material.Filled.Logout" Style="margin: 0px 0px 0px 10px" Edge="Edge.End" Color="Color.Inherit" OnClick="() => Logout()"/>
 
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
@@ -46,6 +48,15 @@
     bool _drawerOpen = true;
     void DrawerToggle() => _drawerOpen = !_drawerOpen;
     void ThemeToggle() => Configuration.IsDarkMode = !Configuration.IsDarkMode;
+    
+    private async Task Logout()
+    { 
+            var result = await UserService.Logout();
+            if (result.IsSuccess)
+            {
+                NavigationManager.NavigateTo("/");
+            }
+    }
 }
 
 

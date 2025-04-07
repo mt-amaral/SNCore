@@ -3,7 +3,7 @@ using Admin.Shared.Response.Input;
 using Admin.Shared.Response.Model;
 using System.Net.Http.Json;
 
-namespace Admin.Shared.Service;
+namespace Admin.App.Client.Service;
 
 public class ModelService(IHttpClientFactory factory)
 {

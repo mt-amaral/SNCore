@@ -2,7 +2,7 @@ using Admin.Shared.Request.Expression;
 using Admin.Shared.Response.Expression;
 using System.Net.Http.Json;
 
-namespace Admin.Shared.Service;
+namespace Admin.App.Client.Service;
 
 public class ExpressionService(IHttpClientFactory factory)
 {

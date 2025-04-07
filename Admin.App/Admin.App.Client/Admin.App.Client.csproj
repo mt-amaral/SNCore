@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="8.0.13" />
     <PackageReference Include="MudBlazor" Version="8.0.0" />
   </ItemGroup>
 
@@ -22,12 +23,20 @@
     <Folder Include="Components\Grid\" />
     <Folder Include="Data\Cron\" />
     <Folder Include="Data\Dashboard\" />
+    <Folder Include="Identity\" />
     <Folder Include="Pages\Hosts\" />
     <Folder Include="Pages\scheduler\" />
+    <Folder Include="Utils\" />
   </ItemGroup>
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\icons\mikrotik-icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNetCore.Mvc.ViewFeatures">
+      <HintPath>C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\8.0.13\Microsoft.AspNetCore.Mvc.ViewFeatures.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

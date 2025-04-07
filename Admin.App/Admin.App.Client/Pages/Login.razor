@@ -1,8 +1,13 @@
-﻿@page "/"
+﻿@page "/login"
+@attribute [IgnoreAntiforgeryToken]
+@rendermode RenderMode.InteractiveServer
 @using Admin.App.Client.Data
 @using Admin.App.Client.Layout
+@using Admin.Shared.Request.Identity
+@using Microsoft.AspNetCore.Mvc
 @layout LoginLayout
 @inject  ISnackbar Snackbar
+@inject  UserService UserService
 @inject  NavigationManager NavigationManager
 <MudGrid Justify="Justify.Center" Spacing="2" Style=" align-items: center; height: 700px">
     <MudItem xs="12" sm="8" md="6" lg="3">
@@ -10,14 +15,14 @@
             <MudText Typo="Typo.h4" Color="Color.Primary" Style="margin:  20px auto 40px;">Login</MudText>
         </div>
         <MudCard Style="padding: 50px 40px 40px">
-                <EditForm Model="@_model" OnValidSubmit="HandleValidSubmit">
-                    <MudTextField @bind-Value="_model.Email"
+                <EditForm Model="login" OnValidSubmit="LoginAsync">
+                    <MudTextField @bind-Value="login.Username"
                                   Label="User"
                                   FullWidth="true"
                                   Class="mb-4"
                                   Variant="Variant.Outlined"/>
 
-                    <MudTextField @bind-Value="_model.Password"
+                    <MudTextField @bind-Value="login.Password"
                                   Label="Password"
                                   InputType="InputType.Password"
                                   FullWidth="true"
@@ -37,18 +42,31 @@
 </MudGrid>
 
 @code {
-    private LoginModel _model = new();
     private bool CheckBox { get; set; } = false;
-    private async Task HandleValidSubmit()
-    {
-        if (_model.Email.ToLower() == "admin" && _model.Password == "admin")
+    private LoginRequest login { get; set; } = new();
+    private bool IsBusy;
+    
+    private async Task LoginAsync()
+    { 
+        IsBusy = true;
+        try
         {
-            await Task.Delay(200); 
-            NavigationManager.NavigateTo("/dashboard");
+            var result = await UserService.Login(login);
+
+            if (result.IsSuccess)
+            {
+                NavigationManager.NavigateTo("/");
+            }
+            else
+                Snackbar.Add(result.Message!, Severity.Error);
         }
-        else
+        catch (Exception ex)
         {
-            Snackbar.Add("Invalid credentials!", Severity.Error);
+            Snackbar.Add(ex.Message, Severity.Error);
+        }
+        finally
+        {
+            IsBusy = false;
         }
     }
 }
