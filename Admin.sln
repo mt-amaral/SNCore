@@ -38,8 +38,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sql", "Sql", "{3D13C7E2-24CF-47EF-B6A9-D791546E313E}"
 	ProjectSection(SolutionItems) = preProject
 		Admin.Sql.Test\Dockerfile = Admin.Sql.Test\Dockerfile
-		Admin.Sql.Test\Oids.sql = Admin.Sql.Test\Oids.sql
 		Admin.Sql.Test\ModelsCreated.sql = Admin.Sql.Test\ModelsCreated.sql
+		Admin.Sql.Test\Oids.sql = Admin.Sql.Test\Oids.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Connection.Test", "Connection.Test\Connection.Test.csproj", "{2DAD9851-B99C-4784-BD60-2AB939A4CEF8}"
@@ -47,6 +47,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Admin.App", "Admin.App\Admin.App\Admin.App.csproj", "{D71CD487-06B0-4C6D-A496-6A06B06D6FA5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Admin.App.Client", "Admin.App\Admin.App.Client\Admin.App.Client.csproj", "{D7D1EC82-46AF-49A6-8201-4C8F7E32A9F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Admin.Ui", "Admin.Ui\Admin.Ui\Admin.Ui.csproj", "{812E0CF8-DD0B-46DB-A7B1-AF39510203B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Admin.Ui.Client", "Admin.Ui\Admin.Ui.Client\Admin.Ui.Client.csproj", "{B7CC11BC-41DF-4E6A-96A8-91FCD12F9978}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -98,6 +102,14 @@ Global
 		{D7D1EC82-46AF-49A6-8201-4C8F7E32A9F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7D1EC82-46AF-49A6-8201-4C8F7E32A9F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7D1EC82-46AF-49A6-8201-4C8F7E32A9F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{812E0CF8-DD0B-46DB-A7B1-AF39510203B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{812E0CF8-DD0B-46DB-A7B1-AF39510203B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{812E0CF8-DD0B-46DB-A7B1-AF39510203B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{812E0CF8-DD0B-46DB-A7B1-AF39510203B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7CC11BC-41DF-4E6A-96A8-91FCD12F9978}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7CC11BC-41DF-4E6A-96A8-91FCD12F9978}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7CC11BC-41DF-4E6A-96A8-91FCD12F9978}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7CC11BC-41DF-4E6A-96A8-91FCD12F9978}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -120,6 +132,8 @@ Global
 		{2DAD9851-B99C-4784-BD60-2AB939A4CEF8} = {061A5B3A-1717-4657-835E-1A809B05D28D}
 		{D71CD487-06B0-4C6D-A496-6A06B06D6FA5} = {7A67E174-00E4-4C99-80A6-1AB7CA1AA256}
 		{D7D1EC82-46AF-49A6-8201-4C8F7E32A9F0} = {7A67E174-00E4-4C99-80A6-1AB7CA1AA256}
+		{812E0CF8-DD0B-46DB-A7B1-AF39510203B6} = {7A67E174-00E4-4C99-80A6-1AB7CA1AA256}
+		{B7CC11BC-41DF-4E6A-96A8-91FCD12F9978} = {7A67E174-00E4-4C99-80A6-1AB7CA1AA256}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {914E1866-9657-4FCD-8763-3CAA0F1662FC}

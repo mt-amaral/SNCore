@@ -1,10 +1,9 @@
 ﻿@page "/login"
-@attribute [IgnoreAntiforgeryToken]
+
 @rendermode RenderMode.InteractiveServer
 @using Admin.App.Client.Data
 @using Admin.App.Client.Layout
 @using Admin.Shared.Request.Identity
-@using Microsoft.AspNetCore.Mvc
 @layout LoginLayout
 @inject  ISnackbar Snackbar
 @inject  UserService UserService
