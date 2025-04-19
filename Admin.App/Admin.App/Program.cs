@@ -1,7 +1,9 @@
 using Admin.App.Client.Pages;
 using Admin.App.Components;
 using Admin.App.Components.Account;
-using Admin.App.Data;
+using Admin.Domain.Account;
+using Admin.Infrustructure;
+using Admin.Persistence.Context;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -25,17 +27,20 @@ builder.Services.AddAuthentication(options =>
     })
     .AddIdentityCookies();
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+builder.Services.AddIdentityContext(builder.Configuration);
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>()
+builder.Services.AddIdentityCore<User>()
+    .AddEntityFrameworkStores<UserDbContext>()
     .AddSignInManager()
     .AddDefaultTokenProviders();
 
-builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Login";
+    options.AccessDeniedPath = "/AccessDenied";
+    options.LogoutPath = "/Logout";
+});
 
 var app = builder.Build();
 

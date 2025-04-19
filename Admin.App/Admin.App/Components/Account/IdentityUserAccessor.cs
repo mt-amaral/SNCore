@@ -1,17 +1,17 @@
-using Admin.App.Data;
+using Admin.Domain.Account;
 using Microsoft.AspNetCore.Identity;
 
 namespace Admin.App.Components.Account
 {
-    internal sealed class IdentityUserAccessor(UserManager<ApplicationUser> userManager, IdentityRedirectManager redirectManager)
+    internal sealed class IdentityUserAccessor(UserManager<User> userManager, IdentityRedirectManager redirectManager)
     {
-        public async Task<ApplicationUser> GetRequiredUserAsync(HttpContext context)
+        public async Task<User> GetRequiredUserAsync(HttpContext context)
         {
             var user = await userManager.GetUserAsync(context.User);
 
             if (user is null)
             {
-                redirectManager.RedirectToWithStatus("Account/InvalidUser", $"Error: Unable to load user with ID '{userManager.GetUserId(context.User)}'.", context);
+                redirectManager.RedirectToWithStatus("InvalidUser", $"Error: Unable to load user with ID '{userManager.GetUserId(context.User)}'.", context);
             }
 
             return user;
