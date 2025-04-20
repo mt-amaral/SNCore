@@ -1,18 +1,19 @@
 ﻿@page "/Login"
 
+
 @using System.ComponentModel.DataAnnotations
 @using Admin.App.Components.Account
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Identity
 @using Admin.Domain.Account
 @using Microsoft.AspNetCore.Components.Forms
-
+@using Layout
+@layout LoginLayout
 @inject SignInManager<User> SignInManager
 @inject ILogger<Login> Logger
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
 
-<PageTitle>Log in</PageTitle>
 
 <h1>Log in</h1>
 <div class="row">

@@ -1,0 +1,27 @@
+
+@using Admin.App.Client
+@using MudBlazor
+
+
+@inherits LayoutComponentBase
+    <MudThemeProvider Theme="Configuration.Theme" IsDarkMode="Configuration.IsDarkMode"/>
+    <MudPopoverProvider/>
+    <MudDialogProvider/>
+    <MudSnackbarProvider/>
+
+    <MudLayout>
+    <MudMainContent>
+    <MudAppBar Elevation="0" Color="Color.Transparent">
+    <MudSpacer />
+    <MudIconButton Icon="@(Configuration.IsDarkMode ? Icons.Material.Rounded.LightMode : Icons.Material.Rounded.DarkMode)"
+Edge="Edge.End"
+Color="Color.Primary"
+OnClick="@ThemeToggle"/>
+    </MudAppBar>
+    @Body
+    </MudMainContent>
+    </MudLayout>
+
+    @code {
+    void ThemeToggle() => Configuration.IsDarkMode = !Configuration.IsDarkMode;
+}

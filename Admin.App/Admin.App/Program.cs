@@ -7,13 +7,31 @@ using Admin.Persistence.Context;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MudBlazor;
+using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Services.AddMudServices(config =>
+{
+    config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.TopRight;
+
+    config.SnackbarConfiguration.PreventDuplicates = false;
+    config.SnackbarConfiguration.NewestOnTop = false;
+    config.SnackbarConfiguration.ShowCloseIcon = true;
+    config.SnackbarConfiguration.VisibleStateDuration = 10000;
+    config.SnackbarConfiguration.HideTransitionDuration = 500;
+    config.SnackbarConfiguration.ShowTransitionDuration = 500;
+    config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
+});
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
+
+
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
@@ -40,6 +58,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LoginPath = "/Login";
     options.AccessDeniedPath = "/AccessDenied";
     options.LogoutPath = "/Logout";
+    options.AccessDeniedPath = "/AccessDenied";
 });
 
 var app = builder.Build();

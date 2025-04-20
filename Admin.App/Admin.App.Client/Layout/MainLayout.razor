@@ -1,0 +1,60 @@
+﻿
+@inherits LayoutComponentBase
+@inject  NavigationManager NavigationManager
+
+
+<MudThemeProvider Theme="Configuration.Theme" IsDarkMode="Configuration.IsDarkMode"/>
+<MudPopoverProvider/>
+<MudSnackbarProvider/>
+<MudDialogProvider
+    FullWidth="true"
+    MaxWidth="MaxWidth.ExtraExtraLarge"
+    CloseButton="true"
+    BackdropClick="false"
+    NoHeader="true"
+    Position="DialogPosition.Center"
+    CloseOnEscapeKey="true"
+    BackgroundClass="my-custom-class"/>
+
+
+<MudLayout>
+    <MudAppBar Elevation="1">
+        <MudIconButton Icon="@Icons.Material.Rounded.Menu" Color="Color.Default" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudSpacer />
+        <MudIconButton Icon="@(Configuration.IsDarkMode ? Icons.Material.Rounded.LightMode : Icons.Material.Rounded.DarkMode)"
+                       Color="Color.Inherit"
+                       Edge="Edge.End"
+                       OnClick="@ThemeToggle"/>
+
+        <MudIconButton Icon="@Icons.Material.Filled.Logout" Style="margin: 0px 0px 0px 10px" Edge="Edge.End" Color="Color.Inherit" OnClick="() => Logout()"/>
+
+    </MudAppBar>
+    <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
+        <MudDrawerHeader Style="display: block">
+            <MudText Typo="Typo.h5" Class="mt-1 d-block">SNCore</MudText>
+            <p>Simple Network</p>
+        </MudDrawerHeader>
+        <NavMenu/>
+    </MudDrawer>
+    <MudMainContent >
+        <MudContainer MaxWidth="MaxWidth.ExtraLarge">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+
+@code {
+    bool _drawerOpen = true;
+    void DrawerToggle() => _drawerOpen = !_drawerOpen;
+    void ThemeToggle() => Configuration.IsDarkMode = !Configuration.IsDarkMode;
+
+    private void Logout()
+    {
+
+        NavigationManager.NavigateTo("/logout");
+    }
+}
+
+
+
