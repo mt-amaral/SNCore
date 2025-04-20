@@ -4,7 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>aspnet-Admin.App-2b96c0f4-ec72-4466-a637-8a360879694c</UserSecretsId>
+    <UserSecretsId>aspnet-Admin.App-0b24c76e-b767-4505-9003-9c075a65d7a0</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,7 +14,9 @@
 
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Admin.Domain\Admin.Domain.csproj" />
     <ProjectReference Include="..\..\Admin.Infrustructure\Admin.Infrustructure.csproj" />
+    <ProjectReference Include="..\..\Admin.Persistence\Admin.Persistence.csproj" />
     <ProjectReference Include="..\Admin.App.Client\Admin.App.Client.csproj" />
   </ItemGroup>
 

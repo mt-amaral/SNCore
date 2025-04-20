@@ -34,6 +34,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddIdentityContext(builder.Configuration);
 
+
 builder.Services.AddIdentityCore<User>()
     .AddEntityFrameworkStores<UserDbContext>()
     .AddSignInManager()
