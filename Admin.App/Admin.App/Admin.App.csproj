@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>aspnet-Admin.App-2b96c0f4-ec72-4466-a637-8a360879694c</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Extensions.MudBlazor.StaticInput" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Admin.Infrustructure\Admin.Infrustructure.csproj" />
+    <ProjectReference Include="..\Admin.App.Client\Admin.App.Client.csproj" />
+  </ItemGroup>
+
+</Project>
