@@ -15,9 +15,6 @@
     <ProjectReference Include="..\Admin.Shared\Admin.Shared.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="https\" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="wwwroot\swagger-ui\SwaggerDark.css" />
   </ItemGroup>
 </Project>

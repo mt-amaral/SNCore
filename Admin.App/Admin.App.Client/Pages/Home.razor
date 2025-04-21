@@ -1,4 +1,9 @@
 ﻿@page "/"
+@using Admin.App.Client.Service
+@using Microsoft.AspNetCore.Authorization
+@inject ExpressionService ExpressionService
+@attribute [Authorize]
+
 
 <PageTitle>Home</PageTitle>
 
@@ -57,3 +62,13 @@
         More details
     </MudLink>
 </MudText>
+
+@code{
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ExpressionService.GetExpressionAsync();
+
+    }
+
+}

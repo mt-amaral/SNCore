@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Admin.Api.Controllers.v1;
 
 
-public class IdentityController : ControllerBase
+public class IdentityController : BaseController
 {
     private readonly SignInManager<User> _signInManager;
     private readonly UserManager<User> _userManager;
@@ -29,10 +29,10 @@ public class IdentityController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] LoginRequest userRequest)
     {
-        var user = await _userManager.FindByNameAsync(userRequest.Username);
+        var user = await _userManager.FindByEmailAsync(userRequest.Username);
         if (user == null) return Unauthorized();
 
-        var result = await _signInManager.PasswordSignInAsync(user, userRequest.Password, true, false);
+        var result = await _signInManager.PasswordSignInAsync(user.Email, userRequest.Password, true, false);
         return result.Succeeded ? Ok() : Unauthorized();
     }
     
