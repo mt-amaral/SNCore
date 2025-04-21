@@ -120,5 +120,6 @@ app.UseAuthorization();
 
 //app.MapIdentityApi<User>();
 app.MapControllers();
+app.MapBlazorHub();
 
 app.Run();

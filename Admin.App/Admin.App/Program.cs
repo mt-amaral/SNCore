@@ -4,14 +4,18 @@ using Admin.App.Client.Config;
 using Admin.App.Client.Pages;
 using Admin.App.Components;
 using Admin.App.Components.Account;
+using Admin.App.Middleware;
 using Admin.Domain.Account;
 using Admin.Infrustructure;
 using Admin.Persistence.Context;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MudBlazor;
 using MudBlazor.Services;
+using Newtonsoft.Json;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,7 +40,54 @@ builder.Services.AddMudServices(config =>
     config.SnackbarConfiguration.ShowTransitionDuration = 500;
     config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
 });
+
+
+
 builder.Services.AddServerWeb();
+builder.Services.AddServer();
+builder.Services.AddDbContext(builder.Configuration);
+builder.Services.AddIdentityContext(builder.Configuration);
+
+builder.Services.AddIdentityCore<User>()
+    .AddEntityFrameworkStores<UserDbContext>()
+    .AddSignInManager()
+    .AddDefaultTokenProviders();
+
+
+
+builder.Services.AddControllers(options =>
+    {
+        var policy = new Microsoft.AspNetCore.Authorization.AuthorizationPolicyBuilder()
+            .RequireAuthenticatedUser()
+            .Build();
+        options.Filters.Add(new Microsoft.AspNetCore.Mvc.Authorization.AuthorizeFilter(policy));
+    })
+    .AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+    });
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(
+    /*c =>
+{
+    {
+        c.SwaggerDoc("v1", new()
+        {
+            Title = "SNCore Documentação Api",
+            Description = ""
+        });
+        var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+        var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+        c.IncludeXmlComments(xmlPath);
+    }
+}*/
+    );
+
+
+
+
+
+
 
 builder.Services.AddHttpClient("Api", client =>
     {
@@ -59,6 +110,8 @@ builder.Services.AddScoped(sp =>
 });
 
 
+
+
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
@@ -71,21 +124,36 @@ builder.Services.AddAuthentication(options =>
     })
     .AddIdentityCookies();
 
-builder.Services.AddIdentityContext(builder.Configuration);
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Events.OnRedirectToLogin = context =>
+    {
+        if(context.Request.Path.StartsWithSegments("/api"))
+        {
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            return Task.CompletedTask;
+        }
+        context.Response.Redirect(context.RedirectUri);
+        return Task.CompletedTask;
+    };
+});
 
 
-builder.Services.AddIdentityCore<User>()
-    .AddEntityFrameworkStores<UserDbContext>()
-    .AddSignInManager()
-    .AddDefaultTokenProviders();
 
-builder.Services.AddSingleton<IEmailSender<User>, IdentityNoOpEmailSender>();
+
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseStaticFiles();
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Admin API V1");
+        c.InjectStylesheet("/swagger-ui/SwaggerDark.css");
+    });
     app.UseWebAssemblyDebugging();
 }
 else
@@ -96,8 +164,6 @@ else
 }
 
 app.UseHttpsRedirection();
-
-
 app.UseAntiforgery();
 
 app.MapStaticAssets();
@@ -107,6 +173,13 @@ app.MapRazorComponents<App>()
     .AddAdditionalAssemblies(typeof(Admin.App.Client._Imports).Assembly);
 
 // Add additional endpoints required by the Identity /Account Razor components.
-app.MapAdditionalIdentityEndpoints();
+app.UseMiddleware<ExceptionMiddleware>();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+//app.MapAdditionalIdentityEndpoints();
+app.MapControllers();
+app.MapBlazorHub(); 
 
 app.Run();

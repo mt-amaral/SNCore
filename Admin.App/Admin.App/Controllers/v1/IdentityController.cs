@@ -1,10 +1,11 @@
+using Admin.Api.Controllers;
 using Admin.Domain.Account;
 using Admin.Shared.Request.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Admin.Api.Controllers.v1;
+namespace Admin.App.Controllers.v1;
 
 
 public class IdentityController : BaseController
@@ -31,6 +32,7 @@ public class IdentityController : BaseController
     {
         var user = await _userManager.FindByEmailAsync(userRequest.Username);
         if (user == null) return Unauthorized();
+
         var result = await _signInManager.PasswordSignInAsync(userRequest.Username, userRequest.Password, true, false);
         return result.Succeeded ? Ok() : Unauthorized();
     }

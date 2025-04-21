@@ -11,7 +11,7 @@ public class ExpressionService(IHttpClientFactory factory)
 
     public async Task GetExpressionAsync()
     {
-        var response = await _httpClient.GetFromJsonAsync<Response<List<GetExpressionResponse>>?>("api/v1/Expression/GetAll");
+        var response = await _httpClient.GetFromJsonAsync<Response<List<GetExpressionResponse>>?>("Expression/GetAll");
         if (response is null)
             ;
         else 
