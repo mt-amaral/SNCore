@@ -1,9 +1,12 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Admin.App;
+using Admin.App.Client;
 using Admin.App.Client.Config;
 using Admin.App.Client.Pages;
 using Admin.App.Components;
 using Admin.App.Components.Account;
+using Admin.App.Filter;
 using Admin.App.Middleware;
 using Admin.Domain.Account;
 using Admin.Infrustructure;
@@ -56,16 +59,20 @@ builder.Services.AddIdentityCore<User>()
 
 
 builder.Services.AddControllers(options =>
+    
     {
         var policy = new Microsoft.AspNetCore.Authorization.AuthorizationPolicyBuilder()
             .RequireAuthenticatedUser()
             .Build();
         options.Filters.Add(new Microsoft.AspNetCore.Mvc.Authorization.AuthorizeFilter(policy));
+        options.Filters.Add<RequestDebugFilter>();
     })
     .AddNewtonsoftJson(options =>
     {
         options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
     });
+
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(
     /*c =>
@@ -85,9 +92,8 @@ builder.Services.AddSwaggerGen(
 
 
 
-
-
-
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddTransient<CookieDelegatingHandler>();
 
 builder.Services.AddHttpClient("Api", client =>
     {
@@ -98,7 +104,7 @@ builder.Services.AddHttpClient("Api", client =>
     {
         client.DefaultRequestHeaders.Accept.Clear();
         client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-    });
+    }).AddHttpMessageHandler<CookieDelegatingHandler>();
 builder.Services.AddScoped(sp =>
 {
     var httpClient = sp.GetRequiredService<IHttpClientFactory>().CreateClient("Api");
@@ -176,6 +182,17 @@ app.MapRazorComponents<App>()
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseAuthentication();
+app.Use(async (context, next) =>
+{
+    Console.WriteLine($"[AUTH DEBUG] Path: {context.Request.Path}");
+    Console.WriteLine($"[AUTH DEBUG] Is Authenticated: {context.User.Identity?.IsAuthenticated}");
+    Console.WriteLine($"[AUTH DEBUG] Auth Type: {context.User.Identity?.AuthenticationType}");
+    Console.WriteLine($"[AUTH DEBUG] Name: {context.User.Identity?.Name}");
+    Console.WriteLine($"[AUTH DEBUG] Claims: {string.Join(", ", context.User.Claims.Select(c => $"{c.Type}={c.Value}"))}");
+
+    await next.Invoke();
+});
+
 app.UseAuthorization();
 
 //app.MapAdditionalIdentityEndpoints();

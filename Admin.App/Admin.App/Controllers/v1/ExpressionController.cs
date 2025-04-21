@@ -24,7 +24,6 @@ public class ExpressionController : BaseController
     [HttpGet]
     [ProducesResponseType(typeof(Response<List<GetExpressionResponse>>), StatusCodes.Status200OK)]
     [Route("GetAll")]
-    [AllowAnonymous]
     public async Task<ActionResult> GetAll()
     {
         

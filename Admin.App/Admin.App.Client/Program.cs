@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Admin.App.Client;
 using Admin.App.Client.Config;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor;
@@ -22,6 +23,7 @@ builder.Services.AddMudServices(config =>
 
 builder.Services.AddServerWeb();
 
+builder.Services.AddScoped<CookieHandler>();
 builder.Services.AddHttpClient("Api", client =>
     {
         client.BaseAddress = new Uri(builder.Configuration["ApiServer:Url"]!);
@@ -31,7 +33,7 @@ builder.Services.AddHttpClient("Api", client =>
     {
         client.DefaultRequestHeaders.Accept.Clear();
         client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-    });
+    }).AddHttpMessageHandler<CookieHandler>();;
 
 builder.Services.AddScoped(sp =>
 {
