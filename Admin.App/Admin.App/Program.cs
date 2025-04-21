@@ -65,7 +65,6 @@ builder.Services.AddControllers(options =>
             .RequireAuthenticatedUser()
             .Build();
         options.Filters.Add(new Microsoft.AspNetCore.Mvc.Authorization.AuthorizeFilter(policy));
-        options.Filters.Add<RequestDebugFilter>();
     })
     .AddNewtonsoftJson(options =>
     {
@@ -182,16 +181,6 @@ app.MapRazorComponents<App>()
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseAuthentication();
-app.Use(async (context, next) =>
-{
-    Console.WriteLine($"[AUTH DEBUG] Path: {context.Request.Path}");
-    Console.WriteLine($"[AUTH DEBUG] Is Authenticated: {context.User.Identity?.IsAuthenticated}");
-    Console.WriteLine($"[AUTH DEBUG] Auth Type: {context.User.Identity?.AuthenticationType}");
-    Console.WriteLine($"[AUTH DEBUG] Name: {context.User.Identity?.Name}");
-    Console.WriteLine($"[AUTH DEBUG] Claims: {string.Join(", ", context.User.Claims.Select(c => $"{c.Type}={c.Value}"))}");
-
-    await next.Invoke();
-});
 
 app.UseAuthorization();
 
