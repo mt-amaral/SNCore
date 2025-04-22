@@ -1,4 +1,3 @@
-using Admin.Api.Controllers;
 using Admin.Domain.Account;
 using Admin.Shared.Request.Identity;
 using Microsoft.AspNetCore.Authorization;
@@ -55,36 +54,5 @@ public class IdentityController : BaseController
             return Ok("Usuário criado com sucesso.");
 
         return BadRequest(result.Errors);
-    }
-    
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
-    [HttpGet]
-    [Route("auth-state")]
-    [AllowAnonymous]
-
-    public IActionResult GetAuthState()
-    {
-        if (User.Identity is { IsAuthenticated: true })
-        {
-            var username = User.Identity.Name ?? "Usuário";
-            return Ok(new { Username = username });
-        }
-
-        return Unauthorized();
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
-    [HttpPost]
-    [Route("logout")]
-    public async Task<IActionResult> Logout()
-    {
-        await _signInManager.SignOutAsync();
-        return Ok();
     }
 }

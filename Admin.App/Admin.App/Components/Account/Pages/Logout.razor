@@ -1,0 +1,21 @@
+﻿@page "/Logout"
+@using Admin.Domain.Account
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<User> SignInManager
+@inject NavigationManager NavigationManager
+
+@code {
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
+    
+    [SupplyParameterFromQuery]
+    private string? ReturnUrl { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await SignInManager.SignOutAsync();
+        NavigationManager.NavigateTo($"/Login?returnUrl", forceLoad: true);
+    }
+    
+}

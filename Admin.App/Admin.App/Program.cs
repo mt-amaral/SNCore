@@ -132,6 +132,8 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
+    options.LoginPath = "/Login";
+    options.LogoutPath = "/Logout";
     options.Events.OnRedirectToLogin = context =>
     {
         if(context.Request.Path.StartsWithSegments("/api"))

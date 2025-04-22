@@ -17,16 +17,16 @@ namespace Admin.App.Security
         {
             ArgumentNullException.ThrowIfNull(endpoints);
 
-            var accountGroup = endpoints.MapGroup("/Account");
+            var accountGroup = endpoints.MapGroup("");
 
-            accountGroup.MapPost("/Logout", async (
-                ClaimsPrincipal user,
-                [FromServices] SignInManager<User> signInManager,
-                [FromForm] string returnUrl) =>
-            {
-                await signInManager.SignOutAsync();
-                return TypedResults.LocalRedirect($"~/{returnUrl}");
-            });
+            //accountGroup.MapPost("/Logout", async (
+            //    ClaimsPrincipal user,
+            //    [FromServices] SignInManager<User> signInManager,
+            //    [FromForm] string returnUrl) =>
+            //{
+            //    await signInManager.SignOutAsync();
+            //    return TypedResults.LocalRedirect($"~/{returnUrl}");
+            //});
             
 
             return accountGroup;

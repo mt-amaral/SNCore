@@ -1,5 +1,8 @@
-﻿@inherits LayoutComponentBase
+﻿@using Admin.Domain.Account
+@using Microsoft.AspNetCore.Identity
+@inherits LayoutComponentBase
 @inject  NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 
 <MudThemeProvider Theme="Configuration.Theme" IsDarkMode="Configuration.IsDarkMode"/>
@@ -18,14 +21,28 @@
 
 <MudLayout>
     <MudAppBar Elevation="1">
-        <MudIconButton Icon="@Icons.Material.Rounded.Menu" Color="Color.Default" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        <MudSpacer />
+        <MudIconButton Icon="@Icons.Material.Rounded.Menu" Color="Color.Default" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"/>
+        <MudSpacer/>
         <MudIconButton Icon="@(Configuration.IsDarkMode ? Icons.Material.Rounded.LightMode : Icons.Material.Rounded.DarkMode)"
                        Color="Color.Inherit"
                        Edge="Edge.End"
                        OnClick="@ThemeToggle"/>
 
-        <MudIconButton Icon="@Icons.Material.Filled.Logout" Style="margin: 0px 0px 0px 10px" Edge="Edge.End" Color="Color.Inherit" OnClick="() => Logout()"/>
+        <AuthorizeView>
+            <Authorized>
+                <MudMenu >
+                    <ActivatorContent>
+                        <MudChip T="string" Icon="@Icons.Material.Filled.Person" Size="Size.Large" Color="Color.Inherit">
+                            @context.User.Identity.Name
+                        </MudChip>
+                    </ActivatorContent>
+                    <ChildContent>
+                        <MudMenuItem Icon="@Icons.Material.Filled.Logout" Label="Logout" IconColor="Color.Primary" OnClick="() => ToLogout()"/>
+                    </ChildContent>
+                </MudMenu>
+            </Authorized>
+        </AuthorizeView>
+
 
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
@@ -53,9 +70,10 @@
     void DrawerToggle() => _drawerOpen = !_drawerOpen;
     void ThemeToggle() => Configuration.IsDarkMode = !Configuration.IsDarkMode;
 
-    private async Task Logout()
+    void ToLogout()
     {
-        NavigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo("Logout", forceLoad: true);
     }
+
 }
 
