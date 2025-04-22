@@ -8,6 +8,7 @@ using Admin.App.Components;
 using Admin.App.Components.Account;
 using Admin.App.Filter;
 using Admin.App.Middleware;
+using Admin.App.Security;
 using Admin.Domain.Account;
 using Admin.Infrustructure;
 using Admin.Persistence.Context;

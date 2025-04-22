@@ -1,7 +1,7 @@
 using Admin.Domain.Account;
 using Microsoft.AspNetCore.Identity;
 
-namespace Admin.App.Components.Account
+namespace Admin.App.Security
 {
     internal sealed class IdentityUserAccessor(UserManager<User> userManager, IdentityRedirectManager redirectManager)
     {
