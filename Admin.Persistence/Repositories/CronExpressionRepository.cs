@@ -2,15 +2,14 @@
 using Admin.Domain.Entities;
 using Admin.Domain.Interfaces;
 using Admin.Persistence.Context;
-using Admin.Persistence.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
 
 namespace Admin.Persistence.Repositories;
 
-public class CronExpressionRepository: ICronExpressionRepository
+public class CronExpressionRepository : ICronExpressionRepository
 {
-    
-    
+
+
     private readonly ApplicationDbContext _context;
     private readonly DbSet<CronExpression> _dbSet;
 
@@ -19,12 +18,12 @@ public class CronExpressionRepository: ICronExpressionRepository
         _context = context;
         _dbSet = _context.Set<CronExpression>();
     }
-    
+
     private async Task<bool> SaveAllAsync()
     {
         return await _context.SaveChangesAsync() > 0;
     }
-    
+
     public async Task<IEnumerable<CronExpression>> GetAll()
     {
         return await _dbSet
@@ -48,10 +47,10 @@ public class CronExpressionRepository: ICronExpressionRepository
         await SaveAllAsync();
     }
 
-    public async Task Delete (CronExpression entity)
+    public async Task Delete(CronExpression entity)
     {
         _dbSet.Remove(entity);
         await SaveAllAsync();
     }
-    
+
 }

@@ -6,7 +6,7 @@ namespace Admin.Persistence.Configuration;
 
 internal class HostGroupConfig : IEntityTypeConfiguration<HostGroup>
 {
-    
+
     public void Configure(EntityTypeBuilder<HostGroup> builder)
     {
         builder.HasKey(x => x.Id);

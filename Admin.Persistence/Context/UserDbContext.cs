@@ -1,5 +1,4 @@
 ﻿using Admin.Domain.Account;
-using Admin.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +22,6 @@ public class UserDbContext(DbContextOptions options) : IdentityDbContext<User>(o
         {
             // entity.Property(u => u.UserName).HasMaxLength(100);
         });
-        
+
     }
 }

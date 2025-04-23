@@ -1,10 +1,6 @@
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
+using Admin.Shared.Response;
 using System.Net;
 using System.Text.Json;
-using System.Threading.Tasks;
-using Admin.Shared.Response;
 
 namespace Admin.Api.Middleware;
 

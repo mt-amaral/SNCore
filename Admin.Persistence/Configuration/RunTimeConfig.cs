@@ -12,21 +12,21 @@ internal class RunTimeConfig : IEntityTypeConfiguration<RunTime>
         builder.Property(x => x.Id).HasColumnOrder(0);
         builder.Property(x => x.Type).HasConversion<byte>().IsRequired().HasColumnOrder(1);
         builder.Property(x => x.Active).HasColumnOrder(2);
-        
+
         builder.HasOne(x => x.CronExpression)
             .WithMany(x => x.RunTime)
             .HasForeignKey(x => x.CronExpressionId);
-        
+
         builder.HasOne(x => x.Item)
             .WithMany(x => x.RunTimes)
             .HasForeignKey(x => x.ItemId)
             .OnDelete(DeleteBehavior.NoAction);
-        
-        
+
+
         builder.HasOne(x => x.Host)
             .WithMany(x => x.RunTimes)
             .HasForeignKey(x => x.HostId);
-        
+
         builder.HasOne(x => x.HostModel)
             .WithMany(x => x.RunTimes)
             .HasForeignKey(x => x.ModelId);

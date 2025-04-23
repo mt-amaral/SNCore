@@ -1,11 +1,8 @@
-﻿using System.Security.Cryptography;
-using System.Text;
-using Admin.Application.Mappings;
+﻿using Admin.Application.Mappings;
 using Admin.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Admin.Infrustructure;
 
@@ -40,5 +37,5 @@ public static class DependecyInjection
         });
         return services;
     }
-    
+
 }

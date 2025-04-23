@@ -19,7 +19,7 @@ internal class ItemConfig : IEntityTypeConfiguration<Item>
         builder.HasOne(x => x.OidList)
             .WithOne(x => x.Item)
             .HasForeignKey<Item>(x => x.OidId);
-        
+
         builder.HasMany(x => x.RunTimes)
             .WithOne(x => x.Item)
             .HasForeignKey(x => x.ItemId)

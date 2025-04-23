@@ -10,9 +10,9 @@ public class HostRepository : BaseRepository<Host>, IHostRepository
 {
     public HostRepository(ApplicationDbContext context) : base(context)
     {
-        
+
     }
-    
+
     public async Task<Host> SelectByHost(int id)
     {
         return await _dbSet
@@ -49,5 +49,5 @@ public class HostRepository : BaseRepository<Host>, IHostRepository
     {
         await Delete(entity);
     }
-    
+
 }

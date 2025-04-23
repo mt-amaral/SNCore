@@ -34,7 +34,7 @@ public class IdentityController : BaseController
         var result = await _signInManager.PasswordSignInAsync(userRequest.Username, userRequest.Password, true, false);
         return result.Succeeded ? Ok() : Unauthorized();
     }
-    
+
     /// <summary>
     /// 
     /// </summary>
@@ -54,7 +54,7 @@ public class IdentityController : BaseController
 
         return BadRequest(result.Errors);
     }
-    
+
     /// <summary>
     /// 
     /// </summary>

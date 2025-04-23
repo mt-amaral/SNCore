@@ -5,9 +5,9 @@ using AutoMapper;
 
 namespace Admin.Application.Mappings;
 
-public class CronExpressionMapper : Profile
+public class ExpressionMapper : Profile
 {
-    public CronExpressionMapper()
+    public ExpressionMapper()
     {
         CreateMap<CronExpression, ExpressionResponse>();
 

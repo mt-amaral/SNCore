@@ -28,8 +28,8 @@ public class ExpressionService : IExpressionService
         var list = _mapper.Map<List<GetExpressionResponse>>(entity);
         return new Response<IEnumerable<GetExpressionResponse?>>(list, 200, null);
     }
-    
-    public async Task<Response<ExpressionResponse>> GetExpression(short id) 
+
+    public async Task<Response<ExpressionResponse>> GetExpression(short id)
     {
         var entity = await _repository.GetById(id);
 
@@ -41,7 +41,7 @@ public class ExpressionService : IExpressionService
 
 
 
-    public async Task <Response<ExpressionResponse?>>  CreateExpression(ExpressionRequest expression)
+    public async Task<Response<ExpressionResponse?>> CreateExpression(ExpressionRequest expression)
     {
         try
         {
@@ -55,17 +55,17 @@ public class ExpressionService : IExpressionService
             throw new Exception($"Não foi possivel criar a expressão ");
         }
     }
-    
 
-    public async Task <Response<string?>> UpdateExpression(ExpressionRequest expression, short id)
+
+    public async Task<Response<string?>> UpdateExpression(ExpressionRequest expression, short id)
     {
         try
         {
             var entity = await _repository.GetById(id);
-            
+
             if (entity is null)
                 return new Response<string?>(null, 404, $"Expressão com ID {id} não encontrada.");
-            
+
             _mapper.Map(expression, entity);
             entity.UpdateDescription(await TranslationExpression(expression));
             await _repository.Update(entity);
@@ -92,18 +92,18 @@ public class ExpressionService : IExpressionService
         }
     }
 
-    public async Task<Response<string?>>  DeleteExpression(short id)
+    public async Task<Response<string?>> DeleteExpression(short id)
     {
         try
         {
             var entity = await _repository.GetById(id);
             if (entity is null)
                 return new Response<string?>(null, 404, $"Expressão com ID {id} não encontrada.");
-            
+
             await _repository.Delete(entity);
             return new Response<string?>(null, 200, "Deletado com sucesso");
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             throw new Exception($"Não foi possivel excluir Expressão ID {id}");
         }

@@ -33,12 +33,12 @@ internal class HostConfig : IEntityTypeConfiguration<Host>
         builder.HasOne(x => x.HostModel)
            .WithMany(x => x.Hosts)
            .HasForeignKey(x => x.ModelId);
-        
+
         builder.HasMany(x => x.Items)
             .WithOne(x => x.Host)
             .HasForeignKey(x => x.HostId)
             .OnDelete(DeleteBehavior.Cascade);
-        
+
         builder.HasMany(x => x.RunTimes)
             .WithOne(x => x.Host)
             .HasForeignKey(x => x.HostId)

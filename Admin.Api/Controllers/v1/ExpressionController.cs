@@ -1,10 +1,9 @@
-﻿using Admin.Application.Interfaces;
+﻿using Admin.Api.Filter;
+using Admin.Application.Interfaces;
 using Admin.Shared.Request.Expression;
+using Admin.Shared.Response;
 using Admin.Shared.Response.Expression;
 using Microsoft.AspNetCore.Mvc;
-using Admin.Api.Filter;
-using Admin.Shared.Response;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Admin.Api.Controllers.v1;
 
@@ -16,7 +15,7 @@ public class ExpressionController : BaseController
     {
         _expressionService = expressionService;
     }
-    
+
     /// <summary>
     /// Expressões cron  criadas até o momento.
     /// </summary>
@@ -26,9 +25,9 @@ public class ExpressionController : BaseController
     public async Task<ActionResult> GetAll()
     {
 
-            var result = await _expressionService.GetExpressions();
+        var result = await _expressionService.GetExpressions();
 
-            return Ok(result);
+        return Ok(result);
 
     }
     /// <summary>
@@ -77,14 +76,14 @@ public class ExpressionController : BaseController
     /// Atualiza expressão cron com base nos dados fornecidos.
     /// </summary>
     [HttpPut("{id}")]
-    [ProducesResponseType(typeof(Response<string?>),StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<string?>), StatusCodes.Status200OK)]
     [ValidateIdFilter]
-    public async Task<ActionResult> Update([FromBody] ExpressionRequest expression,  short id)
+    public async Task<ActionResult> Update([FromBody] ExpressionRequest expression, short id)
     {
 
         var result = await _expressionService.UpdateExpression(expression, id);
         return StatusCode(result.IsSuccess ? 200 : 404, result);
-        
+
     }
     /// <summary>
     /// Deleta expressão cron.
@@ -94,7 +93,7 @@ public class ExpressionController : BaseController
     [ValidateIdFilter]
     public async Task<ActionResult> Delete(short id)
     {
-           var result =  await _expressionService.DeleteExpression(id);
-           return StatusCode(result.IsSuccess ? 200 : 404, result);
+        var result = await _expressionService.DeleteExpression(id);
+        return StatusCode(result.IsSuccess ? 200 : 404, result);
     }
 }

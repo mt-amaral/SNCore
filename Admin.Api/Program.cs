@@ -1,13 +1,11 @@
 using Admin.Api;
+using Admin.Api.Middleware;
+using Admin.Domain.Account;
 using Admin.Infrustructure;
 using Admin.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Reflection;
-using Admin.Api.Middleware;
-using Admin.Domain.Account;
-using Admin.Domain.Entities;
-using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 

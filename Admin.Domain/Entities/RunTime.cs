@@ -15,7 +15,7 @@ public class RunTime
     public long ItemId { get; private set; }
     public int? HostId { get; private set; }
     public int? ModelId { get; private set; }
-    
+
     public CronExpression CronExpression { get; private set; } = new();
     public Item Item { get; private set; } = new();
     public Host Host { get; private set; } = new();

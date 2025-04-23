@@ -6,7 +6,7 @@ namespace Admin.Persistence.Configuration;
 
 internal class SnmpConfig : IEntityTypeConfiguration<Snmp>
 {
-    public  void Configure(EntityTypeBuilder<Snmp> builder)
+    public void Configure(EntityTypeBuilder<Snmp> builder)
     {
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).HasColumnOrder(0);

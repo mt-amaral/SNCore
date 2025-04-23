@@ -19,7 +19,7 @@ public class BaseRepository<T> where T : class
     {
         return await _context.SaveChangesAsync() > 0;
     }
-    
+
     public async Task Create(T entity)
     {
         await _dbSet.AddAsync(entity);

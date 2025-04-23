@@ -20,7 +20,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Identity\" />
     <Folder Include="Migrations\" />
     <Folder Include="Migrations\UserDb\" />
   </ItemGroup>

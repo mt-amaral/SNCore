@@ -6,7 +6,7 @@ namespace Admin.Persistence.Configuration;
 
 internal class HostModelConfig : IEntityTypeConfiguration<HostModel>
 {
-    public  void Configure(EntityTypeBuilder<HostModel> builder)
+    public void Configure(EntityTypeBuilder<HostModel> builder)
     {
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).HasColumnOrder(0);
@@ -20,10 +20,10 @@ internal class HostModelConfig : IEntityTypeConfiguration<HostModel>
         builder.HasMany(x => x.Items)
                .WithOne(x => x.HostModel)
                .HasForeignKey(x => x.ModelId);
-        
+
         builder.HasMany(x => x.RunTimes)
             .WithOne(x => x.HostModel)
             .HasForeignKey(x => x.ModelId);
-        
+
     }
 }
