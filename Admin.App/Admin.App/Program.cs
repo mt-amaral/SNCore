@@ -162,7 +162,7 @@ if (app.Environment.IsDevelopment())
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Admin API V1");
         c.InjectStylesheet("/swagger-ui/SwaggerDark.css");
     });
-    app.UseWebAssemblyDebugging();
+    /*app.UseWebAssemblyDebugging();*/
 }
 else
 {

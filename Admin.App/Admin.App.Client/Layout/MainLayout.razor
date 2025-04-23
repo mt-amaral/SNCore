@@ -19,45 +19,60 @@
     BackgroundClass="my-custom-class"/>
 
 
-<MudLayout>
-    <MudAppBar Elevation="1">
-        <MudIconButton Icon="@Icons.Material.Rounded.Menu" Color="Color.Default" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"/>
-        <MudSpacer/>
-        <MudIconButton Icon="@(Configuration.IsDarkMode ? Icons.Material.Rounded.LightMode : Icons.Material.Rounded.DarkMode)"
-                       Color="Color.Inherit"
-                       Edge="Edge.End"
-                       OnClick="@ThemeToggle"/>
+@if (_isLoainng)
+{
+    <MudLayout>
+        <div style="display:flex; justify-content:center; align-items:center; height:100vh;">
+            <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+        </div>
+    </MudLayout>
+}
 
-        <AuthorizeView>
-            <Authorized>
-                <MudMenu >
-                    <ActivatorContent>
-                        <MudChip T="string" Icon="@Icons.Material.Filled.Person" Size="Size.Large" Color="Color.Inherit">
-                            @context.User.Identity.Name
-                        </MudChip>
-                    </ActivatorContent>
-                    <ChildContent>
-                        <MudMenuItem Icon="@Icons.Material.Filled.Logout" Label="Logout" IconColor="Color.Primary" OnClick="() => ToLogout()"/>
-                    </ChildContent>
-                </MudMenu>
-            </Authorized>
-        </AuthorizeView>
+else
+{
+    <MudLayout>
+        <MudAppBar Elevation="1">
+            <MudIconButton Icon="@Icons.Material.Rounded.Menu" Color="Color.Default" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"/>
+            <MudSpacer/>
+            <MudIconButton Icon="@(Configuration.IsDarkMode ? Icons.Material.Rounded.LightMode : Icons.Material.Rounded.DarkMode)"
+                           Color="Color.Inherit"
+                           Edge="Edge.End"
+                           OnClick="@ThemeToggle"/>
+
+            <AuthorizeView>
+                <Authorized>
+                    <MudMenu >
+                        <ActivatorContent>
+                            <MudChip T="string" Icon="@Icons.Material.Filled.Person" Size="Size.Large" Color="Color.Inherit">
+                                @context.User.Identity.Name
+                            </MudChip>
+                        </ActivatorContent>
+                        <ChildContent>
+                            <MudMenuItem Icon="@Icons.Material.Filled.Logout" Label="Logout" IconColor="Color.Primary" OnClick="() => ToLogout()"/>
+                        </ChildContent>
+                    </MudMenu>
+                </Authorized>
+            </AuthorizeView>
 
 
-    </MudAppBar>
-    <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
-        <MudDrawerHeader Style="display: block">
-            <MudText Typo="Typo.h5" Class="mt-1 d-block">SNCore</MudText>
-            <p>Simple Network</p>
-        </MudDrawerHeader>
-        <NavMenu/>
-    </MudDrawer>
-    <MudMainContent >
-        <MudContainer MaxWidth="MaxWidth.ExtraLarge">
-            @Body
-        </MudContainer>
-    </MudMainContent>
-</MudLayout>
+        </MudAppBar>
+        <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
+            <MudDrawerHeader Style="display: block">
+                <MudText Typo="Typo.h5" Class="mt-1 d-block">SNCore</MudText>
+                <p>Simple Network</p>
+            </MudDrawerHeader>
+            <NavMenu/>
+        </MudDrawer>
+        <MudMainContent >
+            <MudContainer MaxWidth="MaxWidth.ExtraLarge">
+                @Body
+            </MudContainer>
+        </MudMainContent>
+    </MudLayout>
+    
+}
+
+
 
 <div id="blazor-error-ui" data-nosnippet>
     An unhandled error has occurred.
@@ -67,8 +82,19 @@
 
 @code {
     bool _drawerOpen = true;
+    bool _isLoainng = true;
     void DrawerToggle() => _drawerOpen = !_drawerOpen;
     void ThemeToggle() => Configuration.IsDarkMode = !Configuration.IsDarkMode;
+    
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _isLoainng = false;
+            StateHasChanged();
+        }
+    }
 
     void ToLogout()
     {

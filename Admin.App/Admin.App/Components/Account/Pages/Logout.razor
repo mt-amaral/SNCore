@@ -1,7 +1,9 @@
 ﻿@page "/Logout"
 @using Admin.Domain.Account
 @using Microsoft.AspNetCore.Identity
+@using Admin.App.Client.Layout
 
+@layout LoginLayout
 @inject SignInManager<User> SignInManager
 @inject NavigationManager NavigationManager
 
