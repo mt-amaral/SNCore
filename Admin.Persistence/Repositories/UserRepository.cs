@@ -8,8 +8,6 @@ namespace Admin.Persistence.Repositories;
 
 public class UserRepository : IUserRepository
 {
-
-
     private readonly UserDbContext _context;
     private readonly DbSet<User> _dbSet;
 
@@ -20,7 +18,7 @@ public class UserRepository : IUserRepository
     }
 
 
-    public async Task<IEnumerable<User>> GetAll()
+    public async Task<IEnumerable<User?>> GetAll()
     {
         return await _dbSet
             .AsNoTracking().ToListAsync();

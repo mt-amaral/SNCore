@@ -6,8 +6,10 @@
 @using Admin.Domain.Account
 @using Admin.App.Client.Layout
 @using Admin.App.Security
+@using Admin.Application.Interfaces
 @layout LoginLayout
 @inject SignInManager<User> SignInManager
+@inject IUserService IUserService
 @inject ILogger<Login> Logger
 @inject IdentityRedirectManager RedirectManager
 
@@ -22,7 +24,7 @@
             <DataAnnotationsValidator />
             
             <MudGrid>
-                <MudItem md="12">
+                <MudItem md="12" xs="12" sm="12" lg="12" >
                     <MudStaticTextField For="@(() => Input.Email)" @bind-Value="Input.Email" 
                                         Label="Email" Placeholder="name@example.com"
                                         FullWidth="true"
@@ -30,7 +32,7 @@
                                         Variant="Variant.Outlined"
                                         UserAttributes="@(new() { { "autocomplete", "username" }, { "aria-required", "true" } } )" />
                 </MudItem>
-                <MudItem md="12">
+                <MudItem  md="12" xs="12" sm="12" lg="12">
                     <MudStaticTextField For="@(() => Input.Password)" @bind-Value="Input.Password" 
                                         Label="Password" InputType="InputType.Password" Placeholder="password"
                                         FullWidth="true"
@@ -43,7 +45,7 @@
                 <MudItem md="12">
                     <MudStaticCheckBox For="@(() => Input.RememberMe)" Color="Color.Primary" Style="margin-bottom: 20px" @bind-Value="Input.RememberMe">Remember me</MudStaticCheckBox>
                 </MudItem>
-                <MudItem md="12">
+                <MudItem md="12" xs="12" sm="12" lg="12">
                     <MudStaticButton
                         Variant="Variant.Filled"
                         Color="Color.Primary"
@@ -82,8 +84,9 @@
     {
         // This doesn't count login failures towards account lockout
         // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-        var result = await SignInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
-        if (result.Succeeded)
+
+        var result = await IUserService.Login(new() { UserEmail = Input.Email, Password = Input.Password }, Input.RememberMe);
+        if (result.IsSuccess)
         {
             Logger.LogInformation("User logged in.");
             RedirectManager.RedirectTo(ReturnUrl);
@@ -107,6 +110,4 @@
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
     }
-    
-    
 }

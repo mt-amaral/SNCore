@@ -1,6 +1,9 @@
+using Admin.Application.Interfaces;
 using Admin.Domain.Account;
+using Admin.Domain.Interfaces;
 using Admin.Shared.Request.Account;
 using Admin.Shared.Response;
+using Admin.Shared.Response.Account;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -8,16 +11,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace Admin.App.Controllers.v1;
 
 
-public class IdentityController : BaseController
+public class AccountController : BaseController
 {
-    private readonly SignInManager<User> _signInManager;
-    private readonly UserManager<User> _userManager;
 
-
-    public IdentityController(SignInManager<User> signInManager, UserManager<User> userManager)
+    private readonly IUserService _userService;
+    
+    public AccountController(IUserService userService)
     {
-        _signInManager = signInManager;
-        _userManager = userManager;
+        _userService = userService;
     }
 
     /// <summary>
@@ -30,11 +31,8 @@ public class IdentityController : BaseController
     [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] LoginRequest userRequest)
     {
-        var user = await _userManager.FindByEmailAsync(userRequest.Username);
-        if (user == null) return Unauthorized();
-
-        var result = await _signInManager.PasswordSignInAsync(userRequest.Username, userRequest.Password, true, false);
-        return result.Succeeded ? Ok() : Unauthorized();
+        var result = await _userService.Login(userRequest);
+        return result.IsSuccess ? Ok() : Unauthorized();
     }
     
     /// <summary>
@@ -44,18 +42,25 @@ public class IdentityController : BaseController
     /// <returns></returns>
     [HttpPost]
     [ProducesResponseType(typeof(Response<string?>), StatusCodes.Status200OK)]
-
     [Route("register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
-        var user = new User { UserName = request.UserName, Email = request.UserEmail};
-
-        var result = await _userManager.CreateAsync(user, request.Password);
-
-        if (result.Succeeded)
-            return Ok(new Response<string?>(null, 200, $"User {request.UserName} registered successfully"));
-
-        return BadRequest(result.Errors);
+        var result = await _userService.Register(request);
+        return result.IsSuccess ? Ok(result) : BadRequest(result);
+    }
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet]
+    [ProducesResponseType(typeof(Response<List<UsersResponse?>>), StatusCodes.Status200OK)]
+    [Route("ListUsers")]
+    public async Task<IActionResult> ListUsers()
+    {
+        var users = await _userService.GetUsers();   
+        return Ok(users);
+        
     }
     
     /// <summary>
@@ -66,7 +71,7 @@ public class IdentityController : BaseController
     [Route("logout")]
     public async Task<IActionResult> Logout()
     {
-        await _signInManager.SignOutAsync();
+        await _userService.Logout();
         return Ok();
     }
 }

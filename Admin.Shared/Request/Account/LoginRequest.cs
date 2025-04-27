@@ -6,8 +6,8 @@ namespace Admin.Shared.Request.Account;
 public class LoginRequest
 {
     [Required]
-    [MaxLength(255, ErrorMessage = "O nome não pode ter mais de 255 caracteres.")]
-    public string Username { get; set; } = string.Empty;
+    [MaxLength(255, ErrorMessage = "O Email não pode ter mais de 255 caracteres.")]
+    public string UserEmail { get; set; } = string.Empty;
 
     [Required]
     [NotMapped]

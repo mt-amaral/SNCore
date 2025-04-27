@@ -1,10 +1,9 @@
 ﻿@page "/Logout"
-@using Admin.Domain.Account
-@using Microsoft.AspNetCore.Identity
 @using Admin.App.Client.Layout
+@using Admin.Application.Interfaces
 
 @layout LoginLayout
-@inject SignInManager<User> SignInManager
+@inject IUserService IUserService
 @inject NavigationManager NavigationManager
 
 @code {
@@ -16,7 +15,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await SignInManager.SignOutAsync();
+        await IUserService.Logout();
         NavigationManager.NavigateTo($"/Login?returnUrl", forceLoad: true);
     }
     

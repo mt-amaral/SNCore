@@ -4,5 +4,5 @@ namespace Admin.Domain.Account;
 
 public class User : IdentityUser
 {
-
+    
 }

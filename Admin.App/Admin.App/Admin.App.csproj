@@ -4,6 +4,8 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
+	  <NoWarn>$(NoWarn);1591</NoWarn>
     <UserSecretsId>aspnet-Admin.App-0b24c76e-b767-4505-9003-9c075a65d7a0</UserSecretsId>
   </PropertyGroup>
 
