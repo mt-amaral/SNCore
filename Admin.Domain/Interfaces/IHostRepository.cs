@@ -5,10 +5,9 @@ namespace Admin.Domain.Interfaces;
 
 public interface IHostRepository
 {
-    Task<Host> SelectByHost(int id);
-    Task<List<Host>> SelectByGroup();
+    Task<Host?> SelectByHost(int id);
     Task<List<Host>> SelectAll();
-    Task CreateHost(Host newEntity);
+    Task CreateHost(Host entity);
     Task UpdateHost(Host entity);
     Task DeleteHost(Host entity);
 

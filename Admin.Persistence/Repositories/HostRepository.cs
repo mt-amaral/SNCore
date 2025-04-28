@@ -1,32 +1,34 @@
 ﻿using Admin.Domain.Entities;
 using Admin.Domain.Interfaces;
 using Admin.Persistence.Context;
-using Admin.Persistence.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace Admin.Persistence.Repositories;
 
-public class HostRepository : BaseRepository<Host>, IHostRepository
+public class HostRepository : IHostRepository
 {
-    public HostRepository(ApplicationDbContext context) : base(context)
+    private readonly ApplicationDbContext _context;
+    private readonly DbSet<Host> _dbSet;
+    
+    public HostRepository(ApplicationDbContext context)
     {
+        _context = context;
+        _dbSet = _context.Set<Host>();
 
     }
-
-    public async Task<Host> SelectByHost(int id)
+    private async Task<bool> SaveAllAsync()
     {
-        return await _dbSet
-              .Include(e => e.Snmp)
-              .Include(e => e.Telnet)
-              .FirstOrDefaultAsync(e => e.Id == id) ??
-            throw new InvalidOperationException($"Não encontrado {nameof(Host)} id:{id}");
-
+        return await _context.SaveChangesAsync() > 0;
     }
-    public async Task<List<Host>> SelectByGroup()
+
+    public async Task<Host?> SelectByHost(int id)
     {
         return await _dbSet
-            .Include(e => e.HostGroup)
-            .ToListAsync();
+            .Include(e => e.Snmp)
+            .Include(e => e.Telnet)
+            .FirstOrDefaultAsync(e => e.Id == id);
+
     }
 
     public async Task<List<Host>> SelectAll()
@@ -35,19 +37,22 @@ public class HostRepository : BaseRepository<Host>, IHostRepository
             .Include(e => e.HostGroup).AsNoTracking()
             .ToListAsync();
     }
-    public async Task CreateHost(Host newEntity)
+    public async Task CreateHost(Host entity)
     {
-        await Create(newEntity);
+        await _dbSet.AddAsync(entity);
+        await SaveAllAsync();
     }
 
     public async Task UpdateHost(Host entity)
     {
-        await Update(entity);
+        _dbSet.Update(entity);
+        await SaveAllAsync();
     }
 
     public async Task DeleteHost(Host entity)
     {
-        await Delete(entity);
+        _dbSet.Remove(entity);
+        await SaveAllAsync();
     }
 
 }

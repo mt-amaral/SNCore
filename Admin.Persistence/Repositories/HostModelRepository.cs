@@ -1,25 +1,24 @@
 ﻿using Admin.Domain.Entities;
 using Admin.Domain.Interfaces;
 using Admin.Persistence.Context;
-using Admin.Persistence.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
 
 
 namespace Admin.Persistence.Repositories;
 
-public class HostModelRepository : BaseRepository<HostModel>, IHostModelRepository
+public class HostModelRepository : IHostModelRepository
 {
-    public HostModelRepository(ApplicationDbContext context) : base(context)
+    private readonly ApplicationDbContext _context;
+    private readonly DbSet<HostModel> _dbSet;
+    
+    public HostModelRepository(ApplicationDbContext context) 
     {
-
+        _context = context;
+        _dbSet = _context.Set<HostModel>();
     }
     public async Task<List<HostModel>> SelectAll()
     {
         return await _dbSet.ToListAsync();
     }
-
-    public async Task<List<HostModel>> GetInput()
-    {
-        return await _dbSet.AsNoTracking().ToListAsync();
-    }
+    
 }

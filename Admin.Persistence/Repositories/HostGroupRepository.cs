@@ -1,42 +1,42 @@
 ﻿using Admin.Domain.Entities;
 using Admin.Domain.Interfaces;
 using Admin.Persistence.Context;
-using Admin.Persistence.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
 
 namespace Admin.Persistence.Repositories;
 
-public class HostGroupRepository : BaseRepository<HostGroup>, IHostGroupRepository
+public class HostGroupRepository : IHostGroupRepository
 {
-    public HostGroupRepository(ApplicationDbContext context) : base(context)
+    
+    private readonly ApplicationDbContext _context;
+    private readonly DbSet<HostGroup> _dbSet;
+    public HostGroupRepository(ApplicationDbContext context)
     {
+        _context = context;
+        _dbSet = _context.Set<HostGroup>();
 
     }
-
-    public async Task<HostGroup> GetGroupById(int groupId)
+    private async Task<bool> SaveAllAsync()
     {
-        return await _dbSet.Include(h => h.Hosts).FirstOrDefaultAsync(g => g.Id == groupId)
-             ?? throw new InvalidOperationException($"Não encontrado {typeof(HostGroup).Name} id:{groupId}");
+        return await _context.SaveChangesAsync() > 0;
+    }
+    
+    
+    public async Task CreateGroupHost(HostGroup entity)
+    {
+        await _dbSet.AddAsync(entity);
+        await SaveAllAsync();
     }
 
-    public async Task<List<HostGroup>> GetInput()
+    public async Task UpdateGroupHost(HostGroup entity)
     {
-        return await _dbSet.AsNoTracking().ToListAsync();
+        _dbSet.Update(entity);
+        await SaveAllAsync();
+        
     }
-
-    public async Task CreateGroupHost(HostGroup hostGroup)
+    public async Task DeleteGroupHost(HostGroup entity)
     {
-        await Create(hostGroup);
+         _dbSet.Remove(entity);
+        await SaveAllAsync();
     }
-
-    public async Task UpdateGroupHost(HostGroup hostGroup)
-    {
-        await Update(hostGroup);
-    }
-    public async Task DeleteGroupHost(HostGroup hostGroup)
-    {
-        await Delete(hostGroup);
-    }
-
-
 }

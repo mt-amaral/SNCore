@@ -9,6 +9,8 @@ public class HostMapper : Profile
 {
     public HostMapper()
     {
+        CreateMap<CreateHostRequest, Host>();
+        CreateMap<Host, HostResponse>();
 
     }
 }

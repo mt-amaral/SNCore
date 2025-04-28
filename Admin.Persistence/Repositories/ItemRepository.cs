@@ -2,15 +2,19 @@
 using Admin.Domain.Entities;
 using Admin.Domain.Interfaces;
 using Admin.Persistence.Context;
-using Admin.Persistence.Repositories.Base;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Admin.Persistence.Repositories;
 
-public class ItemRepository : BaseRepository<Item>, IItemRepository
+public class ItemRepository : IItemRepository
 {
-    public ItemRepository(ApplicationDbContext context) : base(context)
+    private readonly ApplicationDbContext _context;
+    private readonly DbSet<Item> _dbSet;
+    public ItemRepository(ApplicationDbContext context)
     {
+        _context = context;
+        _dbSet = _context.Set<Item>();
 
     }
 
