@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Admin.Persistence.Context;
 
-public class UserDbContext(DbContextOptions options) : IdentityDbContext<User>(options)
+public class UserDbContext(DbContextOptions<UserDbContext> options) : IdentityDbContext<User>(options)
 {
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -22,6 +22,5 @@ public class UserDbContext(DbContextOptions options) : IdentityDbContext<User>(o
         {
             // entity.Property(u => u.UserName).HasMaxLength(100);
         });
-
     }
 }

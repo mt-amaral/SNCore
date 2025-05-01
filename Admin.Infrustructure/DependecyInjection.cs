@@ -1,5 +1,7 @@
 ﻿using Admin.Application.Mappings;
+using Admin.Domain.Interfaces;
 using Admin.Persistence.Context;
+using Admin.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,12 +11,13 @@ namespace Admin.Infrustructure;
 public static class DependecyInjection
 {
 
-    public static IServiceCollection AddServer(this IServiceCollection services)
+    public static IServiceCollection AddServer(this IServiceCollection services,IConfiguration configuration)
     {
         services.AddAutoMapper(typeof(HostMapper).Assembly);
         services.AddApplicationServices();
         services.AddRepositories();
         services.AddConnection();
+        services.AddMetrics(configuration);
 
         return services;
     }
@@ -37,5 +40,6 @@ public static class DependecyInjection
         });
         return services;
     }
+
 
 }

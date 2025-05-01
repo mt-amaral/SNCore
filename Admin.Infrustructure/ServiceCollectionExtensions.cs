@@ -3,6 +3,7 @@ using Admin.Connection.Connections;
 using Admin.Connection.Interfaces;
 using Admin.Domain.Interfaces;
 using Admin.Persistence.Repositories;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Admin.Infrustructure;
@@ -43,8 +44,14 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddConnection(this IServiceCollection service)
     {
-
         service.AddScoped<ISnmpConnection, SnmpConnection>();
+        return service;
+    }
+    public static IServiceCollection AddMetrics(this IServiceCollection service, IConfiguration configuration)
+    {
+        string connectionString = configuration.GetConnectionString("TimescaleConnection") !;
+        service.AddScoped<IMonitoringScale>(options =>  new MonitoringScale(connectionString));
+        
         return service;
     }
 }

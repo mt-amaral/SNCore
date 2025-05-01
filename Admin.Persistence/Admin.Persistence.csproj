@@ -8,6 +8,7 @@
     <ProjectReference Include="..\Admin.Domain\Admin.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Dapper" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
       <PrivateAssets>none</PrivateAssets>
@@ -18,6 +19,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Npgsql" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Migrations\" />

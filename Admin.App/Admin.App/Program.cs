@@ -48,7 +48,7 @@ builder.Services.AddMudServices(config =>
 
 
 builder.Services.AddServerWeb();
-builder.Services.AddServer();
+builder.Services.AddServer(builder.Configuration);
 builder.Services.AddDbContext(builder.Configuration);
 builder.Services.AddIdentityContext(builder.Configuration);
 
