@@ -13,5 +13,7 @@
     <PackageReference Include="AutoMapper" />
     <PackageReference Include="CronExpressionDescriptor" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" />
+    <PackageReference Include="Quartz" />
+    <PackageReference Include="Quartz.Extensions.Hosting" />
   </ItemGroup>
 </Project>

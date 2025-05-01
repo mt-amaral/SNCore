@@ -1,25 +1,22 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Admin.App;
-using Admin.App.Client;
 using Admin.App.Client.Config;
-using Admin.App.Client.Pages;
 using Admin.App.Components;
-using Admin.App.Components.Account;
-using Admin.App.Filter;
 using Admin.App.Middleware;
 using Admin.App.Security;
+using Admin.Application.Scheduling;
 using Admin.Domain.Account;
 using Admin.Infrustructure;
 using Admin.Persistence.Context;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using MudBlazor;
 using MudBlazor.Services;
 using Newtonsoft.Json;
-using Microsoft.Extensions.DependencyInjection;
+using Quartz;
+using Quartz.Spi;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,6 +48,13 @@ builder.Services.AddServerWeb();
 builder.Services.AddServer(builder.Configuration);
 builder.Services.AddDbContext(builder.Configuration);
 builder.Services.AddIdentityContext(builder.Configuration);
+
+
+builder.Services.AddSingleton<ISchedulerFactory, Quartz.Impl.StdSchedulerFactory>();
+builder.Services.AddSingleton<IJobFactory, ScopedJobFactory>();
+builder.Services.AddSingleton<RuntimeJob>();               
+builder.Services.AddHostedService<QuartzScheduler>();
+
 
 builder.Services.AddIdentityCore<User>()
     .AddEntityFrameworkStores<UserDbContext>()

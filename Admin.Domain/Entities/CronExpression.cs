@@ -22,7 +22,14 @@ public class CronExpression
 
     public string GetExpression(CronExpression expression)
     {
-        return $"{expression.Second} {expression.Minute} {expression.Hour} {expression.Day} {expression.Month} {expression.Weesday}";
+        var day = expression.Day;
+        var weekday = expression.Weesday;
+
+        // regra: não pode ter "*" nos dois
+        if (day == "*" && weekday == "*")
+            weekday = "?"; // ou: day = "?"
+
+        return $"{expression.Second} {expression.Minute} {expression.Hour} {day} {expression.Month} {weekday}";
     }
 }
 

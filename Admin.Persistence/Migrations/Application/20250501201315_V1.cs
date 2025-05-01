@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Admin.Persistence.Migrations
+namespace Admin.Persistence.Migrations.Application
 {
     /// <inheritdoc />
     public partial class V1 : Migration
@@ -178,8 +179,7 @@ namespace Admin.Persistence.Migrations
                 name: "RunTime",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Type = table.Column<byte>(type: "tinyint", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     CronExpressionId = table.Column<short>(type: "smallint", nullable: false),

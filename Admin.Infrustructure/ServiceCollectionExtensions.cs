@@ -9,17 +9,29 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Admin.Infrustructure;
 public static class ServiceCollectionExtensions
 {
+
+
+
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
-        var assembly = typeof(IHostService).Assembly;
-        foreach (var type in assembly.GetTypes().Where(t => t.Name.EndsWith("Service")))
+        try
         {
-            if (!type.IsClass || type.IsAbstract) continue;
-            var interfaceType = type.GetInterface($"I{type.Name}")!;
 
-            services.AddScoped(interfaceType, type);
-        }
+            var assembly = typeof(IHostService).Assembly;
+            foreach (var type in assembly.GetTypes().Where(t => t.Name.EndsWith("Service")))
+            {
+                if (!type.IsClass || type.IsAbstract) continue;
+                var interfaceType = type.GetInterface($"I{type.Name}")!;
+
+                services.AddScoped(interfaceType, type);
+            }
+        
         return services;
+        }
+        catch (Exception exception)
+        {
+            throw;
+        }
     }
     public static IServiceCollection AddRepositories(this IServiceCollection services)
     {

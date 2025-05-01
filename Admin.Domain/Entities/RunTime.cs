@@ -8,7 +8,7 @@ public enum TypeRun : byte
 
 public class RunTime
 {
-    public long Id { get; init; }
+    public Guid Id { get; init; } = new Guid();
     public TypeRun Type { get; private set; } = TypeRun.Snmp;
     public bool Active { get; private set; } = false;
     public short CronExpressionId { get; private set; }
