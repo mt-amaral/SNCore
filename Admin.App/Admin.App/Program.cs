@@ -51,9 +51,9 @@ builder.Services.AddIdentityContext(builder.Configuration);
 
 
 builder.Services.AddSingleton<ISchedulerFactory, Quartz.Impl.StdSchedulerFactory>();
-builder.Services.AddSingleton<IJobFactory, ScopedJobFactory>();
+builder.Services.AddSingleton<ScopedJobFactory>();
 builder.Services.AddSingleton<RuntimeJob>();               
-builder.Services.AddHostedService<QuartzScheduler>();
+builder.Services.AddHostedService<JobScheduler>();
 
 
 builder.Services.AddIdentityCore<User>()
