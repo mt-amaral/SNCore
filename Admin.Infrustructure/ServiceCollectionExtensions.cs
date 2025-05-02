@@ -65,7 +65,7 @@ public static class ServiceCollectionExtensions
     
     public static IServiceCollection AddConnection(this IServiceCollection service)
     {
-        service.AddScoped<ISnmpConnection, SnmpConnection>();
+        service.AddSingleton<ISnmpConnection, SnmpConnection>();
         return service;
     }
 

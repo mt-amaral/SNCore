@@ -34,10 +34,10 @@ else
         <MudAppBar Elevation="1">
             <MudIconButton Icon="@Icons.Material.Rounded.Menu" Color="Color.Default" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"/>
             <MudSpacer/>
-            <MudIconButton Icon="@(Configuration.IsDarkMode ? Icons.Material.Rounded.LightMode : Icons.Material.Rounded.DarkMode)"
+            @*<MudIconButton Icon="@(Configuration.IsDarkMode ? Icons.Material.Rounded.LightMode : Icons.Material.Rounded.DarkMode)"
                            Color="Color.Inherit"
                            Edge="Edge.End"
-                           OnClick="@ThemeToggle"/>
+                           OnClick="@ThemeToggle"/>*@
 
             <AuthorizeView>
                 <Authorized>

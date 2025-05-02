@@ -7,7 +7,7 @@ namespace Connection.Test;
 public class SnmpTeste
 {
 
-    private string ipv4 = "191.37.19.91";
+    private string ipv4 = "192.168.77.233";
     private int port = 161;
     private string communityKey = "public";
     SnmpConnection snmpConnection = new SnmpConnection();
@@ -16,10 +16,10 @@ public class SnmpTeste
     [Fact]
     public void MakesPerformSnmpOperation()
     {
-        string oid = ".1.3.6.1.2.1.25.2.3.1.5.65536";
+        string oid = "1.3.6.1.2.1.1.3.0";
         try
         {
-            var result = snmpConnection.PerformOperation(ipv4, port, communityKey, oid, VersionCode.V2);
+            var result =  snmpConnection.PerformOperation(ipv4, port, communityKey, oid, VersionCode.V2);
         }
         catch (Exception ex)
         {

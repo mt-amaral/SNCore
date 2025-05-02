@@ -45,7 +45,7 @@ public class JobScheduler : IHostedService
 
             var cron = item.CronExpression.GetExpression();
             var trigger = TriggerBuilder.Create()
-                .WithIdentity($"trigger-{item.Id}")
+                .WithIdentity($"trigger-{item.Id.ToString()}")
                 .WithCronSchedule(cron)
                 .Build();
 

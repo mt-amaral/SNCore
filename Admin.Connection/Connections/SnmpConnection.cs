@@ -9,15 +9,14 @@ namespace Admin.Connection.Connections;
 public class SnmpConnection : ISnmpConnection
 {
 
-    public Variable PerformOperation(string ipv4, int port, string community, string oid, VersionCode version)
+    public IList<Variable> PerformOperation(string ipv4, int port, string community, string oid, VersionCode version = VersionCode.V2)
     {
         try
         {
             OctetString communityTarget = new OctetString(community);
             List<Variable> variables = new List<Variable> { new Variable(new ObjectIdentifier(oid)) };
+            return Messenger.Get(version, new IPEndPoint(IPAddress.Parse(ipv4), port), communityTarget, variables, 6000);
 
-            var result = Messenger.Get(version, new IPEndPoint(IPAddress.Parse(ipv4), port), communityTarget, variables, 6000);
-            return result[0];
         }
         catch (Exception ex)
         {
@@ -26,7 +25,7 @@ public class SnmpConnection : ISnmpConnection
     }
 
 
-    public List<Variable> WalkOperation(string ipv4, int port, string community, string oid, VersionCode version)
+    public List<Variable> WalkOperation(string ipv4, int port, string community, string oid, VersionCode version = VersionCode.V2)
     {
         var result = new List<Variable>();
         try

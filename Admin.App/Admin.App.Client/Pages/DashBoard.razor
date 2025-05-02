@@ -5,28 +5,22 @@
 
 @inject HubConnection Hub
 
-<h3>SignalR - Cliente Blazor</h3>
-<p>Mensagem: @mensagem</p>
-<button @onclick="Conectar">Conectar</button>
+<h3>SignalR - WebSocket</h3>
+<p>ROTINA WS 192.168.77.233: <strong>@mensagem</strong></p>
 
 @code {
     private string mensagem = "";
-
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        Hub.On<string>("ReceiveMessage", (msg) =>
+        Hub.On<string>("teste", (msg) =>
         {
             mensagem = msg;
             InvokeAsync(StateHasChanged);
         });
-    }
 
-    private async Task Conectar()
-    {
         if (Hub.State == HubConnectionState.Disconnected)
         {
             await Hub.StartAsync();
-            mensagem = "Conectado!";
         }
     }
 }
