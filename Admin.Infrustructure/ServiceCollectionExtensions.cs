@@ -11,14 +11,11 @@ using Quartz;
 namespace Admin.Infrustructure;
 public static class ServiceCollectionExtensions
 {
-
-
-
+    
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
         try
         {
-
             var assembly = typeof(IHostService).Assembly;
             foreach (var type in assembly.GetTypes().Where(t => t.Name.EndsWith("Service")))
             {

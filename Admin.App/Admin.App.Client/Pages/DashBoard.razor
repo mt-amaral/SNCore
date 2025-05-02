@@ -1,0 +1,32 @@
+﻿@page "/dashboard"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.SignalR.Client
+@attribute [Authorize]
+
+@inject HubConnection Hub
+
+<h3>SignalR - Cliente Blazor</h3>
+<p>Mensagem: @mensagem</p>
+<button @onclick="Conectar">Conectar</button>
+
+@code {
+    private string mensagem = "";
+
+    protected override void OnInitialized()
+    {
+        Hub.On<string>("ReceiveMessage", (msg) =>
+        {
+            mensagem = msg;
+            InvokeAsync(StateHasChanged);
+        });
+    }
+
+    private async Task Conectar()
+    {
+        if (Hub.State == HubConnectionState.Disconnected)
+        {
+            await Hub.StartAsync();
+            mensagem = "Conectado!";
+        }
+    }
+}

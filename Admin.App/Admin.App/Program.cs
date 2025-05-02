@@ -5,18 +5,16 @@ using Admin.App.Client.Config;
 using Admin.App.Components;
 using Admin.App.Middleware;
 using Admin.App.Security;
-using Admin.Application.Scheduling;
+using Admin.Application.Hub;
 using Admin.Domain.Account;
 using Admin.Infrustructure;
 using Admin.Persistence.Context;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using MudBlazor;
+using Microsoft.AspNetCore.SignalR;
 using MudBlazor.Services;
 using Newtonsoft.Json;
-using Quartz;
-using Quartz.Spi;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,7 +52,7 @@ builder.Services.AddIdentityCore<User>()
     .AddSignInManager()
     .AddDefaultTokenProviders();
 
-
+builder.Services.AddSignalR();
 
 builder.Services.AddControllers(options =>
     
@@ -111,9 +109,6 @@ builder.Services.AddScoped(sp =>
     return new HttpClientWithOptions(httpClient, jsonSerializerOptions);
 });
 
-
-
-
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
@@ -148,7 +143,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseStaticFiles();
@@ -182,7 +177,7 @@ app.UseMiddleware<ExceptionMiddleware>();
 app.UseAuthentication();
 
 app.UseAuthorization();
-
+app.MapHub<NotificationHub>("/hubs/notification");
 //app.MapAdditionalIdentityEndpoints();
 app.MapControllers();
 app.MapBlazorHub(); 

@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using Admin.App.Client;
 using Admin.App.Client.Config;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.AspNetCore.SignalR.Client;
 using MudBlazor;
 using MudBlazor.Services;
 
@@ -21,9 +22,18 @@ builder.Services.AddMudServices(config =>
     config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
 });
 
+
+
 builder.Services.AddServerWeb();
 
 builder.Services.AddScoped<CookieHandler>();
+
+builder.Services.AddSingleton(sp =>
+    new HubConnectionBuilder()
+        .WithUrl(builder.Configuration["ApiServer:ws"]! + "/hubs/notification")
+        .WithAutomaticReconnect()
+        .Build());
+
 builder.Services.AddHttpClient("Api", client =>
     {
         client.BaseAddress = new Uri(builder.Configuration["ApiServer:Url"]!);
