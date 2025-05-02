@@ -17,6 +17,7 @@ public static class DependecyInjection
         services.AddApplicationServices();
         services.AddRepositories();
         services.AddConnection();
+        services.AddSchedules();
         services.AddMetrics(configuration);
 
         return services;

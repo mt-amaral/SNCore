@@ -1,10 +1,12 @@
 ﻿using Admin.Application.Interfaces;
+using Admin.Application.Scheduling;
 using Admin.Connection.Connections;
 using Admin.Connection.Interfaces;
 using Admin.Domain.Interfaces;
 using Admin.Persistence.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Quartz;
 
 namespace Admin.Infrustructure;
 public static class ServiceCollectionExtensions
@@ -54,11 +56,22 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
+    public static IServiceCollection AddSchedules(this IServiceCollection service)
+    {
+        service.AddSingleton<ISchedulerFactory, Quartz.Impl.StdSchedulerFactory>();
+        service.AddSingleton<ScopedJobFactory>();
+        service.AddSingleton<RuntimeJob>();
+        service.AddSingleton<JobScheduler>();
+        service.AddHostedService(sp => sp.GetRequiredService<JobScheduler>());
+        return service;
+    }
+    
     public static IServiceCollection AddConnection(this IServiceCollection service)
     {
         service.AddScoped<ISnmpConnection, SnmpConnection>();
         return service;
     }
+
     public static IServiceCollection AddMetrics(this IServiceCollection service, IConfiguration configuration)
     {
         string connectionString = configuration.GetConnectionString("TimescaleConnection") !;

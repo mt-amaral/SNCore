@@ -49,13 +49,6 @@ builder.Services.AddServer(builder.Configuration);
 builder.Services.AddDbContext(builder.Configuration);
 builder.Services.AddIdentityContext(builder.Configuration);
 
-
-builder.Services.AddSingleton<ISchedulerFactory, Quartz.Impl.StdSchedulerFactory>();
-builder.Services.AddSingleton<ScopedJobFactory>();
-builder.Services.AddSingleton<RuntimeJob>();
-builder.Services.AddSingleton<JobScheduler>();
-builder.Services.AddHostedService(sp => sp.GetRequiredService<JobScheduler>());
-
 builder.Services.AddIdentityCore<User>()
     .AddEntityFrameworkStores<UserDbContext>()
     .AddSignInManager()
