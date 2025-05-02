@@ -20,4 +20,6 @@ public class RunTime
     public Item Item { get; private set; } = new();
     public Host Host { get; private set; } = new();
     public HostModel HostModel { get; private set; } = new();
+    
+    public void Activate(bool status)=> Active = status; 
 }

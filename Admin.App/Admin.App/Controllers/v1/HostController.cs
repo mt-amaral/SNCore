@@ -1,10 +1,6 @@
 ﻿using Admin.App.Filter;
 using Admin.Application.Interfaces;
-using Admin.Shared.Request.Expression;
 using Admin.Shared.Request.Host;
-using Admin.Shared.Response;
-using Admin.Shared.Response.Expression;
-using Admin.Shared.Response.Host;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -32,7 +28,7 @@ public class HostController : BaseController
     
     
     /// <summary>
-    /// Cria um novo Host
+    /// Editar Host Existente
     /// </summary>
     [HttpPut]
     [Route("Edit/{id}")]

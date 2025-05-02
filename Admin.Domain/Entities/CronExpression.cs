@@ -20,16 +20,13 @@ public class CronExpression
         Description = description;
     }
 
-    public string GetExpression(CronExpression expression)
+    public string GetExpression()
     {
-        var day = expression.Day;
-        var weekday = expression.Weesday;
-
         // regra: não pode ter "*" nos dois
-        if (day == "*" && weekday == "*")
-            weekday = "?"; // ou: day = "?"
+        if (Day == "*" && Weesday == "*")
+            Weesday = "?"; // ou: day = "?"
 
-        return $"{expression.Second} {expression.Minute} {expression.Hour} {day} {expression.Month} {weekday}";
+        return $"{Second} {Minute} {Hour} {Day} {Month} {Weesday}";
     }
 }
 

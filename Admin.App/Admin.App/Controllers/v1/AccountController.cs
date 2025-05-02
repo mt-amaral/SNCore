@@ -22,7 +22,7 @@ public class AccountController : BaseController
     }
 
     /// <summary>
-    /// 
+    /// Login
     /// </summary>
     /// <param name="userRequest"></param>
     /// <returns></returns>
@@ -36,7 +36,7 @@ public class AccountController : BaseController
     }
     
     /// <summary>
-    /// 
+    /// Registrar novo usuario
     /// </summary>
     /// <param name="request"></param>
     /// <returns></returns>
@@ -50,7 +50,7 @@ public class AccountController : BaseController
     }
     
     /// <summary>
-    /// 
+    /// Listagem simples de usuarios
     /// </summary>
     /// <returns></returns>
     [HttpGet]
@@ -64,7 +64,7 @@ public class AccountController : BaseController
     }
     
     /// <summary>
-    /// 
+    /// Lougout
     /// </summary>
     /// <returns></returns>
     [HttpPost]

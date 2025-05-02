@@ -1,3 +1,4 @@
+using Admin.Domain.Entities;
 using Admin.Domain.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -35,15 +36,14 @@ public class JobScheduler : IHostedService
         using var scope = _sp.CreateScope();
         var repo = scope.ServiceProvider.GetRequiredService<IRunTimeRepository>();
         var list = await repo.GetActiveAsync(ct);
-        foreach (var item in list.Where(x => !string.IsNullOrWhiteSpace(x?.CronExpression?.GetExpression(x.CronExpression))))
+        foreach (var item in list.Where(x => !string.IsNullOrWhiteSpace(x?.CronExpression?.GetExpression())))
         {
             var job = JobBuilder.Create<RuntimeJob>()
                 .WithIdentity($"job-{item!.Id.ToString()}")
                 .UsingJobData("ItemId", item.Id.ToString())
                 .Build();
 
-            // aplica sua regra de "?" aqui
-            var cron = item.CronExpression.GetExpression(item.CronExpression);
+            var cron = item.CronExpression.GetExpression();
             var trigger = TriggerBuilder.Create()
                 .WithIdentity($"trigger-{item.Id}")
                 .WithCronSchedule(cron)
@@ -52,6 +52,34 @@ public class JobScheduler : IHostedService
             await _scheduler.ScheduleJob(job, trigger, ct);
         }
     }
+    
+    public async Task AddJobAsync(RunTime item, CancellationToken ct = default)
+    {
+        var jobKey = new JobKey($"job-{item.Id.ToString()}");
+        var triggerKey = new TriggerKey($"trigger-{item.Id.ToString()}");
+        await _scheduler.DeleteJob(jobKey, ct);
+        
+        var cron = item.CronExpression.GetExpression();
+        if (string.IsNullOrWhiteSpace(cron))
+            return;
+        
+        var job = JobBuilder.Create<RuntimeJob>()
+            .WithIdentity(jobKey)
+            .UsingJobData("ItemId", item.Id.ToString())
+            .Build();
+        
+        var trigger = TriggerBuilder.Create()
+            .WithIdentity(triggerKey)
+            .WithCronSchedule(cron)
+            .Build();
+        
+        await _scheduler.ScheduleJob(job, trigger, ct);
+    }
 
+    public async Task RemoveJobAsync(Guid jobsId, CancellationToken ct = default)
+    {
+        var jobKey = new JobKey($"job-{jobsId.ToString()}");
+        await _scheduler.DeleteJob(jobKey, ct);
+    }
 
 }

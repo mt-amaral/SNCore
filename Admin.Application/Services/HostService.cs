@@ -31,7 +31,7 @@ public class HostService : IHostService
             var response = _mapper.Map<HostResponse>(entity);
             return new Response<HostResponse?>(response, 204, $"Host {request.Name} criado com sucesso.");
         }
-        catch(Exception ex)
+        catch
         {
             return new Response<HostResponse?>(null, 500, $"Erro ao Criar Host {request.Name}");
         }

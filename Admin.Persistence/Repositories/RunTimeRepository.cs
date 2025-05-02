@@ -27,12 +27,15 @@ public class RunTimeRepository : IRunTimeRepository
             .Include(e => e.CronExpression)
             .Include(e => e.Host)
             .Include(e => e.Item)
-            .ToListAsync(ct).ContinueWith(t => (IEnumerable<RunTime>)t.Result, ct);
+            .AsNoTracking().ToListAsync(ct).ContinueWith(t => (IEnumerable<RunTime>)t.Result, ct);
     }
     
     public async Task<RunTime?> GetById(Guid id)
     {
         return await _dbSet
+            .Include(e => e.CronExpression)
+            .Include(e => e.Host)
+            .Include(e => e.Item)
             .FirstOrDefaultAsync(c => c.Id == id);
     }
     public async Task<List<RunTime>?> GetByHostId(long id)
@@ -43,15 +46,13 @@ public class RunTimeRepository : IRunTimeRepository
 
     public async Task Create(RunTime entity)
     {
-        try
-        {
-            await _dbSet.AddAsync(entity);
-            await SaveAllAsync();
-        }
-        catch(Exception ex)
-        {
-            ;
-        }
+        await _dbSet.AddAsync(entity);
+        await SaveAllAsync();
+    }
+    public async Task Update(RunTime entity)
+    {
+        _dbSet.Update(entity);
+        await SaveAllAsync();
 
     }
 

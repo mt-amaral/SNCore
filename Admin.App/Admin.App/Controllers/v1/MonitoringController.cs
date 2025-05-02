@@ -15,7 +15,6 @@ public class MonitoringController: BaseController
     }
 
     [HttpPut]
-    [AllowAnonymous]
     public async Task<IActionResult> WriteSensorDataAsync(Guid trackingKey)
     {
         var result = await _scale.GetByTrackingKeyAsync(trackingKey);
@@ -24,7 +23,6 @@ public class MonitoringController: BaseController
     }
     
     [HttpPost]
-    [AllowAnonymous]
     public async Task<IActionResult> InsertAsync(JsonDocument json)
     {
         var sensorData = new SensorData

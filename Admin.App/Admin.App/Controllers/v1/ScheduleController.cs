@@ -21,16 +21,27 @@ public class ScheduleController : BaseController
     }
     
     /// <summary>
-    /// Cria uma nova rotina
+    /// Criar nova rotina
     /// </summary>
     [HttpPost]
+    [Route("Create")]
     [ProducesResponseType(typeof(Response<string?>), StatusCodes.Status200OK)]
     public async Task<ActionResult> CreateExpressions(CreateScheduleRequest schedule)
     {
-
         var result = await _service.Create(schedule);
         return StatusCode(result.IsSuccess ? 201 : 400, result);
-
+    }
+    
+    /// <summary>
+    /// Define status da rotina
+    /// </summary>
+    [HttpPut]
+    [Route("ScheduleStatus")]
+    [ProducesResponseType(typeof(Response<string?>), StatusCodes.Status200OK)]
+    public async Task<ActionResult> ScheduleStatus(Guid id,bool status = false)
+    {
+        var result = await _service.ScheduleStatus(id, status);
+        return StatusCode(result.IsSuccess ? 201 : 404, result);
     }
     
 }
