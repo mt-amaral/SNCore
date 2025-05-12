@@ -26,13 +26,11 @@ services:
    container_name: app_admin
    hostname: app_admin
    image: app_admin:1.0.0
-   build:
-     context: .
-     dockerfile: Admin.App/Admin.App/Dockerfile
 
    volumes:
     - ./keys:/app/keys
-
+   depends_on:
+     - sql_server
    networks:
      admin-app:
        ipv4_address: 172.20.254.3
@@ -40,42 +38,47 @@ services:
      - "8091:8091"
      - "8090:8090"
    environment:
-     - ASPNETCORE_ENVIRONMENT=Production
+     - ConnectionStrings__Application=Server=172.20.254.4;Database=master;User Id=sa;Password=;TrustServerCertificate=True;
+     - ConnectionStrings__Identity=Server=172.20.254.4;Database=master;User Id=sa;Password=;TrustServerCertificate=True;
+     - ConnectionString__Timescale=Host=172.20.254.5;Port=5432;Database=Sncore_Metrics;Username=admin;Password=;Pooling=true;
+     - ASPNETCORE_ENVIRONMENT=Staging
      - ASPNETCORE_HTTP_PORTS=8090
      - ASPNETCORE_HTTPS_PORTS=8091
    restart: unless-stopped
   
   
-  # timescale_server:
-  #   image: timescale/timescaledb:latest-pg14
-  #   container_name: timescale_server_admin
-  #   environment:
-  #     POSTGRES_USER: admin
-  #     POSTGRES_PASSWORD: admin123
-  #     POSTGRES_DB: admin_db
-  #   ports:
-  #     - "5432:5432"
-  #   networks:
-  #     admin-api:
-  #       ipv4_address: 172.20.254.5
-  #   restart: unless-stopped
-    
-  # sql_server:
-  #   image: sql_server:1.0.0
-  #   container_name: sql_server_admin
-  #   hostname: sql_server_admin
-  #   build:
-  #     context: .
-  #     dockerfile: Admin.Sql.Test/Dockerfile
-  #   environment:
-  #     ACCEPT_EULA: Y
-  #     MSSQL_SA_PASSWORD: BneiivxZf28w7seZ
-  #     MSSQL_PID: Evaluation
-  #   ports:
-  #     - "1433:1433"
-  #   networks:
-  #     admin-api:
-  #       ipv4_address: 172.20.254.4
+  timescale_server:
+    image: timescale/timescaledb:latest-pg14
+    container_name: timescale_server_admin
+    labels:
+      - "io.portainer.hidden=true"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 
+      POSTGRES_DB: Sncore_Metrics
+    ports:
+      - "5556:5432"
+    networks:
+      admin-app:
+        ipv4_address: 172.20.254.5
+    restart: unless-stopped
+
+  sql_server:
+    image: mcr.microsoft.com/mssql/server:2022-preview-ubuntu-22.04
+    container_name: sql_server_admin
+    labels:
+      - "io.portainer.hidden=true"
+    hostname: sql_server_admin
+    environment:
+      ACCEPT_EULA: Y
+      MSSQL_SA_PASSWORD: 
+      MSSQL_PID: Evaluation
+    ports:
+      - "5554:1433"
+    networks:
+      admin-app:
+        ipv4_address: 172.20.254.4
+    restart: unless-stopped
 
 networks:
   admin-app:

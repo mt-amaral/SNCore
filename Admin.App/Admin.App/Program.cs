@@ -17,6 +17,7 @@ using MudBlazor.Services;
 using Newtonsoft.Json;
 using Admin.App.Client;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -186,6 +187,19 @@ if (app.Environment.IsProduction())
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Admin API V1");
         c.InjectStylesheet("/swagger-ui/SwaggerDark.css");
     });
+}
+if (app.Environment.IsStaging())
+{
+    app.UseCors("WebAppDev");
+    app.UseSwagger();
+    app.UseSwaggerUI();
+    app.UseHttpsRedirection();
+
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        dbContext.Database.Migrate();
+    }
 }
 else
 {
