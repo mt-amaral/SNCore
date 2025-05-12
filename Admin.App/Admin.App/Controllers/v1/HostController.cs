@@ -8,34 +8,67 @@ namespace Admin.App.Controllers.v1;
 
 public class HostController : BaseController
 {
-    private readonly IHostService _hostService;
+    private readonly IHostService _service;
 
     public HostController(IHostService service)
     {
-        _hostService = service;
+        _service = service;
+    }
+    
+    /// <summary>
+    /// Pegar por Id
+    /// </summary>
+    [HttpGet]
+    [Route("{id}")]
+    [ValidateIdFilter]
+    public async Task<ActionResult> GetHost(int id)
+    {
+        var result = await _service.GetHost(id);
+        return StatusCode(result.IsSuccess ? 200 : 404, result);
     }
     
     /// <summary>
     /// Cria um novo Host
     /// </summary>
     [HttpPost]
-    [Route("Create")]
-    public async Task<ActionResult> CreateExpressions(CreateHostRequest request)
+    public async Task<ActionResult> CreateHost(CreateHostRequest request)
     {
-        var result = await _hostService.CreateHost(request);
-        return StatusCode(result.IsSuccess ? 201 : 500, result);
+        var result = await _service.CreateHost(request);
+        return StatusCode(result.IsSuccess ? 204 : 500, result);
     }
-    
     
     /// <summary>
     /// Editar Host Existente
     /// </summary>
     [HttpPut]
-    [Route("Edit/{id}")]
+    [Route("{id}")]
     [ValidateIdFilter]
-    public async Task<ActionResult> EditExpressions(CreateHostRequest request, int id)
+    public async Task<ActionResult> EditHost(CreateHostRequest request, int id)
     {
-        var result = await _hostService.UpdateHost(request, id);
-        return StatusCode(result.IsSuccess ? 201 : 500, result);
+        var result = await _service.UpdateHost(request, id);
+        return StatusCode(result.IsSuccess ? 201 : 404, result);
+    }
+    
+    /// <summary>
+    /// Deletar por Id
+    /// </summary>
+    [HttpDelete]
+    [Route("{id}")]
+    [ValidateIdFilter]
+    public async Task<ActionResult> DeleteHost(int id)
+    {
+        var result = await _service.DeleteHost(id);
+        return StatusCode(result.IsSuccess ? 201 : 404, result);
+    }
+    
+    /// <summary>
+    /// Consultar por pagina
+    /// </summary>
+    [HttpGet]
+    [Route("list")]
+    public async Task<ActionResult> GetListHost([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 20)
+    {
+        var result = await _service.GetHostList(pageNumber,pageSize);
+        return Ok(result);
     }
 }

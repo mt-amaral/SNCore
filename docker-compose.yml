@@ -1,80 +1,84 @@
 version: '3.8'
 
 services:
-  api-admin:
-    container_name: api_admin
-    hostname: api_admin
-    image: api_admin:1.0.0
-    build:
-      context: .
-      dockerfile: Admin.Api/Dockerfile
-    networks:
-      admin-api:
-        ipv4_address: 172.20.254.1
-    ports:
-      - "8080:8080"
-      - "8081:8081"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-      - ASPNETCORE_HTTP_PORTS=8080
-      - ASPNETCORE_HTTPS_PORTS=8081
-    restart: unless-stopped
-    depends_on:
-      - sql_server
+  # api-admin:
+  #   container_name: api_admin
+  #   hostname: api_admin
+  #   image: api_admin:1.0.0
+  #   build:
+  #     context: .
+  #     dockerfile: Admin.Api/Dockerfile
+  #   networks:
+  #     admin-api:
+  #       ipv4_address: 172.20.254.1
+  #   ports:
+  #     - "8080:8080"
+  #     - "8081:8081"
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Production
+  #     - ASPNETCORE_HTTP_PORTS=8080
+  #     - ASPNETCORE_HTTPS_PORTS=8081
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - sql_server
 
-  #app_admin:
-  #  container_name: app_admin
-  #  hostname: app_admin
-  #  image: app_admin:1.0.0
-  #  build:
-  #    context: .
-  #    dockerfile: admin.App/Dockerfile
-  #  networks:
-  #    cisco-api:
-  #      ipv4_address: 172.19.254.3
-  #  ports:
-  #    - "8091:8091"
-  #  environment:
-  #    - ASPNETCORE_ENVIRONMENT=Production
-  #    - ASPNETCORE_HTTP_PORTS=8091
-  #  restart: unless-stopped
-  #  depends_on:
-  #    - api-admin
+  app_admin:
+   container_name: app_admin
+   hostname: app_admin
+   image: app_admin:1.0.0
+   build:
+     context: .
+     dockerfile: Admin.App/Admin.App/Dockerfile
+
+   volumes:
+    - ./keys:/app/keys
+
+   networks:
+     admin-app:
+       ipv4_address: 172.20.254.3
+   ports:
+     - "8091:8091"
+     - "8090:8090"
+   environment:
+     - ASPNETCORE_ENVIRONMENT=Production
+     - ASPNETCORE_HTTP_PORTS=8090
+     - ASPNETCORE_HTTPS_PORTS=8091
+   restart: unless-stopped
   
   
-  timescale_server:
-    image: timescale/timescaledb:latest-pg14
-    container_name: timescale_server_admin
-    environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin123
-      POSTGRES_DB: admin_db
-    ports:
-      - "5432:5432"
-    networks:
-      admin-api:
-        ipv4_address: 172.20.254.5
-    restart: unless-stopped
+  # timescale_server:
+  #   image: timescale/timescaledb:latest-pg14
+  #   container_name: timescale_server_admin
+  #   environment:
+  #     POSTGRES_USER: admin
+  #     POSTGRES_PASSWORD: admin123
+  #     POSTGRES_DB: admin_db
+  #   ports:
+  #     - "5432:5432"
+  #   networks:
+  #     admin-api:
+  #       ipv4_address: 172.20.254.5
+  #   restart: unless-stopped
     
-  sql_server:
-    image: sql_server:1.0.0
-    container_name: sql_server_admin
-    hostname: sql_server_admin
-    build:
-      context: .
-      dockerfile: Admin.Sql.Test/Dockerfile
-    environment:
-      ACCEPT_EULA: Y
-      MSSQL_SA_PASSWORD: BneiivxZf28w7seZ
-      MSSQL_PID: Evaluation
-    ports:
-      - "1433:1433"
-    networks:
-      admin-api:
-        ipv4_address: 172.20.254.4
+  # sql_server:
+  #   image: sql_server:1.0.0
+  #   container_name: sql_server_admin
+  #   hostname: sql_server_admin
+  #   build:
+  #     context: .
+  #     dockerfile: Admin.Sql.Test/Dockerfile
+  #   environment:
+  #     ACCEPT_EULA: Y
+  #     MSSQL_SA_PASSWORD: BneiivxZf28w7seZ
+  #     MSSQL_PID: Evaluation
+  #   ports:
+  #     - "1433:1433"
+  #   networks:
+  #     admin-api:
+  #       ipv4_address: 172.20.254.4
 
 networks:
-  admin-api:
+  admin-app:
     driver: bridge
     ipam:
       config:
@@ -85,7 +89,7 @@ networks:
 # docker build -t api_admin:1.0.0 --target api -f Admin.Api/Dockerfile .
 
 # --- Rebuild App
-# docker build -t app_admin:1.0.0 --target app -f Admin.App/Dockerfile .
+# docker build -t app_admin:1.0.0 --target app -f Admin.App/Admin.App/Dockerfile .
 
 # --- Rebuild Sql
 # docker build -t sql_server:1.0.0 --target sql -f Admin.Sql.Test/Dockerfile .

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -7,11 +7,14 @@
 	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
 	  <NoWarn>$(NoWarn);1591</NoWarn>
     <UserSecretsId>aspnet-Admin.App-0b24c76e-b767-4505-9003-9c075a65d7a0</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Extensions.MudBlazor.StaticInput" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" />
     <PackageReference Include="Swashbuckle.AspNetCore" />
   </ItemGroup>
 
@@ -41,6 +44,11 @@
     <_ContentIncludedByDefault Remove="Layout\LoginLayout.razor" />
     <_ContentIncludedByDefault Remove="Layout\MainLayout.razor" />
     <_ContentIncludedByDefault Remove="Layout\NavMenu.razor" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="https\" />
   </ItemGroup>
 
 </Project>

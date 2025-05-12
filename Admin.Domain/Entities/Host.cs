@@ -17,4 +17,8 @@ public class Host
 
     public ICollection<Item> Items { get; private set; } = new HashSet<Item>();
     public ICollection<RunTime> RunTimes { get; private set; } = new HashSet<RunTime>();
+
+
+    public void UpdateGruopId(int? id) => GroupId = id;
+
 }

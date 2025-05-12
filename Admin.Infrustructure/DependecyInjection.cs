@@ -27,7 +27,7 @@ public static class DependecyInjection
     {
         services.AddDbContext<ApplicationDbContext>(options =>
         {
-            options.UseSqlServer(configuration.GetConnectionString("ConnectionDevelopment"),
+            options.UseSqlServer(configuration.GetConnectionString("Application"),
                 m => m.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName));
         });
         return services;
@@ -36,7 +36,7 @@ public static class DependecyInjection
     {
         services.AddDbContext<UserDbContext>(options =>
         {
-            options.UseSqlServer(configuration.GetConnectionString("ConnectionDevelopment"),
+            options.UseSqlServer(configuration.GetConnectionString("Identity"),
                 m => m.MigrationsAssembly(typeof(UserDbContext).Assembly.FullName));
         });
         return services;

@@ -22,21 +22,42 @@ public class HostGroupRepository : IHostGroupRepository
     }
     
     
-    public async Task CreateGroupHost(HostGroup entity)
+    public async Task CreateGroup(HostGroup entity)
     {
         await _dbSet.AddAsync(entity);
         await SaveAllAsync();
     }
 
-    public async Task UpdateGroupHost(HostGroup entity)
+    public async Task UpdateGroup(HostGroup entity)
     {
         _dbSet.Update(entity);
         await SaveAllAsync();
         
     }
-    public async Task DeleteGroupHost(HostGroup entity)
+    public async Task DeleteGroup(HostGroup entity)
     {
          _dbSet.Remove(entity);
         await SaveAllAsync();
     }
+    
+    public async Task<HostGroup?> SelectByGrup(int id)
+    {
+        return await _dbSet
+            .Include(e => e.Hosts)
+            .FirstOrDefaultAsync(e => e.Id == id);
+    }
+
+    public async Task<IEnumerable<HostGroup?>> FilteredGroup(
+        int pageNumber = 1,
+        int pageSize = 20)
+    {
+        return await _dbSet
+            .Include(e => e.Hosts)
+            .AsNoTracking()
+            .OrderByDescending(x => x.Id) 
+            .Skip((pageNumber - 1) * pageSize) 
+            .Take(pageSize) 
+            .ToListAsync();  
+    }
+    
 }

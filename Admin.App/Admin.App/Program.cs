@@ -15,6 +15,8 @@ using MudBlazor;
 using Microsoft.AspNetCore.SignalR;
 using MudBlazor.Services;
 using Newtonsoft.Json;
+using Admin.App.Client;
+using Microsoft.AspNetCore.DataProtection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,12 +42,27 @@ builder.Services.AddMudServices(config =>
     config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsDev", policy => policy
+        .WithOrigins(Acl.AdminDevUrl)
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials());
+
+    options.AddPolicy("CorsProd", policy => policy
+        .WithOrigins(Acl.AdminProUrl)
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials());
+});
 
 
 builder.Services.AddServerWeb();
 builder.Services.AddServer(builder.Configuration);
 builder.Services.AddDbContext(builder.Configuration);
 builder.Services.AddIdentityContext(builder.Configuration);
+
 
 builder.Services.AddIdentityCore<User>()
     .AddEntityFrameworkStores<UserDbContext>()
@@ -94,6 +111,10 @@ builder.Services.AddHttpClient("Api", client =>
         client.BaseAddress = new Uri(builder.Configuration["ApiServer:Url"]!);
         client.DefaultRequestHeaders.Add("Accept", "application/json");
     })
+    .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+    {
+        ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+    })
     .ConfigureHttpClient(client =>
     {
         client.DefaultRequestHeaders.Accept.Clear();
@@ -121,6 +142,10 @@ builder.Services.AddAuthentication(options =>
     })
     .AddIdentityCookies();
 
+
+builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(new DirectoryInfo("/app/keys"));
+
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Login";
@@ -137,15 +162,11 @@ builder.Services.ConfigureApplicationCookie(options =>
     };
 });
 
-
-
-
-
 var app = builder.Build();
-
 
 if (app.Environment.IsDevelopment())
 {
+    app.UseCors("CorsDev");
     app.UseStaticFiles();
     app.UseSwagger();
     app.UseSwaggerUI(c =>
@@ -154,6 +175,17 @@ if (app.Environment.IsDevelopment())
         c.InjectStylesheet("/swagger-ui/SwaggerDark.css");
     });
     /*app.UseWebAssemblyDebugging();*/
+}
+if (app.Environment.IsProduction())
+{
+    app.UseCors("CorsProd");
+    app.UseStaticFiles();
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Admin API V1");
+        c.InjectStylesheet("/swagger-ui/SwaggerDark.css");
+    });
 }
 else
 {
@@ -166,6 +198,7 @@ app.UseHttpsRedirection();
 app.UseAntiforgery();
 
 app.MapStaticAssets();
+
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
@@ -175,11 +208,10 @@ app.MapRazorComponents<App>()
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseAuthentication();
-
 app.UseAuthorization();
+
+app.MapControllers(); 
 app.MapHub<NotificationHub>("/hubs/notification");
 //app.MapAdditionalIdentityEndpoints();
-app.MapControllers();
-app.MapBlazorHub(); 
 
 app.Run();
