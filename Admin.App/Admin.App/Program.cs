@@ -198,7 +198,9 @@ if (app.Environment.IsStaging())
     using (var scope = app.Services.CreateScope())
     {
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        var userContext = scope.ServiceProvider.GetRequiredService<UserDbContext>();
         dbContext.Database.Migrate();
+        userContext.Database.Migrate();
     }
 }
 else
