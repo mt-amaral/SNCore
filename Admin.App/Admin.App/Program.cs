@@ -58,6 +58,11 @@ builder.Services.AddCors(options =>
         .AllowCredentials());
 });
 
+builder.Configuration
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: true)
+    .AddUserSecrets<Program>() // ou AddUserSecrets(typeof(Program).Assembly)
+    .AddEnvironmentVariables();
 
 builder.Services.AddServerWeb();
 builder.Services.AddServer(builder.Configuration);
@@ -109,7 +114,7 @@ builder.Services.AddTransient<CookieDelegatingHandler>();
 
 builder.Services.AddHttpClient("Api", client =>
     {
-        client.BaseAddress = new Uri(builder.Configuration["ApiServer:Url"]!);
+        client.BaseAddress = new Uri(builder.Configuration["ApiServer1:Url"]!);
         client.DefaultRequestHeaders.Add("Accept", "application/json");
     })
     .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
@@ -146,6 +151,8 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddDataProtection()
     .PersistKeysToFileSystem(new DirectoryInfo("/app/keys"));
+
+
 
 builder.Services.ConfigureApplicationCookie(options =>
 {

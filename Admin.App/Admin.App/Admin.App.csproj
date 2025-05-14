@@ -6,9 +6,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
 	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
 	  <NoWarn>$(NoWarn);1591</NoWarn>
-    <UserSecretsId>aspnet-Admin.App-0b24c76e-b767-4505-9003-9c075a65d7a0</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>
+    <UserSecretsId>71bde3bf-f3bc-4c78-9fe9-316e1a9ba9c9</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
