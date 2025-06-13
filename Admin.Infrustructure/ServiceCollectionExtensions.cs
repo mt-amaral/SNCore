@@ -1,9 +1,10 @@
-﻿using Admin.Application.Interfaces;
-using Admin.Application.Scheduling;
+﻿using Admin.Application.Scheduling;
+using Admin.Application.Services;
 using Admin.Connection.Connections;
 using Admin.Connection.Interfaces;
 using Admin.Domain.Interfaces;
 using Admin.Persistence.Repositories;
+using Admin.Shared.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Quartz;
@@ -14,16 +15,22 @@ public static class ServiceCollectionExtensions
     
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
+        var serviceType = typeof(HostService).Assembly;
+        var interfaceType = typeof(IHostService).Assembly;
 
-        var assembly = typeof(IHostService).Assembly;
-        foreach (var type in assembly.GetTypes().Where(t => t.Name.EndsWith("Service")))
+        var types = serviceType.GetTypes()
+            .Where(t => t.Name.EndsWith("Service"));
+
+        foreach (var type in types)
         {
             if (!type.IsClass || type.IsAbstract) continue;
-            var interfaceType = type.GetInterface($"I{type.Name}")!;
+            var valueInterface = interfaceType
+                .GetTypes()
+                .FirstOrDefault(t => t.Name == ("I" + type.Name)
+                                     && t.Name.EndsWith("Service"))!;
 
-            services.AddScoped(interfaceType, type);
+            services.AddScoped(valueInterface, type);
         }
-    
         return services;
         
     }

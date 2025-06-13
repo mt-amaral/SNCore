@@ -2,7 +2,7 @@
 using Admin.Shared.Response;
 using Admin.Shared.Response.Expression;
 
-namespace Admin.Application.Interfaces;
+namespace Admin.Shared.Interfaces;
 
 public interface IExpressionService
 {

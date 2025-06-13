@@ -1,5 +1,5 @@
 ﻿using Admin.App.Filter;
-using Admin.Application.Interfaces;
+using Admin.Shared.Interfaces;
 using Admin.Shared.Request.Host;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,7 +34,7 @@ public class HostController : BaseController
     public async Task<ActionResult> CreateHost(CreateHostRequest request)
     {
         var result = await _service.CreateHost(request);
-        return StatusCode(result.IsSuccess ? 204 : 500, result);
+        return StatusCode(result.IsSuccess ? 200 : 500, result);
     }
     
     /// <summary>

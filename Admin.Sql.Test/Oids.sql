@@ -1,7 +1,7 @@
 DECLARE @InsertedModel TABLE (Id INT);
 DECLARE @InsertedOid TABLE (Id BIGINT, Oid VARCHAR(255));
 
-INSERT INTO master.dbo.HostModel (ModelName, SrcIcon)
+INSERT INTO Sncore_Application.dbo.HostModel (ModelName, SrcIcon)
 OUTPUT INSERTED.Id INTO @InsertedModel(Id)  
 VALUES ('MikroTik', 'icons/mikrotik-icon.png'); 
 
@@ -31,11 +31,11 @@ VALUES
     ('.1.3.6.1.2.1.25.2.3.1.5.131072', 'Total System Disk'),
     ('.1.3.6.1.2.1.25.2.3.1.6.131072', 'Use System Disk');
 
-INSERT INTO master.dbo.OidList (Oid)
+INSERT INTO Sncore_Application.dbo.OidList (Oid)
 OUTPUT INSERTED.ID, INSERTED.Oid INTO @InsertedOid(Id, Oid)
 SELECT Oid FROM @Oids1;
 
-INSERT INTO master.dbo.Item (ModelId, ItemName, OidId)
+INSERT INTO Sncore_Application.dbo.Item (ModelId, ItemName, OidId)
 SELECT @ModelId1, o.ItemName, i.Id 
 FROM @Oids1 o
 JOIN @InsertedOid i ON o.Oid = i.Oid;

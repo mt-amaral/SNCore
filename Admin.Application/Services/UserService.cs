@@ -1,7 +1,7 @@
-using Admin.Application.Interfaces;
 using Admin.Domain.Account;
 using Admin.Domain.Entities;
 using Admin.Domain.Interfaces;
+using Admin.Shared.Interfaces;
 using Admin.Shared.Request.Account;
 using Admin.Shared.Request.Expression;
 using Admin.Shared.Response;
@@ -57,6 +57,22 @@ public class UserService : IUserService
             
         return new Response<string?>(null, 200, $"Usuario {request.UserName} registrado com sucesso!");
     }
+    
+    public async Task<Response<string?>> ChangePasswordNew(ChangePasswordRequest request)
+    {
+        var user = await _userManager.FindByNameAsync(request.UserName);
+        if (user == null)
+            return new Response<string?>(null, 404, "Credencias invalidas");
+        
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+        var result = await _userManager.ResetPasswordAsync(user, token, request.NewPassword);
+        if (!result.Succeeded)
+            return new Response<string?>(null, 400, $"Erro: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+
+        return new Response<string?>(null, 201, "Senha alterada com sucesso!");
+    }
+    
     
     
     public Task Logout() => _signInManager.SignOutAsync();

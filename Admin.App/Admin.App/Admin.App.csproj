@@ -49,6 +49,7 @@
 
   <ItemGroup>
     <Folder Include="https\" />
+    <Folder Include="Service\" />
   </ItemGroup>
 
 </Project>

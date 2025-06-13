@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
     <StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
+    <UserSecretsId>27be567c-d208-47b8-844c-1ab7542b8f89</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Admin.Domain\Admin.Domain.csproj" />
     <ProjectReference Include="..\..\Admin.Shared\Admin.Shared.csproj" />
   </ItemGroup>
 

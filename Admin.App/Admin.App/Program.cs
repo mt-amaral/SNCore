@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.SignalR;
 using MudBlazor.Services;
 using Newtonsoft.Json;
 using Admin.App.Client;
+using Admin.App.Client.Service;
+using Admin.Shared.Interfaces;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,7 +35,6 @@ builder.Services.AddRazorComponents()
 builder.Services.AddMudServices(config =>
 {
     config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.TopRight;
-
     config.SnackbarConfiguration.PreventDuplicates = false;
     config.SnackbarConfiguration.NewestOnTop = false;
     config.SnackbarConfiguration.ShowCloseIcon = true;
@@ -107,14 +108,14 @@ builder.Services.AddSwaggerGen(
     }
 });
 
-
+builder.Services.AddSingleton<IHubConnectionSocket, ClientSocket>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<CookieDelegatingHandler>();
 
 builder.Services.AddHttpClient("Api", client =>
     {
-        client.BaseAddress = new Uri(builder.Configuration["ApiServer1:Url"]!);
+        client.BaseAddress = new Uri(builder.Configuration["ApiServer:Url"]!);
         client.DefaultRequestHeaders.Add("Accept", "application/json");
     })
     .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
@@ -152,8 +153,6 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddDataProtection()
     .PersistKeysToFileSystem(new DirectoryInfo("/app/keys"));
 
-
-
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Login";
@@ -182,7 +181,7 @@ if (app.Environment.IsDevelopment())
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Admin API V1");
         c.InjectStylesheet("/swagger-ui/SwaggerDark.css");
     });
-    /*app.UseWebAssemblyDebugging();*/
+    app.UseWebAssemblyDebugging();
 }
 if (app.Environment.IsProduction())
 {

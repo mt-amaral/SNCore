@@ -1,5 +1,5 @@
 ﻿using Admin.App.Filter;
-using Admin.Application.Interfaces;
+using Admin.Shared.Interfaces;
 using Admin.Shared.Request.Expression;
 using Admin.Shared.Request.Host;
 using Admin.Shared.Request.Schedule;
@@ -35,7 +35,7 @@ public class ScheduleController : BaseController
     /// <summary>
     /// Define status da rotina
     /// </summary>
-    [HttpPut]
+    [HttpPatch]
     [Route("ScheduleStatus")]
     [ProducesResponseType(typeof(Response<string?>), StatusCodes.Status200OK)]
     public async Task<ActionResult> ScheduleStatus(Guid id,bool status = false)

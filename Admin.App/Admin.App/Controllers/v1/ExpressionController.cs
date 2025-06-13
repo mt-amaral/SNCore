@@ -1,5 +1,5 @@
 ﻿using Admin.App.Filter;
-using Admin.Application.Interfaces;
+using Admin.Shared.Interfaces;
 using Admin.Shared.Request.Expression;
 using Admin.Shared.Response;
 using Admin.Shared.Response.Expression;

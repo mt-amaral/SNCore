@@ -1,8 +1,7 @@
-using Admin.Domain.Entities;
 using Admin.Shared.Request.Schedule;
 using Admin.Shared.Response;
 
-namespace Admin.Application.Interfaces;
+namespace Admin.Shared.Interfaces;
 
 public interface IRunTimeService
 {

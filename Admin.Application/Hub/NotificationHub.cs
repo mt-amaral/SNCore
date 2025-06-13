@@ -1,5 +1,9 @@
+
 namespace Admin.Application.Hub;
 
-public class NotificationHub : Microsoft.AspNetCore.SignalR.Hub
+using Microsoft.AspNetCore.SignalR;
+
+public class NotificationHub : Hub
 {
+    
 }

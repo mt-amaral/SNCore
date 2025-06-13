@@ -23,7 +23,7 @@ public class JobScheduler : IHostedService
         _scheduler = await _schedulerFactory.GetScheduler(cancellationToken);
         _scheduler.JobFactory = new ScopedJobFactory(_sp);
         await _scheduler.Start(cancellationToken);
-        await RefreshJobsAsync(cancellationToken);  // carrega só no boot
+        await RefreshJobsAsync(cancellationToken);  
     }
 
     public async Task StopAsync(CancellationToken cancellationToken)

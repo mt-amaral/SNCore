@@ -19,8 +19,8 @@ public static class Configuration
 PaletteLight = new()
 {
     Primary = "#1565C0",          // Azul mais profundo e moderno
-    Secondary = "#E91E63",       // Rosa vibrante com melhor contraste
-    Tertiary = "#6A1B9A",         // Roxo mais saturado
+    Secondary = "#E91E63",        // Rosa vibrante com melhor contraste
+    Tertiary = "#EEEEEE",         // claro
     Success = "#388E3C",          // Verde mais escuro para melhor leitura
     Warning = "#F57C00",          // Laranja mais visível para alertas
     Error = "#D32F2F",            // Vermelho mais intenso

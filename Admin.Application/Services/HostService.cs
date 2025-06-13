@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
-using Admin.Application.Interfaces;
 using Admin.Domain.Entities;
 using Admin.Domain.Interfaces;
+using Admin.Shared.Interfaces;
 using Admin.Shared.Request.Expression;
 using Admin.Shared.Request.Host;
 using Admin.Shared.Response;
@@ -32,7 +32,7 @@ public class HostService : IHostService
             var entity = _mapper.Map<Host>(request);
             await _repository.CreateHost(entity);
             var response = _mapper.Map<HostResponse>(entity);
-            return new Response<HostResponse?>(response, 204, $"Host {request.Name} criado com sucesso.");
+            return new Response<HostResponse?>(response, 200, $"Host {request.Name} criado com sucesso.");
         }
         catch
         {

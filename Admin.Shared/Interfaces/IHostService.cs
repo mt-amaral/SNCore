@@ -2,7 +2,7 @@
 using Admin.Shared.Response;
 using Admin.Shared.Response.Host;
 
-namespace Admin.Application.Interfaces;
+namespace Admin.Shared.Interfaces;
 
 public interface IHostService
 {

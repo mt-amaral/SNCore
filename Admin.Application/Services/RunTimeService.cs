@@ -1,7 +1,7 @@
-﻿using Admin.Application.Interfaces;
-using Admin.Application.Scheduling;
+﻿using Admin.Application.Scheduling;
 using Admin.Domain.Entities;
 using Admin.Domain.Interfaces;
+using Admin.Shared.Interfaces;
 using Admin.Shared.Request.Schedule;
 using Admin.Shared.Response;
 using AutoMapper;
@@ -28,6 +28,7 @@ public class RunTimeService : IRunTimeService
         {
             var entity = _mapper.Map<RunTime>(request);
             await _repository.Create(entity);
+            await _jobScheduler.AddJobAsync(entity);
             return new Response<string?>();
         }
         catch
