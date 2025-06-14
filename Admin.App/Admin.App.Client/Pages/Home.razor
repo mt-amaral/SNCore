@@ -1,27 +1,9 @@
 ﻿@page "/"
-
-@using Admin.Shared.Response
-@using Admin.Shared.Response.Expression
-
 @attribute [Authorize]
 
-@inject IExpressionService ExpressionService
-
-
-@if (_expression.Data != null)
-{
-    foreach (var teste in _expression.Data)
-    {
-        <p>@teste</p>
-    }
-}
 
 
 
 @code {
-    private Response<IEnumerable<GetExpressionResponse?>> _expression = new();
-    protected override async Task OnInitializedAsync()
-    {
-        _expression =  await ExpressionService.GetExpressions();
-    }
+
 }

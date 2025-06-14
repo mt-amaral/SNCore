@@ -4,8 +4,12 @@
 
 <MudNavMenu>
     <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
-    <MudNavGroup Title="Account" Expanded="true">
-        <MudNavLink Href="account/user" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
+    <MudNavGroup Title="Infrastructure"  Icon="@Icons.Material.Filled.Dns">
+        <MudNavLink Href="infrastructure/hosts" Match="NavLinkMatch.All">Hosts</MudNavLink>
+        <MudNavLink Href="infrastructure/hostgroup" Match="NavLinkMatch.All">Host Groups</MudNavLink>
+    </MudNavGroup>
+    <MudNavGroup Title="Users" Icon="@Icons.Material.Filled.SupervisedUserCircle">
+        <MudNavLink Href="users/users" Match="NavLinkMatch.All">Users</MudNavLink>
     </MudNavGroup>
     
 </MudNavMenu>

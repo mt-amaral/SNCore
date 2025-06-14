@@ -1,0 +1,41 @@
+@page "/users/users"
+@using Admin.Shared.Response.Account
+@attribute [Authorize]
+@inject IUserService UserService
+@inject ISnackbar Snackbar
+
+
+@if (Loading)
+{
+    <MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" />
+}
+else if (_users is not null)
+{
+    <MudTable T="UsersResponse?"  Dense="true"
+              Items="@_users" 
+              MultiSelection="true" 
+              @bind-SelectedItems="_selectedUsers"
+              Hover="true">
+        <HeaderContent>
+            <MudTh>Nome</MudTh>
+            <MudTh>Email</MudTh>
+          
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Nome">@context?.UserName</MudTd>
+            <MudTd DataLabel="Email">@context?.Email</MudTd>
+        </RowTemplate>
+    </MudTable>
+}
+
+@code {
+    private List<UsersResponse?>? _users { get; set; }
+    private bool Loading { get; set; } = true;
+    private HashSet<UsersResponse> _selectedUsers = new HashSet<UsersResponse>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _users = await UserService.GetUsers().HandleResponseAsync(Snackbar);
+        Loading = false;
+    }
+}

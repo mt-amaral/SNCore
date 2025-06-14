@@ -8,9 +8,9 @@ namespace Admin.App.Controllers.v1;
 
 public class HostGroupController : BaseController
 {
-    private readonly IHostService _service;
+    private readonly IGroupHostService _service;
 
-    public HostGroupController(IHostService service)
+    public HostGroupController(IGroupHostService service)
     {
         _service = service;
     }
