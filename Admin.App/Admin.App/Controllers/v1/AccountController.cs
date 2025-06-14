@@ -55,8 +55,8 @@ public class AccountController : BaseController
     /// <returns></returns>
     [HttpGet]
     [ProducesResponseType(typeof(Response<List<UsersResponse?>>), StatusCodes.Status200OK)]
-    [Route("ListUsers")]
-    public async Task<IActionResult> ListUsers()
+    [Route("getUsers")]
+    public async Task<IActionResult> GetUsers()
     {
         var users = await _userService.GetUsers();   
         return Ok(users);
