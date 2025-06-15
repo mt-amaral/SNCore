@@ -1,0 +1,18 @@
+@code {
+    [CascadingParameter]
+    public SimpleTabs ContainerTabs { get; set; }
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (ContainerTabs == null)
+            throw new ArgumentNullException(nameof(ContainerTabs), "TabItem must exist within a SimpleTabs container");
+
+        ContainerTabs.ChildTabs.Add(this);
+    }
+}

@@ -1,4 +1,15 @@
 /* wwwroot/css/site.css */
+:root {
+    --primary-color: #1565C0; /* Cor primária do MudBlazor */
+    --primary-light: rgba(89, 74, 226, 0.1);
+    --text-primary: #424242;
+    --background: #ffffff;
+    --surface: #ffffff;
+    --background-grey: #f5f5f5;
+    --text-color: #424242;
+    --inactive-bg: #f5f5f5;
+}
+
 
 @font-face {
     font-family: 'Ubuntu';

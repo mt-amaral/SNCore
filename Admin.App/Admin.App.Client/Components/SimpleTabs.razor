@@ -1,0 +1,22 @@
+<CascadingValue Value="this">
+    <div class="compact-tabs">
+        @ChildContent
+        
+        <div class="tabs-header">
+            @foreach (var tab in ChildTabs)
+            {
+                <mudbu class="@GetTabClass(tab)"
+                        @onclick="() => ActivateTab(tab)">
+                    @tab.Title
+                </mudbu>
+            }
+        </div>
+
+        <div class="tab-content">
+            @if (ActiveTab?.ChildContent != null)
+            {
+                @ActiveTab.ChildContent
+            }
+        </div>
+    </div>
+</CascadingValue>

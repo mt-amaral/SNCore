@@ -1,32 +1,42 @@
 ﻿@implements IDisposable
-
 @inject NavigationManager NavigationManager
 
 <MudNavMenu>
     <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
-    <MudNavGroup Title="Infrastructure"  Icon="@Icons.Material.Filled.Dns">
+    
+    <MudNavGroup Title="Infrastructure" 
+                 Icon="@Icons.Material.Filled.Dns" 
+                 Expanded="@infrastructureExpanded">
         <MudNavLink Href="infrastructure/hosts" Match="NavLinkMatch.All">Hosts</MudNavLink>
         <MudNavLink Href="infrastructure/hostgroup" Match="NavLinkMatch.All">Host Groups</MudNavLink>
     </MudNavGroup>
-    <MudNavGroup Title="Users" Icon="@Icons.Material.Filled.SupervisedUserCircle">
+    
+    <MudNavGroup Title="Users" 
+                 Icon="@Icons.Material.Filled.SupervisedUserCircle"
+                 Expanded="@usersExpanded">
         <MudNavLink Href="users/users" Match="NavLinkMatch.All">Users</MudNavLink>
     </MudNavGroup>
-    
 </MudNavMenu>
 
-
 @code {
-    private string? currentUrl;
+    private bool infrastructureExpanded;
+    private bool usersExpanded;
 
     protected override void OnInitialized()
     {
-        currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
         NavigationManager.LocationChanged += OnLocationChanged;
+        UpdateExpandedState(NavigationManager.ToBaseRelativePath(NavigationManager.Uri));
+    }
+
+    private void UpdateExpandedState(string relativeUrl)
+    {
+        infrastructureExpanded = relativeUrl.StartsWith("infrastructure/", StringComparison.OrdinalIgnoreCase);
+        usersExpanded = relativeUrl.StartsWith("users/", StringComparison.OrdinalIgnoreCase);
     }
 
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
     {
-        currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
+        UpdateExpandedState(NavigationManager.ToBaseRelativePath(e.Location));
         StateHasChanged();
     }
 
@@ -35,4 +45,3 @@
         NavigationManager.LocationChanged -= OnLocationChanged;
     }
 }
-

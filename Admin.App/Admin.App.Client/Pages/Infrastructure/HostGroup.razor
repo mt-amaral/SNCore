@@ -1,36 +1,41 @@
 @page "/infrastructure/hostgroup"
 @using Admin.Shared.Response.Host
+@using Admin.App.Client.Components
 @attribute [Authorize]
 @inject IGroupHostService GroupHostService
 @inject ISnackbar Snackbar
 
+<SimpleTabs>
+    <TabItem Title="Auto">
+        <p>Conteúdo da aba Auto</p>
+        <MudButton>Botão exemplo</MudButton>
+    </TabItem>
 
-@if (Loading)
+    <TabItem Title="WebAssembly">
+        <p>Conteúdo da aba WebAssembly</p>
+    </TabItem>
+</SimpleTabs>
+
+@*@if (Loading)
 {
     <MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" />
 }
 else if (_hostGroup is not null)
 {
-    <MudTable T="GroupHostResponse?"  Dense="true"
-              Items="@_hostGroup" 
-              MultiSelection="true" 
-              @bind-SelectedItems="_selectedGroup"
-              Hover="true">
-        <HeaderContent>
-            <MudTh>Ipv4</MudTh>
-            <MudTh>Nome</MudTh>
-          
-        </HeaderContent>
-        <RowTemplate>
-            <MudTd DataLabel="Nome">@context?.Id</MudTd>
-            <MudTd DataLabel="Email">@context?.GroupName</MudTd>
-        </RowTemplate>
-    </MudTable>
-}
+
+}*@
 @code {
+    
+    
+    
+    
+    
+    
+    
     private List<GroupHostResponse?>? _hostGroup { get; set; }
     private bool Loading { get; set; } = true;  
     private HashSet<GroupHostResponse> _selectedGroup = new HashSet<GroupHostResponse>();
+    
 
     protected override async Task OnInitializedAsync()
     {
