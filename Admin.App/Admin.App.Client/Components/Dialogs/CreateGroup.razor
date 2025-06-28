@@ -1,0 +1,56 @@
+@using Admin.Shared.Request.Host
+@inject IGroupHostService GroupHostService
+@inject ISnackbar Snackbar
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">Criar Novo Grupo</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudTextField
+            @bind-Value="Request.GroupName"
+            Label="Nome do Grupo"
+            Required="true"
+            RequiredError="Nome é obrigatório"
+            Immediate="true" />
+    </DialogContent>
+    <DialogActions>
+        <MudButton
+            OnClick="SubmitAsync"
+            Color="Color.Primary"
+            Disabled="@(!IsFormValid)"
+            Variant="Variant.Filled">Salvar</MudButton>
+        <MudButton
+            OnClick="Cancel"
+            Color="Color.Secondary"
+            Variant="Variant.Text">Cancelar</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    IMudDialogInstance MudDialog { get; set; } = null!;
+
+    private CreateGroupHostRequest Request { get; set; } = new();
+    private bool IsFormValid => !string.IsNullOrWhiteSpace(Request.GroupName);
+    
+
+    private async Task SubmitAsync()
+    {
+        try
+        {
+            if (!IsFormValid) return;
+            
+            var response = await GroupHostService.CreateHostGroup(Request);
+            MudDialog.Close(DialogResult.Ok(response));
+            
+            Snackbar.Add($"Grupo '{Request.GroupName}' criado com sucesso!", Severity.Success);
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Erro ao criar grupo: {ex.Message}", Severity.Error);
+        }
+    }
+
+    private void Cancel() => MudDialog.Cancel();
+}

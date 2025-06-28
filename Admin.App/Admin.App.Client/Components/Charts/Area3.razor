@@ -1,0 +1,32 @@
+@using ApexCharts
+<ApexChart TItem="Order"
+           Title="Order Gross Value">
+
+    <ApexPointSeries TItem="Order"
+                     Items="orders"
+                     SeriesType="SeriesType.Donut"
+                     Name="Gross Value"
+                     XValue="@(e => e.Country)"
+                     YAggregate="@(e => e.Sum(e => e.GrossValue))"
+                     OrderByDescending="e=>e.Y" />
+</ApexChart>
+
+@code {
+    private List<Order> orders = new()
+    {
+        new Order { Country = "Jan", GrossValue = 15000, NetValue = 12000 },
+        new Order { Country = "12", GrossValue = 20000, NetValue = 18000 },
+        new Order { Country = "eeee", GrossValue = 18000, NetValue = 16000 },
+        new Order { Country = "teste", GrossValue = 22000, NetValue = 21000 },
+    };
+
+
+
+    
+    public class Order
+    {
+        public string Country { get; set; } = string.Empty;
+        public decimal GrossValue { get; set; }
+        public decimal NetValue { get; set; }
+    }
+}

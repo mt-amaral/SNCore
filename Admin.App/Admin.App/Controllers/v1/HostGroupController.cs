@@ -1,6 +1,8 @@
 ﻿using Admin.App.Filter;
 using Admin.Shared.Interfaces;
 using Admin.Shared.Request.Host;
+using Admin.Shared.Response;
+using Admin.Shared.Response.Host;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -23,7 +25,8 @@ public class HostGroupController : BaseController
     public async Task<ActionResult> CreateGroup(CreateGroupHostRequest request)
     {
         var result = await _service.CreateHostGroup(request);
-        return StatusCode(result.IsSuccess ? 204 : 500, result);
+        return Created();
+
     }
     
     /// <summary>
@@ -62,13 +65,13 @@ public class HostGroupController : BaseController
     }
     
     /// <summary>
-    /// Consultar por pagina
+    /// Consultar grupos de host com filtros
     /// </summary>
     [HttpGet]
     [Route("list")]
-    public async Task<ActionResult> GetListGroup([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 20)
+    public async Task<ActionResult> GetListGroup([FromQuery] GroupHostFilter filter)
     {
-        var result = await _service.GetHostGroupList(pageNumber,pageSize);
+        var result = await _service.GetHostGroupList(filter);
         return Ok(result);
     }
     

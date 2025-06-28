@@ -4,6 +4,7 @@ using Admin.App.Client;
 using Admin.App.Client.Config;
 using Admin.App.Client.Service;
 using Admin.Shared.Interfaces;
+using ApexCharts;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -24,6 +25,7 @@ builder.Services.AddMudServices(config =>
     config.SnackbarConfiguration.ShowTransitionDuration = 500;
     config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
 });
+builder.Services.AddApexCharts();
 
 
 

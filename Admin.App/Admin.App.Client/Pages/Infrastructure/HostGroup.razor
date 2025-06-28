@@ -1,20 +1,77 @@
 @page "/infrastructure/hostgroup"
 @using Admin.Shared.Response.Host
 @using Admin.App.Client.Components
+@using Admin.App.Client.Components.Dialogs
+@using Admin.Shared.Request.Host
+@using Admin.App.Client.Components.Tabs
 @attribute [Authorize]
 @inject IGroupHostService GroupHostService
 @inject ISnackbar Snackbar
+@inject IDialogService DialogService
 
 <SimpleTabs>
-    <TabItem Title="Auto">
-        <p>Conteúdo da aba Auto</p>
-        <MudButton>Botão exemplo</MudButton>
-    </TabItem>
+    <TabItem Title="Groups">
+        <MudItem xs="12" sm="6" md="4"  Style="margin: 0 auto" >
+            <MudAutocomplete T="string"
+                             ShrinkLabel="true"
+                             Label="Name"
+                             Margin="Margin.Dense"
+                             Variant="Variant.Outlined"
+                             SearchFunc="@SearchGroups"
+                             Value="ValueSearch"
+                             ValueChanged="OnSearchChanged"
+                             ResetValueOnEmptyText="true"
+                             CoerceText="true"
+                             CoerceValue="true"
+                             SelectValueOnTab="true"
+                             AdornmentIcon="@Icons.Material.Filled.Search"
+                             AdornmentColor="Color.Primary" />
 
-    <TabItem Title="WebAssembly">
-        <p>Conteúdo da aba WebAssembly</p>
+
+        </MudItem>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                       OnClick="OpenCreateDialog">
+                       >Create</MudButton>
+
+            <div style="display: flex; gap: 8px;">
+                <MudButton Variant="Variant.Filled"  Disabled Color="Color.Default">Enable Hosts</MudButton>
+                <MudButton Variant="Variant.Filled"  Disabled Color="Color.Default">Disable Hosts</MudButton>
+                <MudButton Variant="Variant.Filled"  Disabled Color="Color.Error">Delete</MudButton>
+            </div>
+        </div>
+
     </TabItem>
 </SimpleTabs>
+
+<MudTable T="GroupHostResponse?"
+          Dense="true"
+          Loading="Loading"
+          Items="@FilteredHostGroups"
+          Striped="true"
+          MultiSelection="true"
+          @bind-SelectedItems="SelectedGroup"
+          Hover="true">
+    <ColGroup>
+        <col style="width: 60px;" />/>
+        <col  />
+    </ColGroup>
+    <HeaderContent>
+        <MudTh>Nome</MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Nome">
+            @context?.GroupName
+        </MudTd>
+        <MudTd DataLabel="Editar" Style="text-align: right;">
+            <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Default"  Size="Size.Small" />
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager HideRowsPerPage="true" InfoFormat="All groups: {all_items}" PageSizeOptions="[10]"/>
+    </PagerContent>
+</MudTable>
 
 @*@if (Loading)
 {
@@ -25,21 +82,72 @@ else if (_hostGroup is not null)
 
 }*@
 @code {
-    
-    
-    
-    
-    
-    
-    
-    private List<GroupHostResponse?>? _hostGroup { get; set; }
+    private string ValueSearch { get; set; } = string.Empty;
+
+    private List<GroupHostResponse?>? HostGroups { get; set; } = new();
+    private List<GroupHostResponse?>? FilteredHostGroups { get; set; } = new();
+    private HashSet<GroupHostResponse> SelectedGroup = new();
     private bool Loading { get; set; } = true;  
-    private HashSet<GroupHostResponse> _selectedGroup = new HashSet<GroupHostResponse>();
-    
+    private GroupHostFilter Filter = new();
 
     protected override async Task OnInitializedAsync()
     {
-        _hostGroup = await GroupHostService.GetHostGroupList().HandleResponseAsync(Snackbar);
+        HostGroups = await GroupHostService.GetHostGroupList(Filter).HandleResponseAsync(Snackbar);
+        FilteredHostGroups = HostGroups?.ToList();
         Loading = false;
     }
+
+    private Task<IEnumerable<string>> SearchGroups(string value, CancellationToken token)
+    {
+        if (string.IsNullOrWhiteSpace(value) || HostGroups is null)
+            return Task.FromResult(Enumerable.Empty<string>());
+
+        var result = HostGroups
+            .Where(x => x != null && x.GroupName.Contains(value, StringComparison.InvariantCultureIgnoreCase))
+            .Select(x => x.GroupName)
+            .Distinct();
+
+        return Task.FromResult(result);
+    }
+
+    private async Task OnSearchChanged(string value)
+    {
+        ValueSearch = value;
+
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            FilteredHostGroups = HostGroups?.ToList();
+        }
+        else
+        {
+            FilteredHostGroups = HostGroups?
+                .Where(x => x != null && x.GroupName.Contains(value, StringComparison.InvariantCultureIgnoreCase))
+                .ToList();
+        }
+        await InvokeAsync(StateHasChanged); 
+    }
+    
+    
+    private async Task OpenCreateDialog()
+    {
+        
+        var options = new DialogOptions 
+        { 
+            CloseOnEscapeKey = true, 
+            FullWidth = true,
+            MaxWidth = MaxWidth.Small 
+        };
+
+        var dialog = DialogService.Show<CreateGroup>("Criar Grupo", new DialogParameters(), options);
+        var result = await dialog.Result;
+        
+        if (result != null && !result.Canceled)
+        {
+            // Atualizar UI com o novo grupo (ex: atualizar lista)
+            // GroupHostResponse newGroup = result.Data as GroupHostResponse;
+        }
+    }
+    
+
+    
 }

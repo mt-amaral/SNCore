@@ -1,5 +1,6 @@
 ﻿
 using Admin.Domain.Entities;
+using Admin.Shared.Request.Host;
 
 namespace Admin.Domain.Interfaces;
 
@@ -9,8 +10,5 @@ public interface IHostGroupRepository
     Task UpdateGroup(HostGroup hostGroup);
     Task DeleteGroup(HostGroup hostGroup);
     Task<HostGroup?> SelectByGrup(int id);
-
-    Task<IEnumerable<HostGroup?>> FilteredGroup(
-        int pageNumber = 1,
-        int pageSize = 20);
+    Task<IEnumerable<HostGroup?>> FilteredGroup(GroupHostFilter filter);
 }

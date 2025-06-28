@@ -34,7 +34,8 @@ public class GroupHostService : IGroupHostService
             var entity = _mapper.Map<HostGroup>(request);
             await _groupRepository.CreateGroup(entity);
             var response = _mapper.Map<GroupHostResponse>(entity);
-            return new Response<GroupHostResponse?>(response, 204, $"Host {request.GroupName} criado com sucesso.");
+            var result = new Response<GroupHostResponse?>(response, 204, $"Host {request.GroupName} criado com sucesso.");
+            return result;
         }
         catch
         {
@@ -77,9 +78,9 @@ public class GroupHostService : IGroupHostService
         }
     }
 
-    public async Task<Response<List<GroupHostResponse?>>> GetHostGroupList(int pageNumber = 1, int pageSize = 20)
+    public async Task<Response<List<GroupHostResponse?>>> GetHostGroupList(GroupHostFilter filter)
     {
-        var entity = await _groupRepository.FilteredGroup(pageNumber, pageSize);
+        var entity = await _groupRepository.FilteredGroup(filter);
         var response = _mapper.Map<List<GroupHostResponse?>>(entity);
         return new Response<List<GroupHostResponse?>> (response, 200, null);
     }

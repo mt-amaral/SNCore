@@ -33,9 +33,9 @@ PaletteLight = new()
     DrawerIcon = "#616161",       // Contraste moderado
     TextPrimary = "#212121",      // Alto contraste
     TextSecondary = "#616161",    // Contraste AA adequado
-    ActionDefault = "#E0E0E0",    // Mantido para consistência
+    /*ActionDefault = "#E0E0E0",    // Mantido para consistência
     ActionDisabled = "#9E9E9E",   // Mais visível que o anterior
-    ActionDisabledBackground = "#EEEEEE", // Fundo mais claro
+    ActionDisabledBackground = "#EEEEEE", // Fundo mais claro*/
 },
 
 PaletteDark = new()

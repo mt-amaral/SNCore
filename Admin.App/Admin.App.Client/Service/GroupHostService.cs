@@ -17,6 +17,8 @@ public class GroupHostService : IGroupHostService
 
     public async Task<Response<GroupHostResponse?>> CreateHostGroup(CreateGroupHostRequest request)
     {
+        
+        var response =  await _httpClient.PostAsJsonAsync("HostGroup", request);
         return await Task.FromResult(new Response<GroupHostResponse?>());
     }
 
@@ -35,8 +37,16 @@ public class GroupHostService : IGroupHostService
         return await Task.FromResult(new Response<GroupHostResponse?>());
     }
 
-    public Task<Response<List<GroupHostResponse?>>> GetHostGroupList(int pageNumber = 1, int pageSize = 20)
+    public async Task<Response<List<GroupHostResponse?>>?> GetHostGroupList(GroupHostFilter filter)
     {
-        return  _httpClient.GetFromJsonAsync<Response<List<GroupHostResponse?>>>($"HostGroup/list?pageNumber={pageNumber}&pageSize={pageSize}")!;
+        var query = new Dictionary<string, string?>
+        {
+            { "name", filter.Name }
+        };
+        var queryString = string.Join("&", query
+            .Where(kv => !string.IsNullOrEmpty(kv.Value))
+            .Select(kv => $"{kv.Key}={Uri.EscapeDataString(kv.Value!)}"));
+
+        return await _httpClient.GetFromJsonAsync<Response<List<GroupHostResponse?>>>($"HostGroup/list?{queryString}")!;
     }
 }

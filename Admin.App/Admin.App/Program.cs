@@ -18,13 +18,11 @@ using Newtonsoft.Json;
 using Admin.App.Client;
 using Admin.App.Client.Service;
 using Admin.Shared.Interfaces;
+using ApexCharts;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add MudBlazor services
-builder.Services.AddMudServices();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
@@ -43,6 +41,7 @@ builder.Services.AddMudServices(config =>
     config.SnackbarConfiguration.ShowTransitionDuration = 500;
     config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
 });
+builder.Services.AddApexCharts();
 
 builder.Services.AddCors(options =>
 {

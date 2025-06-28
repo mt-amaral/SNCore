@@ -1,6 +1,7 @@
 ﻿using Admin.Domain.Entities;
 using Admin.Domain.Interfaces;
 using Admin.Persistence.Context;
+using Admin.Shared.Request.Host;
 using Microsoft.EntityFrameworkCore;
 
 namespace Admin.Persistence.Repositories;
@@ -47,17 +48,19 @@ public class HostGroupRepository : IHostGroupRepository
             .FirstOrDefaultAsync(e => e.Id == id);
     }
 
-    public async Task<IEnumerable<HostGroup?>> FilteredGroup(
-        int pageNumber = 1,
-        int pageSize = 20)
+    public async Task<IEnumerable<HostGroup?>> FilteredGroup(GroupHostFilter filter)
     {
-        return await _dbSet
-            .Include(e => e.Hosts)
-            .AsNoTracking()
-            .OrderByDescending(x => x.Id) 
-            .Skip((pageNumber - 1) * pageSize) 
-            .Take(pageSize) 
-            .ToListAsync();  
+        var query = _dbSet.Include(e => e.Hosts).AsNoTracking();
+
+        if (!string.IsNullOrWhiteSpace(filter.Name))
+            query = query.Where(x => x.GroupName.Contains(filter.Name));
+        
+
+        return await query
+            .OrderByDescending(x => x.Id)
+            /*.Skip((filter.PageNumber - 1) * filter.PageSize)
+            .Take(filter.PageSize)*/
+            .ToListAsync();
     }
     
 }

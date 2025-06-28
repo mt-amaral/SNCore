@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 
-namespace Admin.App.Client.Components;
+namespace Admin.App.Client.Components.Tabs;
 
 public partial class SimpleTabs
 {

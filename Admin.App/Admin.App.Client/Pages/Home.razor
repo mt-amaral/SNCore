@@ -1,9 +1,42 @@
 ﻿@page "/"
 @attribute [Authorize]
+@using ApexCharts
+@using Admin.App.Client.Components.Charts
 
 
+<MudGrid>
+    <MudItem xs="12" sm="6" md="4">
+        <Area1/>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="4">
+        <Area2/>
+    </MudItem>
+    <MudItem xs="12" sm="12" md="4">
+        <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="6">
+        <MudGrid>
+            <MudItem xs="12">
+                <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
+            </MudItem>
+            <MudItem xs="12">
+            </MudItem>
+        </MudGrid>
+    </MudItem>
+    <MudItem xs="12" sm="6">
+        <Area3/>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="4">
+        <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="4">
+        <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="12" md="4">
+        <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
+    </MudItem>
+</MudGrid>
 
 
 @code {
-
 }

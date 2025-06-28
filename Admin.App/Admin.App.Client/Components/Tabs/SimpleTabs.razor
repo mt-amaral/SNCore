@@ -5,10 +5,10 @@
         <div class="tabs-header">
             @foreach (var tab in ChildTabs)
             {
-                <mudbu class="@GetTabClass(tab)"
+                <button class="@GetTabClass(tab)"
                         @onclick="() => ActivateTab(tab)">
                     @tab.Title
-                </mudbu>
+                </button>
             }
         </div>
 
