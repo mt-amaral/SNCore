@@ -25,7 +25,7 @@ public class HostGroupController : BaseController
     public async Task<ActionResult> CreateGroup(CreateGroupHostRequest request)
     {
         var result = await _service.CreateHostGroup(request);
-        return Created();
+        return StatusCode(201, result);
 
     }
     
@@ -53,14 +53,12 @@ public class HostGroupController : BaseController
     }
     
     /// <summary>
-    /// Deletar por Id
+    /// Deletar por Lista de Ids
     /// </summary>
     [HttpDelete]
-    [Route("{id}")]
-    [ValidateIdFilter]
-    public async Task<ActionResult> DeleteGroup(int id)
+    public async Task<ActionResult> DeleteGroup([FromBody]List<int> idList)
     {
-        var result = await _service.DeleteHostGroup(id);
+        var result = await _service.DeleteHostGroup(idList);
         return StatusCode(result.IsSuccess ? 201 : 404, result);
     }
     

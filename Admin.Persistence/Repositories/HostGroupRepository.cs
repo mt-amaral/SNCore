@@ -35,11 +35,12 @@ public class HostGroupRepository : IHostGroupRepository
         await SaveAllAsync();
         
     }
-    public async Task DeleteGroup(HostGroup entity)
+    public async Task DeleteGroupRange(List<HostGroup?> entity)
     {
-         _dbSet.Remove(entity);
+        _dbSet.RemoveRange(entity);
         await SaveAllAsync();
     }
+    
     
     public async Task<HostGroup?> SelectByGrup(int id)
     {
@@ -55,7 +56,9 @@ public class HostGroupRepository : IHostGroupRepository
         if (!string.IsNullOrWhiteSpace(filter.Name))
             query = query.Where(x => x.GroupName.Contains(filter.Name));
         
-
+        if (filter.Ids is not null && filter.Ids.Any())
+            query = query.Where(x => filter.Ids.Contains(x.Id));
+        
         return await query
             .OrderByDescending(x => x.Id)
             /*.Skip((filter.PageNumber - 1) * filter.PageSize)

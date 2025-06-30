@@ -33,15 +33,24 @@
 @code {
     [CascadingParameter]
     IMudDialogInstance MudDialog { get; set; } = null!;
+    
+    [Parameter]
+    public GroupHostResponse Item { get; set; } = new();
+    
 
     private CreateGroupHostRequest Request { get; set; } = new();
     private bool IsFormValid => !string.IsNullOrWhiteSpace(Request.GroupName);
-    
+
+    protected override void OnInitialized()
+    {
+        Request = Mapper.MapToEditGroup(Item);
+    }
 
     private async Task SubmitAsync()
     {
         if (!IsFormValid) return;
-        GroupHostResponse? response = await GroupHostService.CreateHostGroup(Request).HandleResponseAsync(Snackbar);
+        
+        GroupHostResponse? response = await GroupHostService.UpdateHostGroup(Request, Item.Id).HandleResponseAsync(Snackbar);
         MudDialog.Close(DialogResult.Ok(response));
     }
 

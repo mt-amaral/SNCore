@@ -32,12 +32,11 @@
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <MudButton Variant="Variant.Filled" Color="Color.Primary"
                        OnClick="OpenCreateDialog">
-                       >Create</MudButton>
+                       Create</MudButton>
 
             <div style="display: flex; gap: 8px;">
-                <MudButton Variant="Variant.Filled"  Disabled Color="Color.Default">Enable Hosts</MudButton>
-                <MudButton Variant="Variant.Filled"  Disabled Color="Color.Default">Disable Hosts</MudButton>
-                <MudButton Variant="Variant.Filled"  Disabled Color="Color.Error">Delete</MudButton>
+                <MudButton Variant="Variant.Filled"  Disabled="DisabledBnt" 
+                           OnClick="OpenDeleteDialog" Color="Color.Error">Delete</MudButton>
             </div>
         </div>
 
@@ -50,44 +49,41 @@
           Items="@FilteredHostGroups"
           Striped="true"
           MultiSelection="true"
-          @bind-SelectedItems="SelectedGroup"
+          @bind-SelectedItems="_selectedGroup"
           Hover="true">
     <ColGroup>
         <col style="width: 60px;" />/>
         <col  />
     </ColGroup>
     <HeaderContent>
-        <MudTh>Nome</MudTh>
+        <MudTh>Name</MudTh>
         <MudTh></MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel="Nome">
+        <MudTd DataLabel="Name">
             @context?.GroupName
         </MudTd>
         <MudTd DataLabel="Editar" Style="text-align: right;">
-            <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Default"  Size="Size.Small" />
+            <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Default"
+                            Size="Size.Small" OnClick="@(() => OpenEditDialog(context))" />
         </MudTd>
     </RowTemplate>
     <PagerContent>
-        <MudTablePager HideRowsPerPage="true" InfoFormat="All groups: {all_items}" PageSizeOptions="[10]"/>
+        <div class="pageContainer" style="display: flex; justify-content: space-between; width: 100%; align-items: center; ">
+            <div class="mud-table-page-number-information" style="margin-left: 2%">Selected: @_selectedGroup.Count </div>
+            <MudTablePager Style="border-top: none" HideRowsPerPage="true" InfoFormat="All groups: {all_items}" PageSizeOptions="[15]" />
+        </div>
     </PagerContent>
 </MudTable>
 
-@*@if (Loading)
-{
-    <MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" />
-}
-else if (_hostGroup is not null)
-{
-
-}*@
 @code {
     private string ValueSearch { get; set; } = string.Empty;
 
     private List<GroupHostResponse?>? HostGroups { get; set; } = new();
     private List<GroupHostResponse?>? FilteredHostGroups { get; set; } = new();
-    private HashSet<GroupHostResponse> SelectedGroup = new();
+    private HashSet<GroupHostResponse> _selectedGroup = new();
     private bool Loading { get; set; } = true;  
+    private bool DisabledBnt => !_selectedGroup.Any();
     private GroupHostFilter Filter = new();
 
     protected override async Task OnInitializedAsync()
@@ -138,16 +134,76 @@ else if (_hostGroup is not null)
             MaxWidth = MaxWidth.Small 
         };
 
-        var dialog = DialogService.Show<CreateGroup>("Criar Grupo", new DialogParameters(), options);
+        var dialog = DialogService.Show<CreateGroup>("Create Group", new DialogParameters(), options);
         var result = await dialog.Result;
         
         if (result != null && !result.Canceled)
         {
-            // Atualizar UI com o novo grupo (ex: atualizar lista)
-            // GroupHostResponse newGroup = result.Data as GroupHostResponse;
+            FilteredHostGroups?.Insert(0, result.Data as GroupHostResponse );
+            HostGroups?.Insert(0, result.Data as GroupHostResponse );
         }
     }
     
-
+    private async Task OpenDeleteDialog()
+    {
+        
+        var options = new DialogOptions 
+        { 
+            CloseOnEscapeKey = true, 
+            FullWidth = true,
+            MaxWidth = MaxWidth.Small 
+        };
+        var parameters = new DialogParameters
+        {
+            { nameof(DeleteGroup._selectedGroup), _selectedGroup.ToList() } // Converte para List<T> se _selectedGroup for HashSet<T>
+        };
+        var dialog = DialogService.Show<DeleteGroup>("Delete Group", parameters, options);
+        var result = await dialog.Result;
+        
+        if (result != null && !result.Canceled)
+        {
+            foreach (var i in _selectedGroup)
+            {
+                FilteredHostGroups.Remove(i);
+                HostGroups.Remove(i);
+            }
+            _selectedGroup.Clear();
+        }
+    }
     
+    private async Task OpenEditDialog(GroupHostResponse item)
+    {
+        var options = new DialogOptions 
+        { 
+            CloseOnEscapeKey = true, 
+            FullWidth = true,
+            MaxWidth = MaxWidth.Small 
+        };
+        var parameters = new DialogParameters
+        {
+            { nameof(EditGroup.Item), item } 
+        };
+        var dialog = DialogService.Show<EditGroup>("EditGroup", parameters, options);
+        var result = await dialog.Result;
+        
+        if (result != null && !result.Canceled)
+        {
+            
+            var updatedItem = (GroupHostResponse)result.Data;
+            
+            var index = FilteredHostGroups.IndexOf(item);
+            if (index >= 0)
+            {
+                FilteredHostGroups[index] = updatedItem;
+            }
+            
+            var index2 = HostGroups.IndexOf(item);
+            if (index2 >= 0)
+            {
+                HostGroups[index2] = updatedItem;
+            }
+        }
+            
+    }
+
 }

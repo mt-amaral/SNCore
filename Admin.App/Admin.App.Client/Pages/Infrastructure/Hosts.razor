@@ -1,32 +1,32 @@
 @page "/infrastructure/hosts"
 @using Admin.Shared.Response.Host
+@using Admin.App.Client.Components.Tabs
 @attribute [Authorize]
 @inject IHostService HostService
 @inject ISnackbar Snackbar
 
+<SimpleTabs>
+    <TabItem Title="Host">
 
-@if (Loading)
-{
-    <MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" />
-}
-else if (_hosts is not null)
-{
-    <MudTable T="HostResponse?"  Dense="true"
-              Items="@_hosts" 
-              MultiSelection="true" 
-              @bind-SelectedItems="_selectedHost"
-              Hover="true">
-        <HeaderContent>
-            <MudTh>Ipv4</MudTh>
-            <MudTh>Nome</MudTh>
-          
-        </HeaderContent>
-        <RowTemplate>
-            <MudTd DataLabel="Nome">@context?.Ipv4</MudTd>
-            <MudTd DataLabel="Email">@context?.Name</MudTd>
-        </RowTemplate>
-    </MudTable>
-}
+        <p>teste</p>
+    </TabItem>
+</SimpleTabs>
+<MudTable T="HostResponse?"  Dense="true"
+          Items="@_hosts"
+          MultiSelection="true"
+          @bind-SelectedItems="_selectedHost"
+          Hover="true">
+    <HeaderContent>
+        <MudTh>Ipv4</MudTh>
+        <MudTh>Nome</MudTh>
+
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Nome">@context?.Ipv4</MudTd>
+        <MudTd DataLabel="Email">@context?.Name</MudTd>
+    </RowTemplate>
+</MudTable>
+
 
 @code {
     private List<HostResponse?>? _hosts { get; set; }

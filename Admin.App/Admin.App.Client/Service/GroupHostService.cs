@@ -17,9 +17,9 @@ public class GroupHostService : IGroupHostService
 
     public async Task<Response<GroupHostResponse?>> CreateHostGroup(CreateGroupHostRequest request)
     {
-        
-        var response =  await _httpClient.PostAsJsonAsync("HostGroup", request);
-        return await Task.FromResult(new Response<GroupHostResponse?>());
+        var response = await _httpClient.PostAsJsonAsync("HostGroup", request);
+        var result = await response.Content.ReadFromJsonAsync<Response<GroupHostResponse?>>();
+        return result!;
     }
 
     public async Task<Response<GroupHostResponse?>> UpdateHostGroup(CreateGroupHostRequest request, int id)
@@ -32,9 +32,15 @@ public class GroupHostService : IGroupHostService
         return await Task.FromResult(new Response<Dictionary<int, string>?>());
     }
 
-    public async Task<Response<GroupHostResponse?>> DeleteHostGroup(int id)
+    public async Task<Response<GroupHostResponse?>> DeleteHostGroup(List<int> ids)
     {
-        return await Task.FromResult(new Response<GroupHostResponse?>());
+        var request = new HttpRequestMessage(HttpMethod.Delete, "HostGroup")
+        {
+            Content = JsonContent.Create(ids)
+        };
+        var response = await _httpClient.SendAsync(request);
+        var result = await response.Content.ReadFromJsonAsync<Response<GroupHostResponse?>>();
+        return result!;
     }
 
     public async Task<Response<List<GroupHostResponse?>>?> GetHostGroupList(GroupHostFilter filter)

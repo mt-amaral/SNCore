@@ -53,7 +53,8 @@ public class GroupHostService : IGroupHostService
             
             _mapper.Map(request, entity);
             await _groupRepository.UpdateGroup(entity);
-            return new Response<GroupHostResponse?>(null, 201, $"Grupo {request.GroupName} atualizado com sucesso.");
+            var response = _mapper.Map<GroupHostResponse?>(entity);
+            return new Response<GroupHostResponse?>(response, 201, $"Grupo {request.GroupName} atualizado com sucesso.");
         }
         catch
         {
@@ -61,20 +62,23 @@ public class GroupHostService : IGroupHostService
         }
     }
 
-    public async Task<Response<GroupHostResponse?>> DeleteHostGroup(int id)
+    public async Task<Response<GroupHostResponse?>> DeleteHostGroup(List<int> listId)
     {
         try
         {
-            var entity = await _groupRepository.SelectByGrup(id);
-            if (entity is null)
-                return new Response<GroupHostResponse?>(null, 404, $"Grupo Id {id} não encontrado.");
-            await _groupRepository.DeleteGroup(entity);
-            
-            return new Response<GroupHostResponse?>(null, 201, $"Grupo Id {id} deletado com sucesso.");
+            var entity = await _groupRepository.FilteredGroup(new GroupHostFilter(){Ids = listId});
+            var list = entity.ToList();
+            if (list.Any())
+            {
+                await _groupRepository.DeleteGroupRange(list);
+                return new Response<GroupHostResponse?>(null, 201, $"Grupo  deletado.");
+            }
+            else
+                return new Response<GroupHostResponse?>(null, 404, $"Grupo não encontrado.");
         }
         catch 
         {
-            throw new Exception($"Erro ao Deletar Host {id}");
+            throw new Exception($"Erro ao Deletar Grupo");
         }
     }
 

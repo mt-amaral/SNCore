@@ -1,0 +1,52 @@
+@using Admin.Shared.Request.Host
+@using Admin.Shared.Response.Host
+@inject IGroupHostService GroupHostService
+@inject ISnackbar Snackbar
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.DeleteForever" Class="mr-3 mb-n1"/>
+            Delete server?
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudList T="GroupHostResponse">
+            @foreach (var item in _selectedGroup)
+            {
+                <div style="display: flex">
+                    <MudListItem Text="@item.Id.ToString()"  />
+                    <MudListItem Text="@item.GroupName"  />
+                </div>
+            }
+
+        </MudList>
+        
+
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Error" OnClick="DeleteAsync">Delete Group</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    IMudDialogInstance MudDialog { get; set; } = null!;
+    
+    [Parameter]
+    public List<GroupHostResponse> _selectedGroup { get; set; } = new ();
+ 
+
+    private CreateGroupHostRequest Request { get; set; } = new();
+    
+
+    private async Task DeleteAsync()
+    {
+        var itemList = _selectedGroup.Select(x => x.Id).ToList();
+        GroupHostResponse? response = await GroupHostService.DeleteHostGroup(itemList).HandleResponseAsync(Snackbar);
+        MudDialog.Close(DialogResult.Ok(response));
+    }
+
+    private void Cancel() => MudDialog.Cancel();
+}
