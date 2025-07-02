@@ -37,7 +37,7 @@ public class HostGroupRepository : IHostGroupRepository
     }
     public async Task DeleteGroupRange(List<HostGroup?> entity)
     {
-        _dbSet.RemoveRange(entity);
+        _dbSet.RemoveRange(entity!);
         await SaveAllAsync();
     }
     

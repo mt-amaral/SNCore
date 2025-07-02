@@ -21,7 +21,7 @@ public static class AlertExtensions
         catch (Exception ex)
         {
             snackbar.Add($"{ex.Message}", Severity.Error);
-            var response =await responseTask;
+            var response = await responseTask;
             return response.Data;
         }
     }

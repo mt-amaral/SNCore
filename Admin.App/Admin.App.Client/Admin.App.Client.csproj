@@ -23,10 +23,5 @@
     <ProjectReference Include="..\..\Admin.Shared\Admin.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="Microsoft.AspNetCore.Identity">
-      <HintPath>C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\9.0.3\Microsoft.AspNetCore.Identity.dll</HintPath>
-    </Reference>
-  </ItemGroup>
 
 </Project>

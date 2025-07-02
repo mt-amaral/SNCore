@@ -41,6 +41,7 @@
     private async Task SubmitAsync()
     {
         if (!IsFormValid) return;
+
         GroupHostResponse? response = await GroupHostService.CreateHostGroup(Request).HandleResponseAsync(Snackbar);
         MudDialog.Close(DialogResult.Ok(response));
     }

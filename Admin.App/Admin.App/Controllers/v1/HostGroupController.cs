@@ -26,9 +26,7 @@ public class HostGroupController : BaseController
     {
         var result = await _service.CreateHostGroup(request);
         return StatusCode(201, result);
-
     }
-    
     /// <summary>
     /// Editar Host Existente
     /// </summary>
@@ -56,7 +54,7 @@ public class HostGroupController : BaseController
     /// Deletar por Lista de Ids
     /// </summary>
     [HttpDelete]
-    public async Task<ActionResult> DeleteGroup([FromBody]List<int> idList)
+    public async Task<ActionResult> DeleteGroup([FromBody] List<int> idList)
     {
         var result = await _service.DeleteHostGroup(idList);
         return StatusCode(result.IsSuccess ? 201 : 404, result);
