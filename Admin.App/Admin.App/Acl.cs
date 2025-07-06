@@ -10,5 +10,5 @@ public class Acl
 
     public static string CorsPolicyPro = "WebAppProd";
 
-    public static string AdminProUrl = "https://187.94.71.6:11111";
+    public static string AdminProUrl = "https://admin.sncore.net";
 }

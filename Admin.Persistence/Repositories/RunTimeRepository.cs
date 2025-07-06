@@ -18,7 +18,7 @@ public class RunTimeRepository : IRunTimeRepository
     }
 
     private async Task<bool> SaveAllAsync()
-    {
+    {    
         return await _context.SaveChangesAsync() > 0;
     }
     public async Task<IEnumerable<RunTime?>> GetActiveAsync(CancellationToken ct = default)

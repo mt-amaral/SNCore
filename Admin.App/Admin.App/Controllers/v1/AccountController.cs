@@ -43,6 +43,7 @@ public class AccountController : BaseController
     [HttpPost]
     [ProducesResponseType(typeof(Response<string?>), StatusCodes.Status200OK)]
     [Route("register")]
+    [AllowAnonymous]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
         var result = await _userService.Register(request);
