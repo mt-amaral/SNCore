@@ -7,9 +7,24 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        
-      - name:  Build  Docker image
-        run: docker build -t app_admin:latest  --target app -f Admin.App/Admin.App/Dockerfile .
+
+      - name: 🔨 Build Docker image
+        run: docker build -t app_admin:latest --target app -f Admin.App/Admin.App/Dockerfile .
+
+      - name: Setup chave SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+      - name:  imagem para o servidor
+        run: |
+          docker save app_admin:latest | bzip2 | ssh -o StrictHostKeyChecking=no \
+            -i ~/.ssh/id_rsa \
+            -p ${{ secrets.SSH_PORT }} \
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
+            'bunzip2 | docker load'
