@@ -23,7 +23,7 @@ jobs:
 
       - name:  imagem para o servidor
         run: |
-          echo "teste porta${{ secrets.SSH_PORT }}: ${{ SSH_PORT }} "
+          echo "teste porta${{ secrets.SSH_PORT }} "
           |
           docker save app_admin:latest | bzip2 | ssh -o StrictHostKeyChecking=no \
             -i ~/.ssh/id_rsa \
