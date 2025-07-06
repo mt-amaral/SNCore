@@ -21,10 +21,9 @@ jobs:
           echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
-      - name:  imagem para o servidor
+      - name:   imagem para o servidor
         run: |
-          echo "teste porta${{ secrets.SSH_PORT }} "
-          |
+          echo " porta: ${{ secrets.SSH_PORT }}"
           docker save app_admin:latest | bzip2 | ssh -o StrictHostKeyChecking=no \
             -i ~/.ssh/id_rsa \
             -p ${{ secrets.SSH_PORT }} \
