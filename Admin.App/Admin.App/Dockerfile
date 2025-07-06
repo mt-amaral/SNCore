@@ -35,5 +35,5 @@ RUN dotnet publish "./Admin.App.csproj" -c $BUILD_CONFIGURATION -o /app/publish 
 FROM base AS app
 WORKDIR /app
 COPY --from=publish /app/publish .
-COPY Admin.App/Admin.App/https/localhost.pfx .
+#COPY Admin.App/Admin.App/https/localhost.pfx .
 ENTRYPOINT ["dotnet", "Admin.App.dll"]
