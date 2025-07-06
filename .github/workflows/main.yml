@@ -6,27 +6,12 @@ on:
 
 jobs:
   deploy:
-    environment: sncoreenv
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
-      - name: Checkout
+      - name: Checkout código
         uses: actions/checkout@v4
 
-      - name: 🔨 Build Docker image
-        run: docker build -t app_admin:latest --target app -f Admin.App/Admin.App/Dockerfile .
-
-      - name: Setup chave SSH
+      - name: Build imagem Docker
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-
-      - name:   imagem para o servidor
-        run: |
-          echo " porta: ${{ secrets.SSH_PORT }}"
-          docker save app_admin:latest | bzip2 | ssh -o StrictHostKeyChecking=no \
-            -i ~/.ssh/id_rsa \
-            -p ${{ secrets.SSH_PORT }} \
-            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
-            'bunzip2 | docker load'
+          docker build -t app_admin:latest --target app -f Admin.App/Admin.App/Dockerfile .
