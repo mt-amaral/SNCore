@@ -6,6 +6,7 @@ on:
 
 jobs:
   deploy:
+    environment: sncoreenv
     runs-on: ubuntu-latest
 
     steps:
