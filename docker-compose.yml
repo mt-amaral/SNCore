@@ -1,88 +1,31 @@
 version: '3.8'
 
 services:
-
-
   app_admin:
-   container_name: app_admin
-   hostname: app_admin
-   image: app_admin:1.0.0
-   volumes:
-    - ./keys:/app/keys
-   networks:
-     admin-app:
-       ipv4_address: 172.20.254.3
-   ports:
-     - "8091:8091"
-     - "8090:8090"
-   environment:
-     - ConnectionStrings__Application=Server=172.20.254.4;Database=master;User Id=sa;Password=;TrustServerCertificate=True;
-     - ConnectionStrings__Identity=Server=172.20.254.4;Database=master;User Id=sa;Password=;TrustServerCertificate=True;
-     - ConnectionString__Timescale=Host=172.20.254.5;Port=5432;Database=Sncore_Metrics;Username=admin;Password=;Pooling=true;
-     - ApiServerRender__Url=https://localhost:8091/api/v1/
-     - ApiServerRender__WS=https://localhost:8091
-     - ASPNETCORE_ENVIRONMENT=Staging
-     - ASPNETCORE_HTTP_PORTS=8090
-     - ASPNETCORE_HTTPS_PORTS=8091
-   restart: unless-stopped
-  
-  
-#  timescale_server:
-#    image: timescale/timescaledb:latest-pg14
-#    container_name: timescale_server_admin
-#    labels:
-#      - "io.portainer.hidden=true"
-#    environment:
-#      POSTGRES_USER: admin
-#      POSTGRES_PASSWORD: 
-#      POSTGRES_DB: Sncore_Metrics
-#    ports:
-#      - "5556:5432"
-#    networks:
-#      mt_admin-app:
-#        ipv4_address: 172.20.254.5
-#    restart: unless-stopped
+    image: app_admin:latest
+    volumes:
+      - /usr/local/sncoreapp/https:/app/https
+    networks:
+      - admin-app-server
+      - admin-app
+    ports:
+      - "8091:8091"
+      - "8090:8090"
+    environment:
+      - ConnectionStrings__Application=Server=${APP_ENV_STR_APPLICATION}
+      - ConnectionStrings__Identity=Server=${APP_ENV_STR_IDENTITY}
+      - ConnectionStrings__Timescale=Host=${APP_ENV_STR_TIMESCALE}
+      - ApiServer__Url=${APP_ENV_HTTPS}
+      - ApiServer__WS=${APP_ENV_WS}
+      - ASPNETCORE_ENVIRONMENT=${ENV}
+      - ASPNETCORE_HTTP_PORTS=8090
+      - ASPNETCORE_HTTPS_PORTS=8091
+    deploy:
+      restart_policy:
+        condition: any
 
-#  sql_server:
-#    image: mcr.microsoft.com/mssql/server:2022-preview-ubuntu-22.04
-#    container_name: sql_server_admin
-#    labels:
-#      - "io.portainer.hidden=true"
-#    hostname: sql_server_admin
-#    environment:
-#      ACCEPT_EULA: Y
-#      MSSQL_SA_PASSWORD: 
-#      MSSQL_PID: Evaluation
-#    ports:
-#      - "5554:1433"
-#    networks:
-#      admin-app:
-#        ipv4_address: 172.20.254.4
-#    restart: unless-stopped
-
-#networks:
-#  mt_admin-app:
-#    driver: bridge
-#    ipam:
-#      config:
-#        - subnet: 172.20.254.0/27
-#          gateway: 172.20.254.30
-          
-
-          
 networks:
-  mt_admin-app:
-    external: true          
-
-
-# -- Rebuild Api
-# docker build -t api_admin:1.0.0 --target api -f Admin.Api/Dockerfile .
-
-# --- Rebuild App
-# docker build -t app_admin:1.0.0 --target app -f Admin.App/Admin.App/Dockerfile .
-
-# --- Rebuild Sql
-# docker build -t sql_server:1.0.0 --target sql -f Admin.Sql.Test/Dockerfile .
-
-# --- Run Compose
-# docker-compose up -d
+  admin-app-server:
+    driver: overlay
+  admin-app:
+    external: true
