@@ -5,7 +5,7 @@ services:
     image: app_admin:latest
     volumes:
       - /usr/local/sncoreapp/https:/app/https
-      - sncore-keys:/app/keys
+      - /usr/local/sncoreapp/keys:/app/keys
     networks:
       - admin-app-server
       - admin-app
@@ -30,7 +30,3 @@ networks:
     driver: overlay
   admin-app:
     external: true
-
-volumes:
-  sncore-keys:
-    driver: local
